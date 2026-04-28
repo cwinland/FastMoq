@@ -108,6 +108,8 @@ namespace FastMoq
         private readonly Dictionary<ServiceRegistrationKey, MockModel> keyedMockCollection = new();
         private readonly Dictionary<ServiceRegistrationKey, IInstanceModel> keyedTypeMap = new();
         internal Dictionary<Type, IInstanceModel> typeMap = new();
+        internal IEnumerable<KeyValuePair<ServiceRegistrationKey, MockModel>> KeyedMockModels => keyedMockCollection;
+        internal IEnumerable<KeyValuePair<ServiceRegistrationKey, IInstanceModel>> KeyedTypeModels => keyedTypeMap;
         private readonly ObservableExceptionLog exceptionLog = new();
         private readonly ObservableLogEntries logEntries = new();
         private Action<LogLevel, EventId, string, Exception?> externalLoggingCallback;

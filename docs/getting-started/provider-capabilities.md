@@ -13,6 +13,9 @@ FastMoq has two different layers of behavior:
 
 - provider-neutral APIs such as `GetOrCreateMock(...)`, `Verify(...)`, `VerifyNoOtherCalls(...)`, and `VerifyLogged(...)`
 - count-oriented verification wrappers such as `VerifyCalledOnce(...)`, `VerifyNotCalled(...)`, `VerifyLoggedOnce(...)`, and `VerifyNotLogged(...)` when the assertion is exactly once or never
+- broader count wrappers such as `VerifyCalledExactly(...)`, `VerifyCalledAtLeast(...)`, `VerifyCalledAtMost(...)`, and the matching `*AnyArgs(...)` variants when the test wants provider-first counts without manual `TimesSpec` construction
+- method-group any-args verification through `VerifyAnyArgs(...)` when the test only cares that one non-overloaded method was called and every argument can stay wildcarded
+- a provider-neutral diagnostics snapshot through `CreateDiagnosticsSnapshot()` when the test needs to inspect tracked mocks, constructor selections, observed registrations, or captured log entries without dropping into provider-native debug surfaces
 - provider-specific capabilities and convenience APIs exposed by the selected provider
 
 The selected provider determines whether features such as protected-member access, automatic property backing, base-call behavior, and logger capture are available.
@@ -140,8 +143,11 @@ For the common once / never cases, the shared verification surface now has expli
 ```csharp
 Mocks.VerifyCalledOnce<IOrderGateway>(x => x.Publish("alpha"));
 Mocks.VerifyNotCalled<IOrderGateway>(x => x.Publish("beta"));
+Mocks.VerifyCalledExactly<IOrderGateway>(x => x.Publish("alpha"), 2);
 Mocks.VerifyLoggedOnce(LogLevel.Information, "submitted alpha");
 Mocks.VerifyNotLogged(LogLevel.Error, "submission failed");
+Mocks.VerifyAnyArgs<IOrderGateway, Action<string>>(gateway => gateway.Publish, TimesSpec.Once);
+Mocks.VerifyCalledAtLeastAnyArgs<IOrderGateway, Action<string>>(gateway => gateway.Publish, 1);
 ```
 
 Detached handles can use the same style without routing through `MockingProviderRegistry.Default` manually:
@@ -149,6 +155,7 @@ Detached handles can use the same style without routing through `MockingProvider
 ```csharp
 MockingProviderRegistry.VerifyCalledOnce(orderGateway, x => x.Publish("alpha"));
 MockingProviderRegistry.VerifyNotCalled(orderGateway, x => x.Publish("beta"));
+MockingProviderRegistry.VerifyAnyArgs<IOrderGateway, Action<string>>(orderGateway, gateway => gateway.Publish, TimesSpec.Once);
 MockingProviderRegistry.VerifyNoOtherCalls(orderGateway);
 ```
 

@@ -9,12 +9,14 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Logging.Abstractions;
 using System;
+using System.Collections.Generic;
 using System.IO;
 using System.IO.Abstractions;
 using System.Linq.Expressions;
 using System.Net.Http;
 using System.Reflection;
 using System.Reflection.Emit;
+using System.Text.Json;
 
 namespace FastMoq.Tests
 {
@@ -176,6 +178,24 @@ namespace FastMoq.Tests
 
         [Theory]
         [MemberData(nameof(ProviderNames))]
+        public void VerifyCalledExactly_AtLeast_AndAtMost_ShouldWork_ForSelectedProvider(string providerName)
+        {
+            using var providerScope = PushProvider(providerName);
+            var mocker = new Mocker();
+            var dependency = mocker.GetOrCreateMock<IProviderDependency>();
+
+            dependency.Instance.Run("alpha");
+            dependency.Instance.Run("alpha");
+            dependency.Instance.Run("beta");
+
+            mocker.VerifyCalledExactly<IProviderDependency>(service => service.Run("alpha"), 2);
+            mocker.VerifyCalledAtLeast<IProviderDependency>(service => service.Run(FastArg.Any<string>()), 3);
+            mocker.VerifyCalledAtMost<IProviderDependency>(service => service.Run("beta"), 1);
+            mocker.VerifyNoOtherCalls<IProviderDependency>();
+        }
+
+        [Theory]
+        [MemberData(nameof(ProviderNames))]
         public void Verify_ShouldSupportFastArgAnyMatcher_ForSelectedProvider(string providerName)
         {
             using var providerScope = PushProvider(providerName);
@@ -237,6 +257,85 @@ namespace FastMoq.Tests
 
         [Theory]
         [MemberData(nameof(ProviderNames))]
+        public void VerifyAnyArgs_ShouldSupportLongMethodSignatures_ForSelectedProvider(string providerName)
+        {
+            using var providerScope = PushProvider(providerName);
+            var mocker = new Mocker();
+            var dependency = mocker.GetOrCreateMock<IProviderDeploymentDependency>();
+
+            dependency.Instance.CreateDeployment(
+                "alpha",
+                new Dictionary<string, int> { ["region"] = 1 },
+                new MemoryStream(),
+                new MemoryStream(),
+                true);
+
+            mocker.VerifyAnyArgs<IProviderDeploymentDependency, Action<string, Dictionary<string, int>, Stream, Stream, bool>>(service => service.CreateDeployment, TimesSpec.Once);
+            mocker.VerifyNoOtherCalls<IProviderDeploymentDependency>();
+        }
+
+        [Theory]
+        [MemberData(nameof(ProviderNames))]
+        public void DetachedVerifyAnyArgs_ShouldSupportDelegateSelector_ForSelectedProvider(string providerName)
+        {
+            using var providerScope = PushProvider(providerName);
+            var mocker = new Mocker();
+            var dependency = mocker.CreateStandaloneFastMock<IProviderDeploymentDependency>();
+
+            dependency.Instance.CreateDeployment(
+                "alpha",
+                new Dictionary<string, int> { ["region"] = 1 },
+                new MemoryStream(),
+                new MemoryStream(),
+                true);
+
+            MockingProviderRegistry.VerifyAnyArgs<IProviderDeploymentDependency, Action<string, Dictionary<string, int>, Stream, Stream, bool>>(
+                dependency,
+                target => target.CreateDeployment,
+                TimesSpec.Once);
+            MockingProviderRegistry.VerifyNoOtherCalls(dependency);
+        }
+
+        [Theory]
+        [MemberData(nameof(ProviderNames))]
+        public void DetachedVerifyAnyArgs_ShouldSupportOverloadSelection_ForSelectedProvider(string providerName)
+        {
+            using var providerScope = PushProvider(providerName);
+            var mocker = new Mocker();
+            var dependency = mocker.CreateStandaloneFastMock<IProviderOverloadedDeploymentDependency>();
+
+            dependency.Instance.CreateDeployment(
+                "alpha",
+                new Dictionary<string, int> { ["region"] = 1 },
+                new MemoryStream(),
+                new MemoryStream(),
+                true);
+
+            MockingProviderRegistry.VerifyAnyArgs(
+                dependency,
+                nameof(IProviderOverloadedDeploymentDependency.CreateDeployment),
+                TimesSpec.Once,
+                typeof(string),
+                typeof(Dictionary<string, int>),
+                typeof(Stream),
+                typeof(Stream),
+                typeof(bool));
+            MockingProviderRegistry.VerifyNoOtherCalls(dependency);
+        }
+
+        [Fact]
+        public void VerifyAnyArgs_ShouldThrowHelpfulMessage_WhenMethodNameIsAmbiguous()
+        {
+            var mocker = new Mocker();
+
+            var action = () => mocker.VerifyAnyArgs<IProviderOverloadedDeploymentDependency>(nameof(IProviderOverloadedDeploymentDependency.CreateDeployment), TimesSpec.Once);
+
+            action.Should().Throw<InvalidOperationException>()
+                .WithMessage("*is overloaded*parameter types*");
+        }
+
+        [Theory]
+        [MemberData(nameof(ProviderNames))]
         public void CreateStandaloneFastMock_ShouldCreateIndependentUntrackedHandles(string providerName)
         {
             using var providerScope = PushProvider(providerName);
@@ -280,6 +379,42 @@ namespace FastMoq.Tests
 
             MockingProviderRegistry.VerifyCalledOnce(dependency, x => x.Run("alpha"));
             MockingProviderRegistry.VerifyNotCalled(dependency, x => x.Run("beta"));
+            MockingProviderRegistry.VerifyNoOtherCalls(dependency);
+        }
+
+        [Theory]
+        [MemberData(nameof(ProviderNames))]
+        public void DetachedVerifyCalledExactlyAnyArgs_AtLeastAnyArgs_AndAtMostAnyArgs_ShouldWork_ForSelectedProvider(string providerName)
+        {
+            using var providerScope = PushProvider(providerName);
+            var mocker = new Mocker();
+            var dependency = mocker.CreateStandaloneFastMock<IProviderDeploymentDependency>();
+
+            dependency.Instance.CreateDeployment(
+                "alpha",
+                new Dictionary<string, int> { ["region"] = 1 },
+                new MemoryStream(),
+                new MemoryStream(),
+                true);
+            dependency.Instance.CreateDeployment(
+                "beta",
+                new Dictionary<string, int> { ["region"] = 2 },
+                new MemoryStream(),
+                new MemoryStream(),
+                false);
+
+            MockingProviderRegistry.VerifyCalledExactlyAnyArgs<IProviderDeploymentDependency, Action<string, Dictionary<string, int>, Stream, Stream, bool>>(
+                dependency,
+                service => service.CreateDeployment,
+                2);
+            MockingProviderRegistry.VerifyCalledAtLeastAnyArgs<IProviderDeploymentDependency, Action<string, Dictionary<string, int>, Stream, Stream, bool>>(
+                dependency,
+                service => service.CreateDeployment,
+                2);
+            MockingProviderRegistry.VerifyCalledAtMostAnyArgs<IProviderDeploymentDependency, Action<string, Dictionary<string, int>, Stream, Stream, bool>>(
+                dependency,
+                service => service.CreateDeployment,
+                2);
             MockingProviderRegistry.VerifyNoOtherCalls(dependency);
         }
 
@@ -464,6 +599,73 @@ namespace FastMoq.Tests
 
             action.Should().Throw<NotSupportedException>()
                 .WithMessage("*ReflectionMockingProvider*");
+        }
+
+        [Theory]
+        [MemberData(nameof(ProviderNames))]
+        public void CreateDiagnosticsSnapshot_ShouldCaptureTrackedMocks_ConstructorHistory_InstanceRegistrations_AndLogs(string providerName)
+        {
+            using var providerScope = PushProvider(providerName);
+            var expectedUri = new Uri("https://fastmoq.test/providers/diagnostics");
+            var keyedUri = new Uri("https://fastmoq.test/providers/diagnostics/keyed");
+            var mocker = new Mocker();
+
+            mocker.AddCapturedLoggerFactory(replace: true);
+            mocker.AddType<Uri>(_ => expectedUri, replace: true);
+            mocker.AddKeyedType<Uri>("primary", keyedUri, replace: true);
+
+            var dependency = mocker.GetOrCreateMock<IProviderDependency>();
+            var keyedDependency = mocker.GetOrCreateMock<IProviderDependency>(new MockRequestOptions
+            {
+                ServiceKey = "primary",
+            });
+            var consumer = mocker.CreateInstance<ProviderConsumer>();
+            var uriConsumer = mocker.CreateInstance<ProviderUriConsumer>();
+            var logger = mocker.GetObject<ILogger<NullLogger>>();
+
+            consumer.Should().NotBeNull();
+            consumer!.Dependency.Should().BeSameAs(dependency.Instance);
+            keyedDependency.Instance.Run("primary");
+            uriConsumer.Should().NotBeNull();
+            uriConsumer!.Uri.Should().Be(expectedUri);
+            logger.Should().NotBeNull();
+
+            logger!.LogInformation("provider diagnostics");
+
+            var snapshot = mocker.CreateDiagnosticsSnapshot();
+
+            snapshot.ProviderName.Should().Be(MockingProviderRegistry.Default.GetType().Name);
+            snapshot.TrackedMocks.Should().Contain(entry => entry.ServiceType == typeof(IProviderDependency).FullName);
+            snapshot.TrackedMocks.Should().Contain(entry => entry.ServiceType == typeof(IProviderDependency).FullName && entry.ServiceKey == "primary");
+            snapshot.ConstructorSelections.Should().Contain(entry => entry.RequestedType == typeof(ProviderConsumer).FullName);
+            snapshot.InstanceRegistrations.Should().Contain(entry => entry.RequestedType == typeof(Uri).FullName && entry.HasFactory);
+            snapshot.InstanceRegistrations.Should().Contain(entry => entry.RequestedType == typeof(Uri).FullName && entry.ServiceKey == "primary");
+            snapshot.LogEntries.Should().Contain(entry => entry.Message.Contains("provider diagnostics", StringComparison.Ordinal));
+
+            var debugView = snapshot.ToDebugView();
+            debugView.Should().Contain("Tracked mocks:");
+            debugView.Should().Contain(typeof(IProviderDependency).FullName);
+            debugView.Should().Contain(typeof(ProviderConsumer).FullName);
+            debugView.Should().Contain(typeof(ProviderUriConsumer).FullName);
+            debugView.Should().Contain(typeof(Uri).FullName);
+            debugView.Should().Contain("[key: primary]");
+            debugView.Should().Contain("provider diagnostics");
+
+            using var json = JsonDocument.Parse(snapshot.ToJson());
+            json.RootElement.GetProperty("providerName").GetString().Should().Be(snapshot.ProviderName);
+            json.RootElement.GetProperty("trackedMocks").GetArrayLength().Should().BeGreaterThan(0);
+            json.RootElement.GetProperty("instanceRegistrations").GetArrayLength().Should().BeGreaterThan(0);
+            var hasPrimaryServiceKey = false;
+            foreach (var entry in json.RootElement.GetProperty("trackedMocks").EnumerateArray())
+            {
+                if (entry.TryGetProperty("serviceKey", out var serviceKey) && serviceKey.GetString() == "primary")
+                {
+                    hasPrimaryServiceKey = true;
+                    break;
+                }
+            }
+
+            hasPrimaryServiceKey.Should().BeTrue();
         }
 
         [Fact]
@@ -1457,6 +1659,18 @@ namespace FastMoq.Tests
             string? Value { get; set; }
         }
 
+        public interface IProviderDeploymentDependency
+        {
+            void CreateDeployment(string deploymentName, Dictionary<string, int> parameters, Stream template, Stream output, bool whatIf);
+        }
+
+        public interface IProviderOverloadedDeploymentDependency
+        {
+            void CreateDeployment(string deploymentName);
+
+            void CreateDeployment(string deploymentName, Dictionary<string, int> parameters, Stream template, Stream output, bool whatIf);
+        }
+
         public interface INullableProviderDependency
         {
             void Run(string? value);
@@ -1465,6 +1679,11 @@ namespace FastMoq.Tests
         public class ProviderConsumer(IProviderDependency dependency)
         {
             public IProviderDependency Dependency { get; } = dependency;
+        }
+
+        public class ProviderUriConsumer(Uri uri)
+        {
+            public Uri Uri { get; } = uri;
         }
 
         public class DualDependencyConsumer(IProviderDependency primary, IProviderDependency secondary)

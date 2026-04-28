@@ -171,6 +171,46 @@ Mocks.VerifyLoggedOnce(LogLevel.Information, "Submitted order");
 Mocks.VerifyNotLogged(LogLevel.Error, "Unhandled failure");
 ```
 
+When the verification only cares that a method was called and every argument can stay a wildcard, prefer the delegate-selector overload for compiler-verified member selection:
+
+```csharp
+Mocks.VerifyAnyArgs<IArmDeploymentGateway, Func<ResourceGroupResource, Dictionary<string, ArmParamValue>, Stream, Stream, bool, Task>>(
+    gateway => gateway.CreateDeploymentAsync,
+    TimesSpec.Once);
+```
+
+If the method is overloaded, fall back to the method-name overload with explicit parameter types:
+
+```csharp
+Mocks.VerifyAnyArgs<IArmDeploymentGateway>(
+    nameof(IArmDeploymentGateway.CreateDeploymentAsync),
+    TimesSpec.Once,
+    typeof(ResourceGroupResource),
+    typeof(Dictionary<string, ArmParamValue>),
+    typeof(Stream),
+    typeof(Stream),
+    typeof(bool));
+```
+
+If the test wants a count shorthand without spelling out `TimesSpec`, the provider-first surface now exposes explicit wrappers beyond once and never:
+
+```csharp
+Mocks.VerifyCalledExactly<IOrderGateway>(gateway => gateway.Publish("order-42"), 2);
+Mocks.VerifyCalledAtLeastAnyArgs<IArmDeploymentGateway, Func<ResourceGroupResource, Dictionary<string, ArmParamValue>, Stream, Stream, bool, Task>>(
+    gateway => gateway.CreateDeploymentAsync,
+    1);
+```
+
+When a provider-neutral test needs a reusable observability dump for debugging, capture a snapshot from the current mocker instead of reaching into provider-native mock internals:
+
+```csharp
+var snapshot = Mocks.CreateDiagnosticsSnapshot();
+var debugView = snapshot.ToDebugView();
+var json = snapshot.ToJson();
+```
+
+That snapshot surfaces the current tracked mocks, keyed tracked mocks, observed constructor selections, keyed and unkeyed instance registrations, and captured log entries through one FastMoq-owned diagnostics object.
+
 For detached mocks, use the matching helpers on `MockingProviderRegistry`:
 
 ```csharp
