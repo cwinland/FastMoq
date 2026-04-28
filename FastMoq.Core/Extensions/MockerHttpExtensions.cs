@@ -14,6 +14,7 @@ namespace FastMoq.Extensions
         /// <remarks>
         /// This entry point remains supported after v5.
         /// New tests should prefer the provider-neutral request helpers in this class for HTTP behavior.
+        /// Prefer <see cref="ConfigureHttpClient(Mocker, string, HttpStatusCode, string)" /> when the test only needs to update the built-in compatibility factory and handler without creating a client immediately.
         /// Advanced protected-member setups remain available from the Moq provider package for migration scenarios.
         /// When the current <see cref="Mocker" /> is still using the built-in HTTP compatibility registrations,
         /// repeated calls update that built-in handler and <see cref="IHttpClientFactory" /> path.
@@ -23,6 +24,27 @@ namespace FastMoq.Extensions
             HttpStatusCode statusCode = HttpStatusCode.OK, string stringContent = "[{'id':1}]")
         {
             return CreateHttpClientCore(mocker, clientName, baseAddress, statusCode, stringContent);
+        }
+
+        /// <summary>
+        /// Configures the built-in provider-neutral HTTP compatibility registrations without creating a client immediately.
+        /// </summary>
+        /// <param name="mocker">The current mocker.</param>
+        /// <param name="baseAddress">The base address applied to clients created through the built-in compatibility factory.</param>
+        /// <param name="statusCode">The default response status code used when no route-specific match is configured.</param>
+        /// <param name="stringContent">The default response body used when no route-specific match is configured.</param>
+        /// <returns>The current <see cref="Mocker" /> instance.</returns>
+        /// <remarks>
+        /// Use this when a test wants the built-in <see cref="IHttpClientFactory" /> and <see cref="HttpClient" /> compatibility path to be configured first, but will resolve clients later through constructor injection or <c>CreateClient(...)</c> calls.
+        /// </remarks>
+        public static Mocker ConfigureHttpClient(this Mocker mocker, string baseAddress = "http://localhost",
+            HttpStatusCode statusCode = HttpStatusCode.OK, string stringContent = "[{'id':1}]")
+        {
+            ArgumentNullException.ThrowIfNull(mocker);
+
+            var baseUri = new Uri(baseAddress);
+            EnsureProviderNeutralHttpDependencies(mocker, baseUri, statusCode, stringContent);
+            return mocker;
         }
 
         /// <summary>
@@ -78,9 +100,7 @@ namespace FastMoq.Extensions
         internal static HttpClient CreateHttpClientCore(this Mocker mocker, string clientName = "FastMoqHttpClient", string baseAddress = "http://localhost",
             HttpStatusCode statusCode = HttpStatusCode.OK, string stringContent = "[{'id':1}]")
         {
-            var baseUri = new Uri(baseAddress);
-
-            EnsureProviderNeutralHttpDependencies(mocker, baseUri, statusCode, stringContent);
+            mocker.ConfigureHttpClient(baseAddress, statusCode, stringContent);
             return mocker.GetObject<IHttpClientFactory>()?.CreateClient(clientName)
                 ?? throw new ApplicationException("Unable to create IHttpClientFactory.");
         }

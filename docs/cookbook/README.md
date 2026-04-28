@@ -1004,7 +1004,7 @@ Resolve that built-in factory with `GetObject<IHttpClientFactory>()`, `GetRequir
 
 That compatibility factory accepts the requested client name but does not apply per-name configuration.
 
-Later `CreateHttpClient(...)` calls update the built-in compatibility factory and handler to use the latest base address and default response.
+Later `ConfigureHttpClient(...)` or `CreateHttpClient(...)` calls update the built-in compatibility factory and handler to use the latest base address and default response.
 
 If you intentionally replace `IHttpClientFactory` with `GetOrCreateMock<IHttpClientFactory>()` or `AddType<IHttpClientFactory>(...)`, that replacement wins and you must set up `CreateClient(...)` yourself.
 

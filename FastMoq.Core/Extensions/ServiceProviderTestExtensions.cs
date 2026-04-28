@@ -143,7 +143,11 @@ namespace FastMoq.Extensions
         /// <param name="replace">True to replace an existing registration.</param>
         /// <param name="includeMockerFallback">True to fall back to the current <see cref="Mocker" /> for unregistered class and interface resolutions.</param>
         /// <returns>The current <see cref="Mocker" /> instance.</returns>
-        public static Mocker AddServiceProvider(this Mocker mocker, Action<IServiceCollection>? configureServices, bool replace = false, bool includeMockerFallback = false)
+        /// <remarks>
+        /// Prefer this typed builder overload when the current <see cref="Mocker" /> should own the resulting provider registration.
+        /// Use <see cref="AddServiceProvider(Mocker, IServiceProvider, bool)" /> when you already have a provider instance to register.
+        /// </remarks>
+        public static Mocker AddTypedServiceProvider(this Mocker mocker, Action<IServiceCollection>? configureServices = null, bool replace = false, bool includeMockerFallback = false)
         {
             ArgumentNullException.ThrowIfNull(mocker);
 
@@ -162,6 +166,23 @@ namespace FastMoq.Extensions
         }
 
         /// <summary>
+        /// Builds and registers a typed <see cref="IServiceProvider" /> for the current <see cref="Mocker" /> instance.
+        /// </summary>
+        /// <param name="mocker">The current <see cref="Mocker" /> instance.</param>
+        /// <param name="configureServices">Optional service registrations to apply before the provider is built.</param>
+        /// <param name="replace">True to replace an existing registration.</param>
+        /// <param name="includeMockerFallback">True to fall back to the current <see cref="Mocker" /> for unregistered class and interface resolutions.</param>
+        /// <returns>The current <see cref="Mocker" /> instance.</returns>
+        /// <remarks>
+        /// This overload remains available for compatibility.
+        /// Prefer <see cref="AddTypedServiceProvider(Mocker, Action{IServiceCollection}?, bool, bool)" /> for new typed service-provider registrations built from service descriptors.
+        /// </remarks>
+        public static Mocker AddServiceProvider(this Mocker mocker, Action<IServiceCollection>? configureServices, bool replace = false, bool includeMockerFallback = false)
+        {
+            return mocker.AddTypedServiceProvider(configureServices, replace, includeMockerFallback);
+        }
+
+        /// <summary>
         /// Builds and registers a typed <see cref="IServiceScope" /> for the current <see cref="Mocker" /> instance.
         /// </summary>
         /// <param name="mocker">The current <see cref="Mocker" /> instance.</param>
@@ -169,7 +190,11 @@ namespace FastMoq.Extensions
         /// <param name="replace">True to replace an existing registration.</param>
         /// <param name="includeMockerFallback">True to fall back to the current <see cref="Mocker" /> for unregistered class and interface resolutions.</param>
         /// <returns>The current <see cref="Mocker" /> instance.</returns>
-        public static Mocker AddServiceScope(this Mocker mocker, Action<IServiceCollection>? configureServices, bool replace = false, bool includeMockerFallback = false)
+        /// <remarks>
+        /// Prefer this typed builder overload when the current <see cref="Mocker" /> should own the resulting scope registration.
+        /// Use <see cref="AddServiceScope(Mocker, IServiceScope, bool)" /> or <see cref="AddServiceScope(Mocker, IServiceProvider, bool)" /> when you already have a scope or provider instance.
+        /// </remarks>
+        public static Mocker AddTypedServiceScope(this Mocker mocker, Action<IServiceCollection>? configureServices = null, bool replace = false, bool includeMockerFallback = false)
         {
             ArgumentNullException.ThrowIfNull(mocker);
 
@@ -185,6 +210,23 @@ namespace FastMoq.Extensions
                 DisposeCreatedRegistration(serviceScope);
                 throw;
             }
+        }
+
+        /// <summary>
+        /// Builds and registers a typed <see cref="IServiceScope" /> for the current <see cref="Mocker" /> instance.
+        /// </summary>
+        /// <param name="mocker">The current <see cref="Mocker" /> instance.</param>
+        /// <param name="configureServices">Optional service registrations to apply before the scope is built.</param>
+        /// <param name="replace">True to replace an existing registration.</param>
+        /// <param name="includeMockerFallback">True to fall back to the current <see cref="Mocker" /> for unregistered class and interface resolutions.</param>
+        /// <returns>The current <see cref="Mocker" /> instance.</returns>
+        /// <remarks>
+        /// This overload remains available for compatibility.
+        /// Prefer <see cref="AddTypedServiceScope(Mocker, Action{IServiceCollection}?, bool, bool)" /> for new typed scope registrations built from service descriptors.
+        /// </remarks>
+        public static Mocker AddServiceScope(this Mocker mocker, Action<IServiceCollection>? configureServices, bool replace = false, bool includeMockerFallback = false)
+        {
+            return mocker.AddTypedServiceScope(configureServices, replace, includeMockerFallback);
         }
 
         private static void DisposeCreatedRegistration(object createdRegistration)

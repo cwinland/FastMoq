@@ -138,6 +138,21 @@ namespace FastMoq.Tests
         }
 
         [Fact]
+        public void AddTypedServiceProvider_ShouldBuildAndRegisterTypedProviderAndScopeFactory()
+        {
+            var mocker = new Mocker();
+
+            mocker.AddTypedServiceProvider(services => services.AddOptions(), replace: true);
+
+            var provider = mocker.GetObject<IServiceProvider>();
+
+            provider.Should().NotBeNull();
+            provider!.GetService(typeof(IOptions<SampleOptions>)).Should().NotBeNull();
+            mocker.GetObject<IServiceScopeFactory>().Should().NotBeNull();
+            mocker.GetObject<IServiceProviderIsService>().Should().NotBeNull();
+        }
+
+        [Fact]
         public void AddServiceScope_ShouldRegisterTypedScopeAndScopeOwnedProvider()
         {
             var mocker = new Mocker();
@@ -147,6 +162,20 @@ namespace FastMoq.Tests
 
             mocker.GetObject<IServiceScope>().Should().BeSameAs(scope);
             mocker.GetObject<IServiceProvider>().Should().BeSameAs(scope.ServiceProvider);
+            mocker.GetObject<IServiceProvider>()!.GetRequiredService<ScopedProbe>().Should().NotBeNull();
+        }
+
+        [Fact]
+        public void AddTypedServiceScope_ShouldBuildAndRegisterTypedScopeAndScopeOwnedProvider()
+        {
+            var mocker = new Mocker();
+
+            mocker.AddTypedServiceScope(services => services.AddScoped<ScopedProbe>(), replace: true);
+
+            var scope = mocker.GetObject<IServiceScope>();
+
+            scope.Should().NotBeNull();
+            mocker.GetObject<IServiceProvider>().Should().BeSameAs(scope!.ServiceProvider);
             mocker.GetObject<IServiceProvider>()!.GetRequiredService<ScopedProbe>().Should().NotBeNull();
         }
 
@@ -315,6 +344,30 @@ namespace FastMoq.Tests
         [InlineData("moq")]
         [InlineData("nsubstitute")]
         [InlineData("reflection")]
+        public void AddCapturedLoggerFactory_ShouldRegisterLoggerFactoryAndTypedLoggers(string providerName)
+        {
+            using var providerScope = PushProviderScope(providerName);
+            var mocker = new Mocker();
+
+            mocker.AddCapturedLoggerFactory(replace: true);
+
+            var loggerFactory = mocker.GetObject<ILoggerFactory>();
+            var logger = mocker.GetObject<ILogger<ServiceProviderHelperTests>>();
+
+            loggerFactory.Should().NotBeNull();
+            logger.Should().NotBeNull();
+
+            loggerFactory!.CreateLogger("fastmoq.tests").LogInformation("captured factory logger");
+            logger!.LogWarning("captured typed logger");
+
+            mocker.VerifyLogged(LogLevel.Information, "captured factory logger");
+            mocker.VerifyLogged(LogLevel.Warning, "captured typed logger");
+        }
+
+        [Theory]
+        [InlineData("moq")]
+        [InlineData("nsubstitute")]
+        [InlineData("reflection")]
         public void AddLoggerFactory_WithSink_ShouldMirrorLogsAndPreserveVerification(string providerName)
         {
             using var providerScope = PushProviderScope(providerName);
@@ -344,6 +397,32 @@ namespace FastMoq.Tests
 
             mocker.VerifyLogged(LogLevel.Information, "factory sink logger");
             mocker.VerifyLogged(LogLevel.Error, "typed sink logger", new InvalidOperationException("sink boom"), 12, TimesSpec.Once);
+        }
+
+        [Fact]
+        public void AddCapturedLoggerFactory_WithLineWriter_ShouldMirrorLogsAndPreserveVerification()
+        {
+            using var providerScope = PushProviderScope("reflection");
+            var lines = new List<string>();
+            var mocker = new Mocker();
+
+            mocker.AddCapturedLoggerFactory(lines.Add, replace: true);
+
+            var loggerFactory = mocker.GetObject<ILoggerFactory>();
+            var logger = mocker.GetObject<ILogger<ServiceProviderHelperTests>>();
+
+            loggerFactory.Should().NotBeNull();
+            logger.Should().NotBeNull();
+
+            loggerFactory!.CreateLogger("fastmoq.line-sink").LogInformation("captured line logger");
+            logger!.LogError(7, new InvalidOperationException("captured line boom"), "captured typed line logger");
+
+            lines.Should().HaveCount(2);
+            lines[0].Should().Contain("captured line logger");
+            lines[1].Should().Contain("captured typed line logger");
+            lines[1].Should().Contain("captured line boom");
+            mocker.VerifyLogged(LogLevel.Information, "captured line logger");
+            mocker.VerifyLogged(LogLevel.Error, "captured typed line logger", new InvalidOperationException("captured line boom"), 7, TimesSpec.Once);
         }
 
         [Fact]
