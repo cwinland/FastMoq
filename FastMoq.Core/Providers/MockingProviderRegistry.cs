@@ -172,6 +172,15 @@ namespace FastMoq.Providers
             throw new NotSupportedException($"No registered mocking provider can wrap legacy instance '{legacyMock.GetType().FullName}' for mocked type '{mockedType.FullName}'.");
         }
 
+        internal static IMockingProvider ResolveProvider(IFastMock mock)
+        {
+            ArgumentNullException.ThrowIfNull(mock);
+
+            return mock is IProviderBoundFastMock providerBoundFastMock
+                ? providerBoundFastMock.Provider
+                : Default;
+        }
+
         /// <summary>
         /// Sets the global default provider by name.
         /// </summary>
@@ -232,7 +241,7 @@ namespace FastMoq.Providers
             ArgumentNullException.ThrowIfNull(mock);
             ArgumentNullException.ThrowIfNull(expression);
 
-            Default.Verify(mock, expression, TimesSpec.Once);
+            ResolveProvider(mock).Verify(mock, expression, TimesSpec.Once);
         }
 
         /// <summary>
@@ -243,7 +252,7 @@ namespace FastMoq.Providers
             ArgumentNullException.ThrowIfNull(mock);
             ArgumentNullException.ThrowIfNull(expression);
 
-            Default.Verify(mock, expression, TimesSpec.Exactly(times));
+            ResolveProvider(mock).Verify(mock, expression, TimesSpec.Exactly(times));
         }
 
         /// <summary>
@@ -254,7 +263,7 @@ namespace FastMoq.Providers
             ArgumentNullException.ThrowIfNull(mock);
             ArgumentNullException.ThrowIfNull(expression);
 
-            Default.Verify(mock, expression, TimesSpec.AtLeast(times));
+            ResolveProvider(mock).Verify(mock, expression, TimesSpec.AtLeast(times));
         }
 
         /// <summary>
@@ -265,7 +274,7 @@ namespace FastMoq.Providers
             ArgumentNullException.ThrowIfNull(mock);
             ArgumentNullException.ThrowIfNull(expression);
 
-            Default.Verify(mock, expression, TimesSpec.AtMost(times));
+            ResolveProvider(mock).Verify(mock, expression, TimesSpec.AtMost(times));
         }
 
         /// <summary>
@@ -275,7 +284,7 @@ namespace FastMoq.Providers
         {
             ArgumentNullException.ThrowIfNull(mock);
 
-            Default.Verify(mock, VerificationExpressionBuilder.BuildAnyArgsExpression<T>(methodName, parameterTypes), times);
+            ResolveProvider(mock).Verify(mock, VerificationExpressionBuilder.BuildAnyArgsExpression<T>(methodName, parameterTypes), times);
         }
 
         /// <summary>
@@ -289,7 +298,7 @@ namespace FastMoq.Providers
             ArgumentNullException.ThrowIfNull(methodSelector);
 
             var method = VerificationExpressionBuilder.GetSelectedMethod(mock.Instance, methodSelector);
-            Default.Verify(mock, VerificationExpressionBuilder.BuildAnyArgsExpression<T>(method), times);
+            ResolveProvider(mock).Verify(mock, VerificationExpressionBuilder.BuildAnyArgsExpression<T>(method), times);
         }
 
         /// <summary>
@@ -300,7 +309,7 @@ namespace FastMoq.Providers
             ArgumentNullException.ThrowIfNull(mock);
             ArgumentNullException.ThrowIfNull(expression);
 
-            Default.Verify(mock, expression, TimesSpec.Never());
+            ResolveProvider(mock).Verify(mock, expression, TimesSpec.Never());
         }
 
         /// <summary>
@@ -400,7 +409,7 @@ namespace FastMoq.Providers
         {
             ArgumentNullException.ThrowIfNull(mock);
 
-            Default.VerifyNoOtherCalls(mock);
+            ResolveProvider(mock).VerifyNoOtherCalls(mock);
         }
 
         internal static void InitializeBuiltInProviders(bool includeMoqProvider = true)

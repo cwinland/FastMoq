@@ -28,14 +28,14 @@ namespace FastMoq.AzureFunctions.Extensions
                 throw new ArgumentException($"The supplied mock must represent {typeof(TaskOrchestrationContext).FullName}.", nameof(fastMock));
             }
 
-            if (!TryConfigureTaskOrchestrationReplaySafeLogging(fastMock, loggerFactory, isReplaying: false))
-            {
-                throw new NotSupportedException("Tracked TaskOrchestrationContext replay-safe logging currently requires a provider that can configure the protected Durable logger factory getter through FastMoq's tracked-property configuration contract. The built-in Moq provider supports this today. Use Mocker.AddTaskOrchestrationReplaySafeLogging(...) before resolving TaskOrchestrationContext for provider-neutral concrete-instance coverage.");
-            }
-
             if (isReplaying)
             {
                 throw new NotSupportedException("Tracked TaskOrchestrationContext replay-state suppression is not supported on the mock-backed helper. Use Mocker.AddTaskOrchestrationReplaySafeLogging(isReplaying: true, ...) before resolving TaskOrchestrationContext so FastMoq can supply a concrete orchestration context.");
+            }
+
+            if (!TryConfigureTaskOrchestrationReplaySafeLogging(fastMock, loggerFactory, isReplaying: false))
+            {
+                throw new NotSupportedException("Tracked TaskOrchestrationContext replay-safe logging currently requires a provider that can configure the protected Durable logger factory getter through FastMoq's tracked-property configuration contract. The built-in Moq provider supports this today. Use Mocker.AddTaskOrchestrationReplaySafeLogging(...) before resolving TaskOrchestrationContext for provider-neutral concrete-instance coverage.");
             }
 
             return fastMock;
@@ -57,8 +57,8 @@ namespace FastMoq.AzureFunctions.Extensions
         {
             ArgumentNullException.ThrowIfNull(mocker);
 
-            mocker.AddCapturedLoggerFactory(replace: replace);
-            return mocker.AddTaskOrchestrationReplaySafeLogging(mocker.GetRequiredObject<ILoggerFactory>(), isReplaying, replace);
+            var loggerFactory = mocker.CreateLoggerFactory();
+            return mocker.AddTaskOrchestrationReplaySafeLogging(loggerFactory, isReplaying, replace);
         }
 
         /// <summary>

@@ -215,7 +215,7 @@ namespace FastMoq
             var model = GetMockModelFast(typeof(T));
             if (model.FastMock is IFastMock<T> typed)
             {
-                var provider = MockingProviderRegistry.Default;
+                var provider = MockingProviderRegistry.ResolveProvider(typed);
                 provider.Verify(typed, expression, times);
             }
             // If the stored fast mock is not strongly typed (should not occur normally), no-op.
@@ -258,7 +258,7 @@ namespace FastMoq
             if (model.FastMock is IFastMock<T> typed)
             {
                 var method = VerificationExpressionBuilder.GetSelectedMethod(typed.Instance, methodSelector);
-                var provider = MockingProviderRegistry.Default;
+                var provider = MockingProviderRegistry.ResolveProvider(typed);
                 provider.Verify(typed, VerificationExpressionBuilder.BuildAnyArgsExpression<T>(method), times);
             }
         }
@@ -399,7 +399,7 @@ namespace FastMoq
         public void VerifyNoOtherCalls<T>() where T : class
         {
             var model = GetMockModelFast(typeof(T));
-            var provider = MockingProviderRegistry.Default;
+            var provider = MockingProviderRegistry.ResolveProvider(model.FastMock);
             provider.VerifyNoOtherCalls(model.FastMock);
         }
 

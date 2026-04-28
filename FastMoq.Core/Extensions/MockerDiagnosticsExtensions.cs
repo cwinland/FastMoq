@@ -75,11 +75,37 @@ namespace FastMoq.Extensions
                 .ToArray();
 
             return new MockerDiagnosticsSnapshot(
-                MockingProviderRegistry.Default.GetType().Name,
+                ResolveSnapshotProviderName(mocker),
                 trackedMocks,
                 constructorSelections,
                 instanceRegistrations,
                 logEntries);
+        }
+
+        private static string ResolveSnapshotProviderName(Mocker mocker)
+        {
+            var providerNames = mocker.mockCollection
+                .Select(model => GetProviderName(model.FastMock))
+                .Concat(mocker.KeyedMockModels.Select(entry => GetProviderName(entry.Value.FastMock)))
+                .Where(name => !string.IsNullOrWhiteSpace(name))
+                .Distinct(StringComparer.Ordinal)
+                .OrderBy(name => name, StringComparer.Ordinal)
+                .Cast<string>()
+                .ToArray();
+
+            return providerNames.Length switch
+            {
+                0 => MockingProviderRegistry.Default.GetType().Name,
+                1 => providerNames[0],
+                _ => $"Multiple ({string.Join(", ", providerNames)})",
+            };
+        }
+
+        private static string? GetProviderName(IFastMock fastMock)
+        {
+            return fastMock is IProviderBoundFastMock providerBoundFastMock
+                ? providerBoundFastMock.Provider.GetType().Name
+                : null;
         }
 
         private static string DescribeType(Type? type) => type?.FullName ?? "<unknown>";

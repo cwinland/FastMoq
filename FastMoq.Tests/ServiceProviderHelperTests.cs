@@ -758,6 +758,21 @@ namespace FastMoq.Tests
         [InlineData("moq")]
         [InlineData("nsubstitute")]
         [InlineData("reflection")]
+        public void AddTaskOrchestrationReplaySafeLogging_ShouldRegisterLoggerFactoryWithoutDuplicateRegistration_WhenUsingDefaults(string providerName)
+        {
+            using var providerScope = PushProviderScope(providerName);
+            var mocker = new Mocker();
+
+            Action action = () => mocker.AddTaskOrchestrationReplaySafeLogging();
+
+            action.Should().NotThrow();
+            mocker.GetObject<ILoggerFactory>().Should().NotBeNull();
+        }
+
+        [Theory]
+        [InlineData("moq")]
+        [InlineData("nsubstitute")]
+        [InlineData("reflection")]
         public void AddTaskOrchestrationReplaySafeLogging_ShouldSuppressLogs_WhenReplaying(string providerName)
         {
             using var providerScope = PushProviderScope(providerName);
@@ -787,6 +802,23 @@ namespace FastMoq.Tests
             logger.LogError("tracked replay-safe");
 
             mocker.VerifyLogged(LogLevel.Error, "tracked replay-safe", TimesSpec.Once);
+        }
+
+        [Fact]
+        public void AddTaskOrchestrationReplaySafeLogging_OnTrackedMock_ShouldFailBeforeConfiguringReplayStateSuppression()
+        {
+            using var providerScope = PushProviderScope("moq");
+            var mocker = new Mocker();
+            var loggerFactory = mocker.CreateLoggerFactory();
+            var context = mocker.GetOrCreateMock<TaskOrchestrationContext>();
+
+            Action action = () => context.AddTaskOrchestrationReplaySafeLogging(loggerFactory, isReplaying: true);
+
+            action.Should().Throw<NotSupportedException>()
+                .WithMessage("*replay-state suppression is not supported*");
+
+            Action loggerAction = () => context.Instance.CreateReplaySafeLogger("tracked orchestrator");
+            loggerAction.Should().Throw<Exception>();
         }
 
         [Fact]

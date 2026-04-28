@@ -1,4 +1,5 @@
 using System;
+using System.Reflection;
 using System.Threading;
 using System.Threading.Tasks;
 using FastMoq.Extensions;
@@ -281,6 +282,43 @@ namespace FastMoq.Tests
                 .WithMessage("*interface types only*");
         }
 
+        [Fact]
+        public void AddMethodCallback_ShouldReportAccurateHelperName_WhenNonInterfaceTypeIsUsed()
+        {
+            var mocker = new Mocker();
+
+            Action action = () => mocker.AddMethodCallback<MethodResultConcreteCallbackTarget>(x => x.Publish("alpha"), () => { });
+
+            action.Should().Throw<NotSupportedException>()
+                .WithMessage($"*{nameof(MethodResultExtensions.AddMethodCallback)} currently supports interface types only*");
+        }
+
+        [Fact]
+        public void AddMethodCallbackAsync_ShouldReportAccurateHelperName_WhenExpressionIsNotDirectMethodCall()
+        {
+            var mocker = new Mocker();
+            _ = mocker.GetOrCreateMock<IMethodResultGateway>();
+
+            Action action = () => mocker.AddMethodCallbackAsync<IMethodResultGateway>(gateway => gateway == null ? Task.CompletedTask : gateway.PublishAsync("alpha", CancellationToken.None), () => { });
+
+            action.Should().Throw<NotSupportedException>()
+                .WithMessage($"*{nameof(MethodResultExtensions.AddMethodCallbackAsync)} supports direct method call expressions only*");
+        }
+
+        [Fact]
+        public void AddMethodResult_ShouldPreserveInnerStackTrace_WhenWrappedServiceThrows()
+        {
+            var mocker = new Mocker();
+            var throwingGateway = DispatchProxy.Create<IMethodResultGateway, ThrowingGatewayDispatchProxy>();
+            mocker.AddType<IMethodResultGateway>(throwingGateway);
+            var gateway = mocker.AddMethodResult<IMethodResultGateway, string?>(x => x.Fetch("alpha"), "configured");
+
+            Action action = () => gateway.Fetch("throw");
+
+            var exception = action.Should().Throw<InvalidOperationException>().Which;
+            exception.StackTrace.Should().Contain(nameof(ThrowingGatewayDispatchProxy));
+        }
+
         public interface IMethodResultGateway
         {
             string? Fetch(string key);
@@ -318,6 +356,21 @@ namespace FastMoq.Tests
             {
                 PublishCalls++;
                 return Task.CompletedTask;
+            }
+        }
+
+        private class ThrowingGatewayDispatchProxy : DispatchProxy
+        {
+            protected override object? Invoke(MethodInfo? targetMethod, object?[]? args)
+            {
+                throw new InvalidOperationException("boom:throw");
+            }
+        }
+
+        private sealed class MethodResultConcreteCallbackTarget
+        {
+            public void Publish(string key)
+            {
             }
         }
 

@@ -1,5 +1,6 @@
 using FastMoq.Providers;
 using System.Linq.Expressions;
+using System.Runtime.ExceptionServices;
 using System.Reflection;
 
 namespace FastMoq.Extensions
@@ -34,7 +35,7 @@ namespace FastMoq.Extensions
             ArgumentNullException.ThrowIfNull(mocker);
             ArgumentNullException.ThrowIfNull(callExpression);
 
-            return mocker.AddMethodBehavior(callExpression, () => value, replace);
+            return mocker.AddMethodBehavior(callExpression, () => value, replace, nameof(AddMethodResult));
         }
 
         /// <summary>
@@ -62,7 +63,7 @@ namespace FastMoq.Extensions
             ArgumentNullException.ThrowIfNull(mocker);
             ArgumentNullException.ThrowIfNull(callExpression);
 
-            return mocker.AddMethodBehavior(callExpression, () => Task.FromResult(value), replace);
+            return mocker.AddMethodBehavior(callExpression, () => Task.FromResult(value), replace, nameof(AddMethodResultAsync));
         }
 
         /// <summary>
@@ -79,7 +80,7 @@ namespace FastMoq.Extensions
             ArgumentNullException.ThrowIfNull(mocker);
             ArgumentNullException.ThrowIfNull(callExpression);
 
-            return mocker.AddMethodBehavior(callExpression, () => Task.CompletedTask, replace);
+            return mocker.AddMethodBehavior(callExpression, () => Task.CompletedTask, replace, nameof(AddMethodCompletionAsync));
         }
 
         /// <summary>
@@ -98,7 +99,7 @@ namespace FastMoq.Extensions
             ArgumentNullException.ThrowIfNull(callExpression);
             ArgumentNullException.ThrowIfNull(callback);
 
-            return mocker.AddMethodBehavior(callExpression, callback, replace);
+            return mocker.AddMethodBehavior(callExpression, callback, replace, nameof(AddMethodCallback));
         }
 
         /// <summary>
@@ -121,7 +122,7 @@ namespace FastMoq.Extensions
             {
                 callback();
                 return Task.CompletedTask;
-            }, replace);
+            }, replace, nameof(AddMethodCallbackAsync));
         }
 
         /// <summary>
@@ -141,7 +142,7 @@ namespace FastMoq.Extensions
             ArgumentNullException.ThrowIfNull(callExpression);
             ArgumentNullException.ThrowIfNull(exception);
 
-            return mocker.AddMethodBehavior(callExpression, () => throw exception, replace);
+            return mocker.AddMethodBehavior(callExpression, () => throw exception, replace, nameof(AddMethodException));
         }
 
         /// <summary>
@@ -160,7 +161,7 @@ namespace FastMoq.Extensions
             ArgumentNullException.ThrowIfNull(callExpression);
             ArgumentNullException.ThrowIfNull(exception);
 
-            return mocker.AddMethodBehavior(callExpression, () => throw exception, replace);
+            return mocker.AddMethodBehavior(callExpression, () => throw exception, replace, nameof(AddMethodException));
         }
 
         /// <summary>
@@ -180,7 +181,7 @@ namespace FastMoq.Extensions
             ArgumentNullException.ThrowIfNull(callExpression);
             ArgumentNullException.ThrowIfNull(exception);
 
-            return mocker.AddMethodBehavior(callExpression, () => Task.FromException<TResult>(exception), replace);
+            return mocker.AddMethodBehavior(callExpression, () => Task.FromException<TResult>(exception), replace, nameof(AddMethodExceptionAsync));
         }
 
         /// <summary>
@@ -199,10 +200,10 @@ namespace FastMoq.Extensions
             ArgumentNullException.ThrowIfNull(callExpression);
             ArgumentNullException.ThrowIfNull(exception);
 
-            return mocker.AddMethodBehavior(callExpression, () => Task.FromException(exception), replace);
+            return mocker.AddMethodBehavior(callExpression, () => Task.FromException(exception), replace, nameof(AddMethodExceptionAsync));
         }
 
-        private static TService AddMethodBehavior<TService, TResult>(this Mocker mocker, Expression<Func<TService, TResult>> callExpression, Func<TResult> resultFactory, bool replace)
+        private static TService AddMethodBehavior<TService, TResult>(this Mocker mocker, Expression<Func<TService, TResult>> callExpression, Func<TResult> resultFactory, bool replace, string helperName)
             where TService : class
         {
             ArgumentNullException.ThrowIfNull(resultFactory);
@@ -210,26 +211,26 @@ namespace FastMoq.Extensions
             var serviceType = typeof(TService);
             if (!serviceType.IsInterface)
             {
-                throw new NotSupportedException($"{nameof(AddMethodResult)} currently supports interface types only. Use a fake or stub plus {nameof(Mocker.AddType)}(...) for {serviceType.Name}.");
+                throw new NotSupportedException($"{helperName} currently supports interface types only. Use a fake or stub plus {nameof(Mocker.AddType)}(...) for {serviceType.Name}.");
             }
 
             var currentInstance = mocker.GetObject<TService>() ?? throw new InvalidOperationException($"Unable to resolve an instance for {serviceType.Name} before adding method behavior.");
             if (currentInstance is MethodResultProxy<TService> existingProxy)
             {
-                existingProxy.AddBehavior(callExpression, () => resultFactory()!);
+                existingProxy.AddBehavior(callExpression, () => resultFactory()!, helperName);
                 return currentInstance;
             }
 
             var proxy = DispatchProxy.Create<TService, MethodResultProxy<TService>>();
             var proxyController = (MethodResultProxy<TService>) (object) proxy;
             proxyController.Initialize(currentInstance, mocker.TryGetTrackedMock<TService>(out var trackedMock) && ReferenceEquals(trackedMock.Instance, currentInstance));
-            proxyController.AddBehavior(callExpression, () => resultFactory()!);
+            proxyController.AddBehavior(callExpression, () => resultFactory()!, helperName);
 
             mocker.AddType<TService>(proxy, replace);
             return proxy;
         }
 
-        private static TService AddMethodBehavior<TService>(this Mocker mocker, Expression<Action<TService>> callExpression, Action behavior, bool replace)
+        private static TService AddMethodBehavior<TService>(this Mocker mocker, Expression<Action<TService>> callExpression, Action behavior, bool replace, string helperName)
             where TService : class
         {
             ArgumentNullException.ThrowIfNull(behavior);
@@ -237,7 +238,7 @@ namespace FastMoq.Extensions
             var serviceType = typeof(TService);
             if (!serviceType.IsInterface)
             {
-                throw new NotSupportedException($"{nameof(AddMethodResult)} currently supports interface types only. Use a fake or stub plus {nameof(Mocker.AddType)}(...) for {serviceType.Name}.");
+                throw new NotSupportedException($"{helperName} currently supports interface types only. Use a fake or stub plus {nameof(Mocker.AddType)}(...) for {serviceType.Name}.");
             }
 
             var currentInstance = mocker.GetObject<TService>() ?? throw new InvalidOperationException($"Unable to resolve an instance for {serviceType.Name} before adding method behavior.");
@@ -247,7 +248,7 @@ namespace FastMoq.Extensions
                 {
                     behavior();
                     return null;
-                });
+                }, helperName);
                 return currentInstance;
             }
 
@@ -258,7 +259,7 @@ namespace FastMoq.Extensions
             {
                 behavior();
                 return null;
-            });
+            }, helperName);
 
             mocker.AddType<TService>(proxy, replace);
             return proxy;
@@ -280,7 +281,7 @@ namespace FastMoq.Extensions
             _forwardConfiguredCallsToInner = forwardConfiguredCallsToInner;
         }
 
-        public void AddBehavior(LambdaExpression callExpression, Func<object?> resultFactory)
+        public void AddBehavior(LambdaExpression callExpression, Func<object?> resultFactory, string helperName)
         {
             ArgumentNullException.ThrowIfNull(callExpression);
             ArgumentNullException.ThrowIfNull(resultFactory);
@@ -292,7 +293,7 @@ namespace FastMoq.Extensions
             }
             catch (NotSupportedException ex)
             {
-                throw new NotSupportedException($"{nameof(MethodResultExtensions.AddMethodResult)} supports direct method call expressions only.", ex);
+                throw new NotSupportedException($"{helperName} supports direct method call expressions only.", ex);
             }
 
             _registrations.Add(new MethodResultRegistration(invocation, resultFactory));
@@ -335,7 +336,8 @@ namespace FastMoq.Extensions
             }
             catch (TargetInvocationException ex) when (ex.InnerException is not null)
             {
-                throw ex.InnerException;
+                ExceptionDispatchInfo.Capture(ex.InnerException).Throw();
+                return null;
             }
         }
 

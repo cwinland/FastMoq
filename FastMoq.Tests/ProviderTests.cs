@@ -382,6 +382,26 @@ namespace FastMoq.Tests
             MockingProviderRegistry.VerifyNoOtherCalls(dependency);
         }
 
+        [Fact]
+        public void VerifyWrappers_ShouldUseProviderBoundMockProvider_WhenDefaultProviderChanges()
+        {
+            using var providerScope = PushProvider("moq");
+            var mocker = new Mocker();
+            var dependency = mocker.GetOrCreateMock<IProviderDependency>();
+            var detached = mocker.CreateStandaloneFastMock<IProviderDependency>();
+
+            dependency.Instance.Run("alpha");
+            detached.Instance.Run("beta");
+
+            using var switchedProvider = PushProvider("reflection");
+
+            Action trackedVerify = () => mocker.VerifyCalledOnce<IProviderDependency>(service => service.Run("alpha"));
+            Action detachedVerify = () => MockingProviderRegistry.VerifyCalledOnce(detached, service => service.Run("beta"));
+
+            trackedVerify.Should().NotThrow();
+            detachedVerify.Should().NotThrow();
+        }
+
         [Theory]
         [MemberData(nameof(ProviderNames))]
         public void DetachedVerifyCalledExactlyAnyArgs_AtLeastAnyArgs_AndAtMostAnyArgs_ShouldWork_ForSelectedProvider(string providerName)
@@ -666,6 +686,20 @@ namespace FastMoq.Tests
             }
 
             hasPrimaryServiceKey.Should().BeTrue();
+        }
+
+        [Fact]
+        public void CreateDiagnosticsSnapshot_ShouldPreferTrackedMockProviderName_WhenDefaultProviderChanges()
+        {
+            using var providerScope = PushProvider("moq");
+            var mocker = new Mocker();
+
+            _ = mocker.GetOrCreateMock<IProviderDependency>();
+
+            using var switchedProvider = PushProvider("reflection");
+            var snapshot = mocker.CreateDiagnosticsSnapshot();
+
+            snapshot.ProviderName.Should().Be(nameof(MoqMockingProvider));
         }
 
         [Fact]
