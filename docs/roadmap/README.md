@@ -38,12 +38,12 @@ Helper and migration work remains active where common testing scenarios still ne
 
 Current follow-up areas include:
 
-- Additional provider-first setup and verification helpers where current suites still drop into provider-native syntax too early.
+- Analyzer follow-up for the newly landed provider-first setup and verification helper surfaces so supported rewrites can be suggested precisely without widening the shared runtime contract too far.
 - Additional provider-neutral guidance for framework-heavy suites that combine typed `IServiceProvider` helpers with keyed services or framework-owned service graphs beyond the current scope-aware helper path.
-- Azure Functions follow-up helpers beyond the shipped `FunctionContext.InstanceServices`, `CreateHttpRequestData(...)`, and `CreateHttpResponseData(...)` support.
+- Azure Functions follow-up for analyzer guidance and broader tracked-property provider adoption beyond the shipped `FunctionContext.InstanceServices`, `CreateHttpRequestData(...)`, `CreateHttpResponseData(...)`, and replay-safe orchestration logging support.
 - Focused migration guidance and examples for compatibility-only APIs that remain temporary rather than long-term patterns.
 
-Current public issue anchors in this bucket include [#41](https://github.com/cwinland/FastMoq/issues/41) for structured diagnostics and [#107](https://github.com/cwinland/FastMoq/issues/107) for remaining Azure Functions execution-context follow-up.
+Current public issue anchors in this bucket include [#41](https://github.com/cwinland/FastMoq/issues/41) for reusable diagnostics snapshots, [#145](https://github.com/cwinland/FastMoq/issues/145) for broader structured runtime diagnostics, [#148](https://github.com/cwinland/FastMoq/issues/148) for replay-safe orchestration analyzer guidance, and [#150](https://github.com/cwinland/FastMoq/issues/150) for the remaining tracked-property provider-contract adoption work.
 
 Examples, migration docs, and analyzer guidance are more likely to move first than broad new helper surfaces when the release split is still being evaluated.
 
