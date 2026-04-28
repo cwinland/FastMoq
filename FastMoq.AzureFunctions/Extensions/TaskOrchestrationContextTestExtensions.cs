@@ -28,9 +28,9 @@ namespace FastMoq.AzureFunctions.Extensions
                 throw new ArgumentException($"The supplied mock must represent {typeof(TaskOrchestrationContext).FullName}.", nameof(fastMock));
             }
 
-            if (!IsMoqBacked(fastMock))
+            if (!TryConfigureTaskOrchestrationReplaySafeLogging(fastMock, loggerFactory, isReplaying: false))
             {
-                throw new NotSupportedException("Tracked TaskOrchestrationContext replay-safe logging currently requires a Moq-backed mock because the Durable logger factory lives behind a protected abstract getter. Use Mocker.AddTaskOrchestrationReplaySafeLogging(...) before resolving TaskOrchestrationContext for provider-neutral concrete-instance coverage.");
+                throw new NotSupportedException("Tracked TaskOrchestrationContext replay-safe logging currently requires a provider that can configure the protected Durable logger factory getter through FastMoq's tracked-property configuration contract. The built-in Moq provider supports this today. Use Mocker.AddTaskOrchestrationReplaySafeLogging(...) before resolving TaskOrchestrationContext for provider-neutral concrete-instance coverage.");
             }
 
             if (isReplaying)
@@ -38,7 +38,6 @@ namespace FastMoq.AzureFunctions.Extensions
                 throw new NotSupportedException("Tracked TaskOrchestrationContext replay-state suppression is not supported on the mock-backed helper. Use Mocker.AddTaskOrchestrationReplaySafeLogging(isReplaying: true, ...) before resolving TaskOrchestrationContext so FastMoq can supply a concrete orchestration context.");
             }
 
-            ConfigureTaskOrchestrationReplaySafeLogging(fastMock, loggerFactory, isReplaying);
             return fastMock;
         }
 
@@ -51,7 +50,8 @@ namespace FastMoq.AzureFunctions.Extensions
         /// <returns>The current <see cref="Mocker" /> instance.</returns>
         /// <remarks>
         /// This helper keeps assertions on the normal <see cref="Mocker.LogEntries" /> and <see cref="TestClassExtensions.VerifyLogged(FastMoq.Mocker, LogLevel, string, TimesSpec?)" /> surface.
-        /// Reflection-based provider paths do not support this helper because <see cref="TaskOrchestrationContext" /> is abstract and requires mock-backed overrides.
+        /// When <see cref="TaskOrchestrationContext" /> has not already been resolved, this helper can register a concrete replay-safe orchestration context on Moq, NSubstitute, or reflection paths.
+        /// If a tracked orchestration mock already exists, the active provider must support FastMoq's tracked-property configuration contract for the protected Durable logger factory getter; the built-in Moq provider supports that path today.
         /// </remarks>
         public static Mocker AddTaskOrchestrationReplaySafeLogging(this Mocker mocker, bool isReplaying = false, bool replace = false)
         {
@@ -79,12 +79,10 @@ namespace FastMoq.AzureFunctions.Extensions
             if (mocker.Contains(typeof(TaskOrchestrationContext)))
             {
                 var trackedContext = mocker.GetOrCreateMock<TaskOrchestrationContext>();
-                if (!IsMoqBacked(trackedContext))
+                if (!TryConfigureTaskOrchestrationReplaySafeLogging(trackedContext, loggerFactory, isReplaying))
                 {
-                    throw new NotSupportedException("AddTaskOrchestrationReplaySafeLogging(...) must run before resolving TaskOrchestrationContext when the active provider cannot configure the protected Durable logger factory getter. Call the helper before GetObject<TaskOrchestrationContext>() on NSubstitute or reflection paths.");
+                    throw new NotSupportedException("AddTaskOrchestrationReplaySafeLogging(...) must run before resolving TaskOrchestrationContext when the active provider cannot configure the protected Durable logger factory getter through FastMoq's tracked-property configuration contract. Call the helper before GetObject<TaskOrchestrationContext>() when the selected provider does not support that tracked-mock path.");
                 }
-
-                ConfigureTaskOrchestrationReplaySafeLogging(trackedContext, loggerFactory, isReplaying);
                 return mocker;
             }
 
@@ -93,18 +91,19 @@ namespace FastMoq.AzureFunctions.Extensions
             return mocker;
         }
 
-        private static void ConfigureTaskOrchestrationReplaySafeLogging(IFastMock fastMock, ILoggerFactory loggerFactory, bool isReplaying)
+        private static bool TryConfigureTaskOrchestrationReplaySafeLogging(IFastMock fastMock, ILoggerFactory loggerFactory, bool isReplaying)
         {
-            MockPropertyConfigurationHelper.ConfigureNativeMockProperty(fastMock, "LoggerFactory", loggerFactory, includeNonPublic: true);
-            if (isReplaying)
+            if (!MockPropertyConfigurationHelper.TryConfigureNativeMockProperty(fastMock, "LoggerFactory", loggerFactory, includeNonPublic: true))
             {
-                MockPropertyConfigurationHelper.ConfigureNativeMockProperty(fastMock, nameof(TaskOrchestrationContext.IsReplaying), true, includeNonPublic: true);
+                return false;
             }
-        }
 
-        private static bool IsMoqBacked(IFastMock fastMock)
-        {
-            return string.Equals(fastMock.NativeMock.GetType().Namespace, "Moq", StringComparison.Ordinal);
+            if (!isReplaying)
+            {
+                return true;
+            }
+
+            return MockPropertyConfigurationHelper.TryConfigureNativeMockProperty(fastMock, nameof(TaskOrchestrationContext.IsReplaying), true, includeNonPublic: true);
         }
 
         private sealed class ReplaySafeLoggerTaskOrchestrationContext(ILoggerFactory loggerFactory, bool isReplaying) : TaskOrchestrationContext

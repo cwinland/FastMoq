@@ -21,6 +21,8 @@ using System.Security.Claims;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Linq;
+using System.Linq.Expressions;
+using System.Reflection;
 
 namespace FastMoq.Tests
 {
@@ -787,6 +789,34 @@ namespace FastMoq.Tests
             mocker.VerifyLogged(LogLevel.Error, "tracked replay-safe", TimesSpec.Once);
         }
 
+        [Fact]
+        public void AddTaskOrchestrationReplaySafeLogging_OnTrackedMock_ShouldThrow_WhenProviderCannotConfigureProtectedDurableMembers()
+        {
+            using var providerScope = PushProviderScope("nsubstitute");
+            var mocker = new Mocker();
+            var loggerFactory = mocker.CreateLoggerFactory();
+            var context = mocker.GetOrCreateMock<TaskOrchestrationContext>();
+
+            Action action = () => context.AddTaskOrchestrationReplaySafeLogging(loggerFactory);
+
+            action.Should().Throw<NotSupportedException>()
+                .WithMessage("*tracked-property configuration contract*");
+        }
+
+        [Fact]
+        public void AddFunctionContextInvocationId_ShouldWork_WithCustomProviderThatImplementsTrackedPropertyConfiguration()
+        {
+            const string providerName = "custom-moq-ext";
+            EnsureCustomProviderRegistered(providerName);
+            using var providerScope = MockingProviderRegistry.Push(providerName);
+            var mocker = new Mocker();
+            var context = mocker.GetOrCreateMock(typeof(FunctionContext));
+
+            context.AddFunctionContextInvocationId("custom-inv-123");
+
+            ((FunctionContext)context.Instance).InvocationId.Should().Be("custom-inv-123");
+        }
+
         [Theory]
         [InlineData("moq")]
         [InlineData("nsubstitute")]
@@ -998,11 +1028,138 @@ namespace FastMoq.Tests
             throw new InvalidOperationException($"Unknown provider '{providerName}'.");
         }
 
+        private static void EnsureCustomProviderRegistered(string providerName)
+        {
+            if (MockingProviderRegistry.TryGet(providerName, out _))
+            {
+                return;
+            }
+
+            MockingProviderRegistry.Register(providerName, new DelegatingMoqPropertyConfiguratorProvider(), setAsDefault: false);
+        }
+
         private sealed class TriggerPayload
         {
             public int Count { get; set; }
 
             public string? Name { get; set; }
+        }
+
+        private sealed class DelegatingMoqPropertyConfiguratorProvider : IMockingProvider, IMockingProviderCapabilities, ITrackedMockPropertyConfigurator
+        {
+            private readonly MoqMockingProvider _inner = MoqMockingProvider.Instance;
+
+            public IMockingProviderCapabilities Capabilities => this;
+            public bool SupportsCallBase => _inner.SupportsCallBase;
+            public bool SupportsSetupAllProperties => _inner.SupportsSetupAllProperties;
+            public bool SupportsProtectedMembers => _inner.SupportsProtectedMembers;
+            public bool SupportsInvocationTracking => _inner.SupportsInvocationTracking;
+            public bool SupportsLoggerCapture => _inner.SupportsLoggerCapture;
+
+            public Expression<Func<T, bool>> BuildExpression<T>()
+            {
+                return _inner.BuildExpression<T>();
+            }
+
+            public IFastMock<T> CreateMock<T>(MockCreationOptions? options = null) where T : class
+            {
+                return new ProviderBoundFastMock<T>(_inner.CreateMock<T>(options), this);
+            }
+
+            public IFastMock CreateMock(Type type, MockCreationOptions? options = null)
+            {
+                return new ProviderBoundFastMock(_inner.CreateMock(type, options), this);
+            }
+
+            public void SetupAllProperties(IFastMock mock)
+            {
+                _inner.SetupAllProperties(Unwrap(mock));
+            }
+
+            public void SetCallBase(IFastMock mock, bool value)
+            {
+                _inner.SetCallBase(Unwrap(mock), value);
+            }
+
+            public void Verify<T>(IFastMock<T> mock, Expression<Action<T>> expression, TimesSpec? times = null) where T : class
+            {
+                _inner.Verify((IFastMock<T>)Unwrap(mock), expression, times);
+            }
+
+            public void VerifyNoOtherCalls(IFastMock mock)
+            {
+                _inner.VerifyNoOtherCalls(Unwrap(mock));
+            }
+
+            public void ConfigureProperties(IFastMock mock)
+            {
+                _inner.ConfigureProperties(Unwrap(mock));
+            }
+
+            public void ConfigureLogger(IFastMock mock, Action<LogLevel, EventId, string, Exception?> callback)
+            {
+                _inner.ConfigureLogger(Unwrap(mock), callback);
+            }
+
+            public object? TryGetLegacy(IFastMock mock)
+            {
+                return _inner.TryGetLegacy(Unwrap(mock));
+            }
+
+            public IFastMock? TryWrapLegacy(object legacyMock, Type mockedType)
+            {
+                var wrapped = _inner.TryWrapLegacy(legacyMock, mockedType);
+                return wrapped is null ? null : new ProviderBoundFastMock(wrapped, this);
+            }
+
+            public bool TryConfigureMockProperty(IFastMock mock, PropertyInfo propertyInfo, object? value)
+            {
+                return ((ITrackedMockPropertyConfigurator)_inner).TryConfigureMockProperty(Unwrap(mock), propertyInfo, value);
+            }
+
+            private static IFastMock Unwrap(IFastMock mock)
+            {
+                return mock is ProviderBoundFastMock providerBound ? providerBound.Inner : mock;
+            }
+        }
+
+        private class ProviderBoundFastMock : IProviderBoundFastMock
+        {
+            public ProviderBoundFastMock(IFastMock inner, IMockingProvider provider)
+            {
+                Inner = inner;
+                Provider = provider;
+            }
+
+            internal IFastMock Inner { get; }
+
+            public Type MockedType => Inner.MockedType;
+
+            public object Instance => Inner.Instance;
+
+            public object NativeMock => Inner.NativeMock;
+
+            public IMockingProvider Provider { get; }
+
+            public void Reset()
+            {
+                Inner.Reset();
+            }
+        }
+
+        private sealed class ProviderBoundFastMock<T> : ProviderBoundFastMock, IFastMock<T> where T : class
+        {
+            private readonly IFastMock<T> _typedInner;
+
+            public ProviderBoundFastMock(IFastMock<T> inner, IMockingProvider provider)
+                : base(inner, provider)
+            {
+                _typedInner = inner;
+            }
+
+            public new T Instance => _typedInner.Instance;
+
+            T IFastMock<T>.Instance => _typedInner.Instance;
         }
 
         private sealed class TestFunctionContext : FunctionContext

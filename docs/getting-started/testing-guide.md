@@ -201,6 +201,24 @@ Mocks.VerifyCalledAtLeastAnyArgs<IArmDeploymentGateway, Func<ResourceGroupResour
     1);
 ```
 
+### Shared verification selection matrix
+
+Use the smallest shared verification shape that still expresses the intent clearly:
+
+| If the assertion is... | Prefer... | ScenarioBuilder path | Fall back when... |
+| --- | --- | --- | --- |
+| one exact expected call with explicit argument intent | `Verify(...)` with `TimesSpec` and `FastArg` markers where needed | `.Verify<T>(...)` | the assertion fundamentally depends on provider-native semantics |
+| a once / never / exact / at-least / at-most count | `VerifyCalledOnce(...)`, `VerifyNotCalled(...)`, `VerifyCalledExactly(...)`, `VerifyCalledAtLeast(...)`, or `VerifyCalledAtMost(...)` | keep `.Verify<T>(..., TimesSpec...)` inside ScenarioBuilder; the count wrappers are outer `Mocks` / `MockingProviderRegistry` conveniences | the test is really about order, sequences, or another provider-specific behavior |
+| a method-level wildcard assertion where every argument can stay flexible | `VerifyAnyArgs(...)` and the matching `*AnyArgs(...)` count helpers | use `.Verify<T>(...)` inline when the scenario already has a readable verification expression; use `VerifyAnyArgs(...)` around execution when wildcard matching is the main point | overloaded or provider-bound behavior needs a provider-native path |
+| no-other-calls on a tracked or detached dependency | `VerifyNoOtherCalls(...)` | `.VerifyNoOtherCalls<T>()` | the suite intentionally preserves a provider-native no-other-calls surface |
+| logger assertions | `VerifyLogged(...)`, `VerifyLoggedOnce(...)`, and `VerifyNotLogged(...)` when logger capture is supported | call them on `Mocks` around scenario execution | the provider does not support logger capture |
+| call order, event sequencing, protected members, or other provider-bound verification | provider-native verification APIs | no shared ScenarioBuilder wrapper | the provider-specific feature is the behavior under test |
+
+ScenarioBuilder note:
+
+- the supported inline verification hooks are `.Verify<T>(...)` and `.VerifyNoOtherCalls<T>()`
+- if a test wants the convenience wrappers such as `VerifyCalledExactly(...)`, `VerifyCalledAtLeastAnyArgs(...)`, or `VerifyLoggedOnce(...)`, keep those on `Mocks` or `MockingProviderRegistry` around scenario execution instead of expecting separate ScenarioBuilder overloads
+
 When a provider-neutral test needs a reusable observability dump for debugging, capture a snapshot from the current mocker instead of reaching into provider-native mock internals:
 
 ```csharp
@@ -238,6 +256,20 @@ Those helpers intentionally stay narrow:
 - they support direct method-call expressions only
 - they are aimed at exact-call fixed results, exact-call `Task` completions, exact-call callbacks, and exact-call exceptions, including simple async `Task<T>` results through `AddMethodResultAsync(...)`, completed `Task` responses through `AddMethodCompletionAsync(...)`, side-effect callbacks through `AddMethodCallback(...)` / `AddMethodCallbackAsync(...)`, and faulted `Task` / `Task<T>` responses through `AddMethodExceptionAsync(...)`
 - they do not try to replace broader provider-native setup chains, exception orchestration, or advanced callback behavior
+
+### Shared setup selection matrix
+
+| If the arranged behavior is... | Prefer... | Keyed-service note | Fall back when... |
+| --- | --- | --- | --- |
+| one exact-call fixed return, fixed `Task<T>` result, completed `Task`, callback, or exception on an interface collaborator | `AddMethodResult(...)`, `AddMethodResultAsync(...)`, `AddMethodCompletionAsync(...)`, `AddMethodCallback(...)`, `AddMethodCallbackAsync(...)`, `AddMethodException(...)`, or `AddMethodExceptionAsync(...)` | these helpers currently wrap the currently resolved service and do not expose keyed-specific overloads | the behavior needs sequencing, conditional setup, advanced callbacks, or a class target |
+| simple stateful interface properties | `AddPropertyState<TService>(...)` | this helper currently wraps the currently resolved service and does not expose keyed-specific overloads | the target is a class, the property behavior is broader than simple state, or a keyed role needs its own explicit fake |
+| capturing assignments to one interface property | `AddPropertySetterCapture<TService, TValue>(...)` | this helper currently wraps the currently resolved service and does not expose keyed-specific overloads | setter interception is not the behavior under test, or the target is a class |
+| one fixed keyed dependency instance | `AddKeyedType(...)` and `GetKeyedObject<T>(...)` | keyed registrations are first-class here | the dependency is still conceptually a mock that should stay tracked |
+
+Keyed practical rule:
+
+- preserve the keyed DI role first by choosing keyed mocks or keyed fixed instances
+- if you still need exact-call or property-state behavior for that keyed role, use a keyed tracked mock with provider-native setup or a keyed fake/stub instead of expecting the unkeyed helper overloads to retarget themselves
 
 Analyzer note:
 
@@ -470,7 +502,7 @@ Package note:
 - `CreateTypedServiceScope(...)`, `AddTypedServiceScope(...)`, and `AddServiceScope(...)` remain part of `FastMoq.Core`
 - direct `FastMoq.Core` consumers should add `FastMoq.AzureFunctions` and import `FastMoq.AzureFunctions.Extensions` before using `CreateFunctionContextInstanceServices(...)`, `AddFunctionContextInstanceServices(...)`, `CreateHttpRequestData(...)`, or `CreateHttpResponseData(...)`
 - `AddTaskOrchestrationReplaySafeLogging(...)` also lives in `FastMoq.AzureFunctions`; it depends only on `Microsoft.DurableTask.Abstractions`, so tests that only need replay-safe logger creation do not need the heavier Durable Functions worker extension package just to verify orchestration logs
-- the replay-safe orchestration helper currently targets mock-backed `TaskOrchestrationContext` flows on Moq and NSubstitute; reflection-only provider paths cannot synthesize the required abstract orchestration members safely
+- `Mocker.AddTaskOrchestrationReplaySafeLogging(...)` can register a concrete replay-safe orchestration context before resolution on Moq, NSubstitute, or reflection paths; the tracked `IFastMock` overload is narrower and currently requires a provider that supports FastMoq's tracked-property configuration contract for the protected Durable logger factory getter, which the built-in Moq provider supports today
 - the aggregate `FastMoq` package includes the Azure Functions helper package already
 
 Analyzer note:

@@ -11,7 +11,7 @@ namespace FastMoq.Providers.ReflectionProvider
     /// Does NOT support: strict mode, call base, property auto-setup, protected members.
     /// Intended as a fallback / baseline provider so FastMoq can operate without external mocking libraries.
     /// </summary>
-    internal sealed class ReflectionMockingProvider : IMockingProvider, IMockingProviderCapabilities
+    internal sealed class ReflectionMockingProvider : IMockingProvider, IMockingProviderCapabilities, ITrackedMockPropertyConfigurator
     {
         public static readonly ReflectionMockingProvider Instance = new();
         private ReflectionMockingProvider() { }
@@ -60,6 +60,11 @@ namespace FastMoq.Providers.ReflectionProvider
         public void SetCallBase(IFastMock mock, bool value) => throw CreateUnsupportedFeatureException(nameof(SupportsCallBase));
         public void ConfigureProperties(IFastMock mock) => throw CreateUnsupportedFeatureException(nameof(SupportsSetupAllProperties));
         public void ConfigureLogger(IFastMock mock, Action<LogLevel, EventId, string, Exception?> callback) => throw CreateUnsupportedFeatureException(nameof(SupportsLoggerCapture));
+
+        public bool TryConfigureMockProperty(IFastMock mock, PropertyInfo propertyInfo, object? value)
+        {
+            return false;
+        }
         #endregion
 
         #region Verification
@@ -139,7 +144,7 @@ namespace FastMoq.Providers.ReflectionProvider
         #endregion
 
         #region Internal FastMock Wrapper
-        private sealed class ReflectionFastMock<T> : IFastMock<T> where T : class
+        private sealed class ReflectionFastMock<T> : IFastMock<T>, IProviderBoundFastMock where T : class
         {
             private readonly Action<MethodInfo, object?[], object?> _tracker;
 
@@ -156,6 +161,8 @@ namespace FastMoq.Providers.ReflectionProvider
             }
 
             public Type MockedType => typeof(T);
+
+            public IMockingProvider Provider => ReflectionMockingProvider.Instance;
 
             public T Instance { get; }
 

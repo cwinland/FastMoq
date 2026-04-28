@@ -8,12 +8,16 @@ namespace FastMoq.Providers.MoqProvider
     /// <summary>
     /// Provider implementation that adapts Moq to the provider-neutral FastMoq abstractions.
     /// </summary>
-    public sealed class MoqMockingProvider : IMockingProvider, IMockingProviderCapabilities
+    public sealed class MoqMockingProvider : IMockingProvider, IMockingProviderCapabilities, ITrackedMockPropertyConfigurator
     {
         private static readonly MethodInfo SetupLoggerCallbackGenericMethod = typeof(MoqMockingProvider)
             .GetMethod(nameof(SetupLoggerCallbackGeneric), BindingFlags.NonPublic | BindingFlags.Static)
             ?? throw new InvalidOperationException($"Could not resolve {nameof(SetupLoggerCallbackGeneric)} for logger setup dispatch.");
+        private static readonly MethodInfo ConfigureMockPropertyGenericMethod = typeof(MoqMockingProvider)
+            .GetMethod(nameof(TryConfigureMockPropertyGeneric), BindingFlags.NonPublic | BindingFlags.Static)
+            ?? throw new InvalidOperationException($"Could not resolve {nameof(TryConfigureMockPropertyGeneric)} for property setup dispatch.");
         private static readonly ConcurrentDictionary<Type, Action<Mock, Action<LogLevel, EventId, string, Exception?>>> LoggerSetupDispatchCache = new();
+        private static readonly ConcurrentDictionary<Type, Func<Mock, PropertyInfo, object?, bool>> PropertySetupDispatchCache = new();
 
         /// <summary>
         /// Gets the shared singleton instance of the Moq provider.
@@ -243,6 +247,28 @@ namespace FastMoq.Providers.MoqProvider
         }
 
         /// <summary>
+        /// Attempts to configure a single property getter on the wrapped Moq mock.
+        /// </summary>
+        public bool TryConfigureMockProperty(IFastMock mock, PropertyInfo propertyInfo, object? value)
+        {
+            ArgumentNullException.ThrowIfNull(mock);
+            ArgumentNullException.ThrowIfNull(propertyInfo);
+
+            var underlying = TryGetUnderlyingMock(mock);
+            if (underlying == null)
+            {
+                return false;
+            }
+
+            var dispatcher = PropertySetupDispatchCache.GetOrAdd(mock.MockedType, static mockedType =>
+                (Func<Mock, PropertyInfo, object?, bool>)ConfigureMockPropertyGenericMethod
+                    .MakeGenericMethod(mockedType)
+                    .CreateDelegate(typeof(Func<Mock, PropertyInfo, object?, bool>)));
+
+            return dispatcher(underlying, propertyInfo, value);
+        }
+
+        /// <summary>
         /// Attempts to expose the underlying Moq mock from a provider-neutral wrapper.
         /// </summary>
         public object? TryGetLegacy(IFastMock mock)
@@ -351,6 +377,46 @@ namespace FastMoq.Providers.MoqProvider
             }
 
             return null;
+        }
+
+        private static bool TryConfigureMockPropertyGeneric<TMock>(Mock mock, PropertyInfo propertyInfo, object? value)
+            where TMock : class
+        {
+            if (mock is not Mock<TMock> typedMock || propertyInfo.GetMethod is null)
+            {
+                return false;
+            }
+
+            if (value is null)
+            {
+                if (propertyInfo.PropertyType.IsValueType && Nullable.GetUnderlyingType(propertyInfo.PropertyType) is null)
+                {
+                    return false;
+                }
+            }
+            else if (!propertyInfo.PropertyType.IsAssignableFrom(value.GetType()))
+            {
+                return false;
+            }
+
+            try
+            {
+                var instanceParam = Expression.Parameter(typeof(TMock), "instance");
+                Expression propertyAccess = Expression.Property(instanceParam, propertyInfo);
+                if (propertyInfo.PropertyType.IsValueType)
+                {
+                    propertyAccess = Expression.Convert(propertyAccess, typeof(object));
+                }
+
+                var getterExpression = Expression.Lambda<Func<TMock, object>>(propertyAccess, instanceParam);
+                object configuredValue = value!;
+                typedMock.Setup(getterExpression).Returns(configuredValue);
+                return true;
+            }
+            catch
+            {
+                return false;
+            }
         }
 
         private static class MoqProviderTransitionWarning

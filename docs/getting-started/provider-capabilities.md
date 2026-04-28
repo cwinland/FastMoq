@@ -172,6 +172,36 @@ Mocks.Verify<IOrderGateway>(x => x.Load("order-42"), TimesSpec.Once);
 
 Use `AddMethodResultAsync(...)` for the same shape when the collaborator returns `Task<T>`, `AddMethodCompletionAsync(...)` when it returns `Task`, `AddMethodCallback(...)` / `AddMethodCallbackAsync(...)` when the exact-call behavior is a simple side effect, and `AddMethodException(...)` / `AddMethodExceptionAsync(...)` when the exact-call behavior is a fixed exception rather than a value.
 
+### Shared setup helper boundary
+
+Use the shared setup helpers when the arranged behavior is narrow enough that FastMoq can own it directly.
+
+| If the arranged behavior is... | Prefer... | Keyed-service note | Fall back when... |
+| --- | --- | --- | --- |
+| one exact-call fixed return, fixed `Task<T>` result, completed `Task`, callback, or exception on an interface collaborator | `AddMethodResult(...)`, `AddMethodResultAsync(...)`, `AddMethodCompletionAsync(...)`, `AddMethodCallback(...)`, `AddMethodCallbackAsync(...)`, `AddMethodException(...)`, or `AddMethodExceptionAsync(...)` | these helpers currently wrap the currently resolved service and do not expose keyed-specific overloads; when the collaborator role is keyed, keep the keyed separation first and then use a keyed tracked mock or keyed fake for that role | the arrangement needs sequencing, conditional behavior, advanced callbacks, or a class target |
+| simple readable and writable property state on an interface collaborator | `AddPropertyState<TService>(...)` | `AddPropertyState(...)` currently wraps the currently resolved service and does not expose keyed-specific overloads; for keyed roles, prefer keyed mocks or keyed fixed instances first | the target is a class, the state model is broader than simple property backing, or the keyed role needs its own explicit fake |
+| capturing assignments to one interface property | `AddPropertySetterCapture<TService, TValue>(...)` | `AddPropertySetterCapture(...)` currently wraps the currently resolved service and does not expose keyed-specific overloads; for keyed roles, prefer keyed mocks or keyed fixed instances first | setter interception is not the real behavior under test, or the target is a class |
+| one fixed keyed dependency instance | `AddKeyedType(...)` plus `GetKeyedObject<T>(...)` when needed | keyed registrations are first-class here | the dependency is still conceptually a mock that you want FastMoq to track |
+
+Practical rule:
+
+- shared setup helpers are the first choice for unkeyed interface collaborators when the behavior is exact-call or simple property state
+- keyed DI contracts should preserve the key boundary first; if the helper shape still matters after that, use a keyed tracked mock or keyed fake instead of expecting the unkeyed helper overloads to retarget themselves
+- when the arrangement needs more than the table above, stay honest and use provider-native setup or an explicit fake/stub
+
+### Shared verification boundary
+
+The shared verification surface is intentionally broader than the shared setup surface, but it still has explicit stop points.
+
+| If the assertion is... | Prefer... | ScenarioBuilder note | Stay provider-native when... |
+| --- | --- | --- | --- |
+| exact-call verification with explicit argument intent | `Verify(...)` with `TimesSpec` and `FastArg` markers where needed | `.Verify<T>(...)` is the inline ScenarioBuilder path | the test fundamentally depends on provider-only verification semantics |
+| once / never / exact count / at-least / at-most count | `VerifyCalledOnce(...)`, `VerifyNotCalled(...)`, `VerifyCalledExactly(...)`, `VerifyCalledAtLeast(...)`, or `VerifyCalledAtMost(...)` | ScenarioBuilder does not currently add separate count-wrapper methods; use `.Verify<T>(..., TimesSpec...)` inside the scenario or call the wrappers on `Mocks` / `MockingProviderRegistry` around execution | the assertion is really about call order, sequences, or another provider-specific concept |
+| any-args verification for one non-overloaded member | `VerifyAnyArgs(...)` and the matching `*AnyArgs(...)` count helpers | use the normal `.Verify<T>(...)` path inside ScenarioBuilder when you need inline verification; use `VerifyAnyArgs(...)` around execution when the scenario only needs wildcard matching | the member shape is provider-specific or the test needs a provider-native sequence / event assertion |
+| no-other-calls on a tracked or detached handle | `VerifyNoOtherCalls(...)` | `.VerifyNoOtherCalls<T>()` is supported inline on ScenarioBuilder | the suite intentionally preserves a provider-native no-other-calls surface |
+| captured logger assertions | `VerifyLogged(...)`, `VerifyLoggedOnce(...)`, and `VerifyNotLogged(...)` when the provider supports logger capture | call the logger verification on `Mocks` around scenario execution; ScenarioBuilder does not add a separate logger-verification wrapper | the selected provider does not support logger capture |
+| call order, sequences, events, protected members, or other provider-bound semantics | the selected provider's native verification APIs | do not expect ScenarioBuilder to flatten these into a shared abstraction | the provider-specific feature is the thing under test |
+
 When you need Moq-native behavior that is not exposed as a tracked shortcut, step through `AsMoq()`:
 
 ```csharp
@@ -369,6 +399,7 @@ Important extension-model note:
 - the built-in providers are not inheritance extension points
 - if you want custom behavior, implement a new `IMockingProvider`
 - when the change is incremental rather than a full rewrite, prefer a wrapper or decorator provider that delegates to an existing provider and adjusts only the behavior you need
+- provider-authored tracked helpers can opt into additional FastMoq-owned behavior by implementing optional extension interfaces such as `ITrackedMockPropertyConfigurator` on the provider and exposing the creating provider through `IProviderBoundFastMock` on the wrapper
 
 If your team writes its own provider, treat this matrix format as the minimum documentation bar.
 
