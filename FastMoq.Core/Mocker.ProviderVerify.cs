@@ -222,6 +222,22 @@ namespace FastMoq
         }
 
         /// <summary>
+        /// Verifies that the specified invocation occurred exactly once on the tracked mock.
+        /// </summary>
+        public void VerifyCalledOnce<T>(Expression<Action<T>> expression) where T : class
+        {
+            Verify(expression, TimesSpec.Once);
+        }
+
+        /// <summary>
+        /// Verifies that the specified invocation never occurred on the tracked mock.
+        /// </summary>
+        public void VerifyNotCalled<T>(Expression<Action<T>> expression) where T : class
+        {
+            Verify(expression, TimesSpec.Never());
+        }
+
+        /// <summary>
         /// Ensures no other calls were made for a given mock (provider-first only).
         /// </summary>
         public void VerifyNoOtherCalls<T>() where T : class

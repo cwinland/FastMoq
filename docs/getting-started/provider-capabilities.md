@@ -12,6 +12,7 @@ Use it together with [Provider Selection and Setup](./provider-selection.md):
 FastMoq has two different layers of behavior:
 
 - provider-neutral APIs such as `GetOrCreateMock(...)`, `Verify(...)`, `VerifyNoOtherCalls(...)`, and `VerifyLogged(...)`
+- count-oriented verification wrappers such as `VerifyCalledOnce(...)`, `VerifyNotCalled(...)`, `VerifyLoggedOnce(...)`, and `VerifyNotLogged(...)` when the assertion is exactly once or never
 - provider-specific capabilities and convenience APIs exposed by the selected provider
 
 The selected provider determines whether features such as protected-member access, automatic property backing, base-call behavior, and logger capture are available.
@@ -132,6 +133,23 @@ dependency.Setup(x => x.Publish("alpha"));
 dependency.Instance.Publish("alpha");
 
 Mocks.Verify<IOrderGateway>(x => x.Publish("alpha"), TimesSpec.Once);
+```
+
+For the common once / never cases, the shared verification surface now has explicit wrappers:
+
+```csharp
+Mocks.VerifyCalledOnce<IOrderGateway>(x => x.Publish("alpha"));
+Mocks.VerifyNotCalled<IOrderGateway>(x => x.Publish("beta"));
+Mocks.VerifyLoggedOnce(LogLevel.Information, "submitted alpha");
+Mocks.VerifyNotLogged(LogLevel.Error, "submission failed");
+```
+
+Detached handles can use the same style without routing through `MockingProviderRegistry.Default` manually:
+
+```csharp
+MockingProviderRegistry.VerifyCalledOnce(orderGateway, x => x.Publish("alpha"));
+MockingProviderRegistry.VerifyNotCalled(orderGateway, x => x.Publish("beta"));
+MockingProviderRegistry.VerifyNoOtherCalls(orderGateway);
 ```
 
 For exact-call fixed results that do not need a broader provider-native setup chain, prefer the shared helper surface first:

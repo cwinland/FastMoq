@@ -155,6 +155,32 @@ Migration guardrail:
 - do not rewrite a tracked helper to [AddType(...)](xref:FastMoq.Mocker.AddType``1(System.Func{FastMoq.Mocker,``0},System.Boolean,System.Object[])) when the same service still flows through `GetObject<T>()`, `GetRequiredTrackedMock<T>()`, `GetMockModel<T>()`, `AddPropertyState<TService>(...)`, or `AddPropertySetterCapture<TService, TValue>(...)`
 - that is still a tracked FastMoq dependency, not a concrete type-map override
 
+### Common verification counts
+
+When the assertion is mechanically “once” or “never”, prefer the explicit provider-first wrappers over repeating `TimesSpec` boilerplate:
+
+```csharp
+Mocks.VerifyCalledOnce<IOrderGateway>(x => x.Publish("order-42"));
+Mocks.VerifyNotCalled<IOrderGateway>(x => x.Publish("order-99"));
+```
+
+The same shorthand exists for captured logger assertions:
+
+```csharp
+Mocks.VerifyLoggedOnce(LogLevel.Information, "Submitted order");
+Mocks.VerifyNotLogged(LogLevel.Error, "Unhandled failure");
+```
+
+For detached mocks, use the matching helpers on `MockingProviderRegistry`:
+
+```csharp
+var emailGateway = Mocks.CreateStandaloneFastMock<IEmailGateway>();
+
+MockingProviderRegistry.VerifyCalledOnce(emailGateway, x => x.Send("finance@contoso.test"));
+MockingProviderRegistry.VerifyNotCalled(emailGateway, x => x.Send("audit@contoso.test"));
+MockingProviderRegistry.VerifyNoOtherCalls(emailGateway);
+```
+
 ### Exact-call fixed results
 
 When a test only needs a fixed return value, exact-call completion, exact-call callback, or exact-call exception for one collaborator call, prefer `AddMethodResult(...)`, `AddMethodResultAsync(...)`, `AddMethodCompletionAsync(...)`, `AddMethodCallback(...)`, `AddMethodCallbackAsync(...)`, `AddMethodException(...)`, or `AddMethodExceptionAsync(...)` over provider-native `Setup(...).Returns(...)`, `ReturnsAsync(...)`, `Callback(...)`, or `Throws(...)` chains:

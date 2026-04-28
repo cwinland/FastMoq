@@ -559,6 +559,30 @@ namespace FastMoq.Extensions
             mocker.VerifyLogged(logLevel, message, null, null, times);
 
         /// <summary>
+        /// Verifies that exactly one matching log entry was captured.
+        /// </summary>
+        public static void VerifyLoggedOnce(this Mocker mocker, LogLevel logLevel, string message) =>
+            mocker.VerifyLogged(logLevel, message, null, null, TimesSpec.Once);
+
+        /// <summary>
+        /// Verifies that exactly one matching log entry was captured.
+        /// </summary>
+        public static void VerifyLoggedOnce(this Mocker mocker, LogLevel logLevel, string message, Exception? exception, int? eventId = null) =>
+            mocker.VerifyLogged(logLevel, message, exception, eventId, TimesSpec.Once);
+
+        /// <summary>
+        /// Verifies that no matching log entries were captured.
+        /// </summary>
+        public static void VerifyNotLogged(this Mocker mocker, LogLevel logLevel, string message) =>
+            mocker.VerifyLogged(logLevel, message, null, null, TimesSpec.Never());
+
+        /// <summary>
+        /// Verifies that no matching log entries were captured.
+        /// </summary>
+        public static void VerifyNotLogged(this Mocker mocker, LogLevel logLevel, string message, Exception? exception, int? eventId = null) =>
+            mocker.VerifyLogged(logLevel, message, exception, eventId, TimesSpec.Never());
+
+        /// <summary>
         /// Provider-agnostic logger verification based on captured ILogger callbacks.
         /// Defaults to at least one matching log entry when no explicit count specification is supplied.
         /// </summary>

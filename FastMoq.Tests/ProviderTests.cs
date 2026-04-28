@@ -161,6 +161,21 @@ namespace FastMoq.Tests
 
         [Theory]
         [MemberData(nameof(ProviderNames))]
+        public void VerifyCalledOnce_AndVerifyNotCalled_ShouldWork_ForSelectedProvider(string providerName)
+        {
+            using var providerScope = PushProvider(providerName);
+            var mocker = new Mocker();
+            var dependency = mocker.GetOrCreateMock<IProviderDependency>();
+
+            dependency.Instance.Run("alpha");
+
+            mocker.VerifyCalledOnce<IProviderDependency>(x => x.Run("alpha"));
+            mocker.VerifyNotCalled<IProviderDependency>(x => x.Run("beta"));
+            mocker.VerifyNoOtherCalls<IProviderDependency>();
+        }
+
+        [Theory]
+        [MemberData(nameof(ProviderNames))]
         public void Verify_ShouldSupportFastArgAnyMatcher_ForSelectedProvider(string providerName)
         {
             using var providerScope = PushProvider(providerName);
@@ -253,6 +268,21 @@ namespace FastMoq.Tests
             MockingProviderRegistry.Default.Verify(second, x => x.Run("beta"), TimesSpec.Once);
         }
 
+        [Theory]
+        [MemberData(nameof(ProviderNames))]
+        public void DetachedVerifyCalledOnce_AndVerifyNotCalled_ShouldWork_ForSelectedProvider(string providerName)
+        {
+            using var providerScope = PushProvider(providerName);
+            var mocker = new Mocker();
+
+            var dependency = mocker.CreateStandaloneFastMock<IProviderDependency>();
+            dependency.Instance.Run("alpha");
+
+            MockingProviderRegistry.VerifyCalledOnce(dependency, x => x.Run("alpha"));
+            MockingProviderRegistry.VerifyNotCalled(dependency, x => x.Run("beta"));
+            MockingProviderRegistry.VerifyNoOtherCalls(dependency);
+        }
+
         [Fact]
         public void CreateStandaloneFastMock_WithConstructorArgs_ShouldHonorSelectedProviderWithoutTracking()
         {
@@ -338,6 +368,25 @@ namespace FastMoq.Tests
         [Theory]
         [InlineData("moq")]
         [InlineData("nsubstitute")]
+        public void VerifyLoggedOnce_AndVerifyNotLogged_ShouldWork_ForProvidersThatSupportLoggerCapture(string providerName)
+        {
+            using var providerScope = PushProvider(providerName);
+            var mocker = new Mocker();
+            var logger = mocker.GetObject<ILogger<NullLogger>>();
+
+            logger.Should().NotBeNull();
+            logger!.LogInformation("provider info");
+            logger.LogError(12, new InvalidOperationException("provider boom"), "provider error");
+
+            mocker.VerifyLoggedOnce(LogLevel.Information, "provider info");
+            mocker.VerifyLoggedOnce(LogLevel.Error, "provider error", new InvalidOperationException("provider boom"), 12);
+            mocker.VerifyNotLogged(LogLevel.Warning, "provider warning");
+            mocker.VerifyNotLogged(LogLevel.Error, "provider error", new InvalidOperationException("other boom"), 12);
+        }
+
+        [Theory]
+        [InlineData("moq")]
+        [InlineData("nsubstitute")]
         public void SetupLoggerCallback_ShouldMirrorCapturedEntries_WithoutBreakingStoredLogs(string providerName)
         {
             using var providerScope = PushProvider(providerName);
@@ -400,6 +449,18 @@ namespace FastMoq.Tests
             var mocker = new Mocker();
 
             var action = () => mocker.VerifyLogged(LogLevel.Information, "provider info", 1);
+
+            action.Should().Throw<NotSupportedException>()
+                .WithMessage("*ReflectionMockingProvider*");
+        }
+
+        [Fact]
+        public void VerifyLoggedOnce_ShouldFailFast_ForProviderWithoutLoggerCapture()
+        {
+            using var providerScope = PushProvider("reflection");
+            var mocker = new Mocker();
+
+            var action = () => mocker.VerifyLoggedOnce(LogLevel.Information, "provider info");
 
             action.Should().Throw<NotSupportedException>()
                 .WithMessage("*ReflectionMockingProvider*");

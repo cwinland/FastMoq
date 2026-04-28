@@ -1,6 +1,7 @@
 using FastMoq.Providers.MoqProvider;
 using FastMoq.Providers.ReflectionProvider;
 using System.Collections.Concurrent;
+using System.Linq.Expressions;
 using System.Reflection;
 
 namespace FastMoq.Providers
@@ -221,6 +222,38 @@ namespace FastMoq.Providers
             _defaultSource = DefaultProviderSource.None;
             _lastCompletedDiscoveryVersion = -1;
             _current.Value = null;
+        }
+
+        /// <summary>
+        /// Verifies that the specified invocation occurred exactly once on a detached provider-first mock handle.
+        /// </summary>
+        public static void VerifyCalledOnce<T>(IFastMock<T> mock, Expression<Action<T>> expression) where T : class
+        {
+            ArgumentNullException.ThrowIfNull(mock);
+            ArgumentNullException.ThrowIfNull(expression);
+
+            Default.Verify(mock, expression, TimesSpec.Once);
+        }
+
+        /// <summary>
+        /// Verifies that the specified invocation never occurred on a detached provider-first mock handle.
+        /// </summary>
+        public static void VerifyNotCalled<T>(IFastMock<T> mock, Expression<Action<T>> expression) where T : class
+        {
+            ArgumentNullException.ThrowIfNull(mock);
+            ArgumentNullException.ThrowIfNull(expression);
+
+            Default.Verify(mock, expression, TimesSpec.Never());
+        }
+
+        /// <summary>
+        /// Verifies that no other invocations were recorded on a detached provider-first mock handle.
+        /// </summary>
+        public static void VerifyNoOtherCalls(IFastMock mock)
+        {
+            ArgumentNullException.ThrowIfNull(mock);
+
+            Default.VerifyNoOtherCalls(mock);
         }
 
         internal static void InitializeBuiltInProviders(bool includeMoqProvider = true)
