@@ -66,7 +66,13 @@ namespace FastMoq.Providers
         /// <param name="mock">The mock to verify.</param>
         /// <param name="method">The method to verify.</param>
         /// <param name="times">The expected invocation count.</param>
-        void VerifyMethod<T>(IFastMock<T> mock, MethodInfo method, TimesSpec? times = null) where T : class;
+        /// <exception cref="NotSupportedException">
+        /// Thrown when the current provider does not implement wildcard method verification.
+        /// </exception>
+        void VerifyMethod<T>(IFastMock<T> mock, MethodInfo method, TimesSpec? times = null) where T : class
+        {
+            throw new NotSupportedException("The current mocking provider does not support VerifyMethod<T>. Implement IMockingProvider.VerifyMethod<T> to enable wildcard method verification.");
+        }
 
         /// <summary>
         /// Verifies that no unexpected invocations remain on the mock.

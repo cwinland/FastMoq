@@ -179,7 +179,7 @@ namespace FastMoq.AzureFunctions.Extensions
                 ApplyObjectDefaults = ComposeFunctionContextObjectDefaults(existingRegistration?.ApplyObjectDefaults, applyObjectDefaults),
             };
 
-            mocker.AddKnownType(mergedRegistration, replace: existingRegistration is not null);
+            mocker.AddKnownType(mergedRegistration, replace);
         }
 
         private static void EnsureFunctionContextKnownTypeCanBeUpdated(Mocker mocker, bool replace)
