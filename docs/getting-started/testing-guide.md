@@ -13,7 +13,7 @@ Use these rules first:
 3. Use [Mocks.GetOrCreateMock&lt;T&gt;()](xref:FastMoq.Mocker.GetOrCreateMock``1(FastMoq.MockRequestOptions)) when you want the normal FastMoq tracked mock path for a dependency.
 4. Use [AddType(...)](xref:FastMoq.Mocker.AddType``1(System.Func{FastMoq.Mocker,``0},System.Boolean,System.Object[])) when you need to replace FastMoq's default resolution with a specific concrete type, factory, or fixed instance.
 5. Use `CreateInstanceByType(...)` when direct `Mocker` usage must pick an exact constructor signature. Do not treat `GetObject<T>()` as the explicit constructor-selection API.
-6. Use `CreateTypedServiceProvider(...)`, `CreateTypedServiceScope(...)`, `AddServiceProvider(...)`, and `AddServiceScope(...)` when framework code expects typed service-provider or service-scope behavior rather than a one-object-for-all-types shim.
+6. Use `CreateTypedServiceProvider(...)`, `CreateTypedServiceScope(...)`, `AddTypedServiceProvider(...)`, and `AddTypedServiceScope(...)` when framework code expects typed service-provider or service-scope behavior rather than a one-object-for-all-types shim. Keep `AddServiceProvider(...)` and `AddServiceScope(...)` for registering an existing provider or scope instance, or as compatibility aliases for older builder-based call sites.
 7. If the constructor uses the same abstraction more than once under different DI service keys, use keyed mocks, keyed registrations, or explicit constructor injection for tests where dependency selection matters.
 8. Use [AddKnownType(...)](xref:FastMoq.Mocker.AddKnownType(FastMoq.KnownTypeRegistration,System.Boolean)) when a framework-style type needs special resolution or post-processing behavior.
 9. Use [GetMockDbContext&lt;TContext&gt;()](xref:FastMoq.DbContextMockerExtensions.GetMockDbContext``1(FastMoq.Mocker)) when testing EF Core contexts. Do not hand-roll DbContext setup unless you need behavior outside FastMoq's helper.
@@ -31,7 +31,7 @@ Use this decision table first:
 | a tracked collaborator that you will arrange or verify | [GetOrCreateMock&lt;T&gt;()](xref:FastMoq.Mocker.GetOrCreateMock``1(FastMoq.MockRequestOptions)) | creating a mock and then re-registering `mock.Instance` with [AddType(...)](xref:FastMoq.Mocker.AddType``1(System.Func{FastMoq.Mocker,``0},System.Boolean,System.Object[])) |
 | a real fixed dependency instance | [AddType(...)](xref:FastMoq.Mocker.AddType``1(System.Func{FastMoq.Mocker,``0},System.Boolean,System.Object[])) with the concrete instance | wrapping that instance in extra local indirection before handing it back to `Mocker` |
 | FastMoq's built-in real `IFileSystem` | `GetFileSystem(...)` or `GetObject<IFileSystem>()` | creating a fresh `MockFileSystem` only to satisfy an `IFileSystem` slot when the built-in shared one would do |
-| typed DI or scope behavior for framework resolution | `CreateTypedServiceProvider(...)`, `AddServiceProvider(...)`, `CreateTypedServiceScope(...)`, or `AddServiceScope(...)` | ad hoc `new ServiceCollection().BuildServiceProvider()` setup when the typed helper can express the same shape |
+| typed DI or scope behavior for framework resolution | `CreateTypedServiceProvider(...)`, `AddTypedServiceProvider(...)`, `CreateTypedServiceScope(...)`, or `AddTypedServiceScope(...)` | ad hoc `new ServiceCollection().BuildServiceProvider()` setup when the typed helper can express the same shape |
 | a framework-style built-in type with special behavior | the matching built-in helper or [AddKnownType(...)](xref:FastMoq.Mocker.AddKnownType(FastMoq.KnownTypeRegistration,System.Boolean)) | treating that dependency like an ordinary manual registration first |
 
 ### Keep one dependency model per service
@@ -128,7 +128,7 @@ These are not interchangeable.
 - You only need to arrange or verify behavior.
 - You want the dependency tracked as the mock FastMoq would have created anyway.
 
-The example below assumes the Moq provider extensions are in use for the arrange step. The tracked-mock concept is provider-first, but the `.Setup(...)` syntax itself is provider-specific. See [Provider Capabilities](./provider-capabilities.md) when you need the equivalent arrangement style for another provider.
+The example below assumes the Moq provider extensions are in use for the arrange step. The tracked-mock concept is provider-first, but the `.Setup(...)` syntax itself is provider-specific. For exact-call fixed results that can stay on a shared FastMoq surface, prefer `AddMethodResult(...)` or `AddMethodResultAsync(...)` before dropping into provider-native setup syntax. See [Provider Capabilities](./provider-capabilities.md) when you need the equivalent arrangement style for another provider.
 
 ```csharp
 var repoMock = Mocks.GetOrCreateMock<IOrderRepository>();
@@ -154,6 +154,122 @@ Migration guardrail:
 
 - do not rewrite a tracked helper to [AddType(...)](xref:FastMoq.Mocker.AddType``1(System.Func{FastMoq.Mocker,``0},System.Boolean,System.Object[])) when the same service still flows through `GetObject<T>()`, `GetRequiredTrackedMock<T>()`, `GetMockModel<T>()`, `AddPropertyState<TService>(...)`, or `AddPropertySetterCapture<TService, TValue>(...)`
 - that is still a tracked FastMoq dependency, not a concrete type-map override
+
+### Common verification counts
+
+When the assertion is mechanically “once” or “never”, prefer the explicit provider-first wrappers over repeating `TimesSpec` boilerplate:
+
+```csharp
+Mocks.VerifyCalledOnce<IOrderGateway>(x => x.Publish("order-42"));
+Mocks.VerifyNotCalled<IOrderGateway>(x => x.Publish("order-99"));
+```
+
+The same shorthand exists for captured logger assertions:
+
+```csharp
+Mocks.VerifyLoggedOnce(LogLevel.Information, "Submitted order");
+Mocks.VerifyNotLogged(LogLevel.Error, "Unhandled failure");
+```
+
+When the verification only cares that a method was called and every argument can stay a wildcard, prefer the delegate-selector overload for compiler-verified member selection:
+
+```csharp
+Mocks.VerifyAnyArgs<IArmDeploymentGateway, Func<ResourceGroupResource, Dictionary<string, ArmParamValue>, Stream, Stream, bool, Task>>(
+    gateway => gateway.CreateDeploymentAsync,
+    TimesSpec.Once);
+```
+
+If the method is overloaded, fall back to the method-name overload with explicit parameter types:
+
+```csharp
+Mocks.VerifyAnyArgs<IArmDeploymentGateway>(
+    nameof(IArmDeploymentGateway.CreateDeploymentAsync),
+    TimesSpec.Once,
+    typeof(ResourceGroupResource),
+    typeof(Dictionary<string, ArmParamValue>),
+    typeof(Stream),
+    typeof(Stream),
+    typeof(bool));
+```
+
+If the test wants a count shorthand without spelling out `TimesSpec`, the provider-first surface now exposes explicit wrappers beyond once and never:
+
+```csharp
+Mocks.VerifyCalledExactly<IOrderGateway>(gateway => gateway.Publish("order-42"), 2);
+Mocks.VerifyCalledAtLeastAnyArgs<IArmDeploymentGateway, Func<ResourceGroupResource, Dictionary<string, ArmParamValue>, Stream, Stream, bool, Task>>(
+    gateway => gateway.CreateDeploymentAsync,
+    1);
+```
+
+### Shared verification selection matrix
+
+Use the smallest shared verification shape that still expresses the intent clearly:
+
+| If the assertion is... | Prefer... | ScenarioBuilder path | Fall back when... |
+| --- | --- | --- | --- |
+| one exact expected call with explicit argument intent | `Verify(...)` with `TimesSpec` and `FastArg` markers where needed | `.Verify<T>(...)` | the assertion fundamentally depends on provider-native semantics |
+| a once / never / exact / at-least / at-most count | `VerifyCalledOnce(...)`, `VerifyNotCalled(...)`, `VerifyCalledExactly(...)`, `VerifyCalledAtLeast(...)`, or `VerifyCalledAtMost(...)` | keep `.Verify<T>(..., TimesSpec...)` inside ScenarioBuilder; the count wrappers are outer `Mocks` / `MockingProviderRegistry` conveniences | the test is really about order, sequences, or another provider-specific behavior |
+| a method-level wildcard assertion where every argument can stay flexible | `VerifyAnyArgs(...)` and the matching `*AnyArgs(...)` count helpers | use `.Verify<T>(...)` inline when the scenario already has a readable verification expression; use `VerifyAnyArgs(...)` around execution when wildcard matching is the main point | overloaded or provider-bound behavior needs a provider-native path |
+| no-other-calls on a tracked or detached dependency | `VerifyNoOtherCalls(...)` | `.VerifyNoOtherCalls<T>()` | the suite intentionally preserves a provider-native no-other-calls surface |
+| logger assertions | `VerifyLogged(...)`, `VerifyLoggedOnce(...)`, and `VerifyNotLogged(...)` when logger capture is supported | call them on `Mocks` around scenario execution | the provider does not support logger capture |
+| call order, event sequencing, protected members, or other provider-bound verification | provider-native verification APIs | no shared ScenarioBuilder wrapper | the provider-specific feature is the behavior under test |
+
+ScenarioBuilder note:
+
+- the supported inline verification hooks are `.Verify<T>(...)` and `.VerifyNoOtherCalls<T>()`
+- if a test wants the convenience wrappers such as `VerifyCalledExactly(...)`, `VerifyCalledAtLeastAnyArgs(...)`, or `VerifyLoggedOnce(...)`, keep those on `Mocks` or `MockingProviderRegistry` around scenario execution instead of expecting separate ScenarioBuilder overloads
+
+When a provider-neutral test needs a reusable observability dump for debugging, capture a snapshot from the current mocker instead of reaching into provider-native mock internals:
+
+```csharp
+var snapshot = Mocks.CreateDiagnosticsSnapshot();
+var debugView = snapshot.ToDebugView();
+var json = snapshot.ToJson();
+```
+
+That snapshot surfaces the current tracked mocks, keyed tracked mocks, observed constructor selections, keyed and unkeyed instance registrations, and captured log entries through one FastMoq-owned diagnostics object.
+
+For detached mocks, use the matching helpers on `MockingProviderRegistry`:
+
+```csharp
+var emailGateway = Mocks.CreateStandaloneFastMock<IEmailGateway>();
+
+MockingProviderRegistry.VerifyCalledOnce(emailGateway, x => x.Send("finance@contoso.test"));
+MockingProviderRegistry.VerifyNotCalled(emailGateway, x => x.Send("audit@contoso.test"));
+MockingProviderRegistry.VerifyNoOtherCalls(emailGateway);
+```
+
+### Exact-call fixed results
+
+When a test only needs a fixed return value, exact-call completion, exact-call callback, or exact-call exception for one collaborator call, prefer `AddMethodResult(...)`, `AddMethodResultAsync(...)`, `AddMethodCompletionAsync(...)`, `AddMethodCallback(...)`, `AddMethodCallbackAsync(...)`, `AddMethodException(...)`, or `AddMethodExceptionAsync(...)` over provider-native `Setup(...).Returns(...)`, `ReturnsAsync(...)`, `Callback(...)`, or `Throws(...)` chains:
+
+```csharp
+var gateway = Mocks.AddMethodResult<IOrderGateway, Order?>(
+    x => x.Load("order-42"),
+    expectedOrder);
+
+gateway.Load("order-42").Should().BeSameAs(expectedOrder);
+```
+
+Those helpers intentionally stay narrow:
+
+- they support direct method-call expressions only
+- they are aimed at exact-call fixed results, exact-call `Task` completions, exact-call callbacks, and exact-call exceptions, including simple async `Task<T>` results through `AddMethodResultAsync(...)`, completed `Task` responses through `AddMethodCompletionAsync(...)`, side-effect callbacks through `AddMethodCallback(...)` / `AddMethodCallbackAsync(...)`, and faulted `Task` / `Task<T>` responses through `AddMethodExceptionAsync(...)`
+- they do not try to replace broader provider-native setup chains, exception orchestration, or advanced callback behavior
+
+### Shared setup selection matrix
+
+| If the arranged behavior is... | Prefer... | Keyed-service note | Fall back when... |
+| --- | --- | --- | --- |
+| one exact-call fixed return, fixed `Task<T>` result, completed `Task`, callback, or exception on an interface collaborator | `AddMethodResult(...)`, `AddMethodResultAsync(...)`, `AddMethodCompletionAsync(...)`, `AddMethodCallback(...)`, `AddMethodCallbackAsync(...)`, `AddMethodException(...)`, or `AddMethodExceptionAsync(...)` | these helpers currently wrap the currently resolved service and do not expose keyed-specific overloads | the behavior needs sequencing, conditional setup, advanced callbacks, or a class target |
+| simple stateful interface properties | `AddPropertyState<TService>(...)` | this helper currently wraps the currently resolved service and does not expose keyed-specific overloads | the target is a class, the property behavior is broader than simple state, or a keyed role needs its own explicit fake |
+| capturing assignments to one interface property | `AddPropertySetterCapture<TService, TValue>(...)` | this helper currently wraps the currently resolved service and does not expose keyed-specific overloads | setter interception is not the behavior under test, or the target is a class |
+| one fixed keyed dependency instance | `AddKeyedType(...)` and `GetKeyedObject<T>(...)` | keyed registrations are first-class here | the dependency is still conceptually a mock that should stay tracked |
+
+Keyed practical rule:
+
+- preserve the keyed DI role first by choosing keyed mocks or keyed fixed instances
+- if you still need exact-call or property-state behavior for that keyed role, use a keyed tracked mock with provider-native setup or a keyed fake/stub instead of expecting the unkeyed helper overloads to retarget themselves
 
 Analyzer note:
 
@@ -247,17 +363,19 @@ var instanceServices = Mocks.CreateTypedServiceProvider(
     includeMockerFallback: true);
 ```
 
-Use `AddServiceProvider(...)` when the system under test resolves `IServiceProvider` or `IServiceScopeFactory` from the current [Mocker](xref:FastMoq.Mocker):
+Use `AddTypedServiceProvider(...)` when the system under test resolves `IServiceProvider` or `IServiceScopeFactory` from the current [Mocker](xref:FastMoq.Mocker) and the provider should be built from service registrations:
 
 ```csharp
-Mocks.AddServiceProvider(services =>
+Mocks.AddTypedServiceProvider(services =>
 {
     services.AddLogging();
     services.AddSingleton(new WidgetClock());
 });
 ```
 
-`AddServiceProvider(...)` registers the typed provider itself and, when the built container exposes them, also registers `IServiceScopeFactory` and `IServiceProviderIsService` for the current `Mocker`.
+`AddTypedServiceProvider(...)` registers the typed provider itself and, when the built container exposes them, also registers `IServiceScopeFactory` and `IServiceProviderIsService` for the current `Mocker`.
+
+Use `AddServiceProvider(...)` when you already have an `IServiceProvider` instance to register, or when an existing test still uses the older builder-based alias and call-site churn is not worth a separate rewrite.
 
 Use `CreateTypedServiceScope(...)` when the test needs an actual scope instance or wants to verify scoped lifetimes directly:
 
@@ -270,7 +388,16 @@ using var scope = Mocks.CreateTypedServiceScope(services =>
 var scopedService = scope.ServiceProvider.GetRequiredService<ScopedWidgetContext>();
 ```
 
-Use `AddServiceScope(...)` when the current `Mocker` should expose a scope and its scope-owned provider:
+Use `AddTypedServiceScope(...)` when the current `Mocker` should build and expose a scope and its scope-owned provider:
+
+```csharp
+Mocks.AddTypedServiceScope(services =>
+{
+    services.AddScoped<ScopedProbe>();
+}, replace: true);
+```
+
+Use `AddServiceScope(...)` when the current `Mocker` should expose an existing scope or an existing provider through a fixed scope:
 
 ```csharp
 using var scope = Mocks.CreateTypedServiceScope(services =>
@@ -314,7 +441,7 @@ Reuse `GetFileSystem()` when you want FastMoq's shared in-memory file system to 
 
 Instead of building a provider manually and registering only `provider.GetRequiredService<IServiceScopeFactory>()`, keep the full typed provider registered so constructor injection, nested framework resolution, and service-scope behavior stay aligned.
 
-When framework code should resolve a mix of real DI registrations and normal FastMoq collaborators, use `includeMockerFallback: true` on `CreateTypedServiceProvider(...)`, `CreateTypedServiceScope(...)`, `AddServiceProvider(...)`, or `AddServiceScope(...)`.
+When framework code should resolve a mix of real DI registrations and normal FastMoq collaborators, use `includeMockerFallback: true` on `CreateTypedServiceProvider(...)`, `CreateTypedServiceScope(...)`, `AddTypedServiceProvider(...)`, or `AddTypedServiceScope(...)`.
 
 For Azure-oriented tests that also need configuration defaults, prefer `CreateAzureServiceProvider(...)` or `AddAzureServiceProvider(...)` from `FastMoq.Azure.DependencyInjection` instead of repeating `AddLogging()`, `AddOptions()`, and `IConfiguration` setup in every test.
 
@@ -331,6 +458,23 @@ Mocks.AddFunctionContextInstanceServices(services =>
 var context = Mocks.GetObject<FunctionContext>();
 var clock = context.InstanceServices.GetRequiredService<WidgetClock>();
 ```
+
+For Durable orchestration tests, keep replay-safe logging on the normal FastMoq logger capture path instead of building a second assertion layer:
+
+```csharp
+using FastMoq.AzureFunctions.Extensions;
+
+Mocks.AddTaskOrchestrationReplaySafeLogging(replace: true);
+
+var orchestrationContext = Mocks.GetObject<TaskOrchestrationContext>();
+var logger = orchestrationContext.CreateReplaySafeLogger<ShipOrderOrchestrator>();
+
+logger.LogInformation("starting orchestration");
+
+Mocks.VerifyLogged(LogLevel.Information, "starting orchestration", TimesSpec.Once);
+```
+
+When you want replay-safe log suppression behavior, pass `isReplaying: true` and assert against the existing `Mocks.LogEntries` surface.
 
 For HTTP-trigger tests, use `CreateHttpRequestData(...)` and `CreateHttpResponseData(...)` to build concrete worker request or response objects instead of hand-rolling `HttpRequestData` and `HttpResponseData` doubles:
 
@@ -354,9 +498,11 @@ Use `ReadBodyAsStringAsync(...)` and `ReadBodyAsJsonAsync<T>(...)` when you want
 
 Package note:
 
-- `CreateTypedServiceProvider(...)` and `AddServiceProvider(...)` remain part of `FastMoq.Core`
-- `CreateTypedServiceScope(...)` and `AddServiceScope(...)` remain part of `FastMoq.Core`
+- `CreateTypedServiceProvider(...)`, `AddTypedServiceProvider(...)`, and `AddServiceProvider(...)` remain part of `FastMoq.Core`
+- `CreateTypedServiceScope(...)`, `AddTypedServiceScope(...)`, and `AddServiceScope(...)` remain part of `FastMoq.Core`
 - direct `FastMoq.Core` consumers should add `FastMoq.AzureFunctions` and import `FastMoq.AzureFunctions.Extensions` before using `CreateFunctionContextInstanceServices(...)`, `AddFunctionContextInstanceServices(...)`, `CreateHttpRequestData(...)`, or `CreateHttpResponseData(...)`
+- `AddTaskOrchestrationReplaySafeLogging(...)` also lives in `FastMoq.AzureFunctions`; it depends only on `Microsoft.DurableTask.Abstractions`, so tests that only need replay-safe logger creation do not need the heavier Durable Functions worker extension package just to verify orchestration logs
+- `Mocker.AddTaskOrchestrationReplaySafeLogging(...)` can register a concrete replay-safe orchestration context before resolution on Moq, NSubstitute, or reflection paths; the tracked `IFastMock` overload is narrower and currently requires a provider that supports FastMoq's tracked-property configuration contract for the protected Durable logger factory getter, which the built-in Moq provider supports today
 - the aggregate `FastMoq` package includes the Azure Functions helper package already
 
 Analyzer note:
@@ -442,7 +588,7 @@ FastMoq handles constructor resolution and injection at runtime; it does not byp
 
 When a test needs a specific constructor, prefer a test-side override first.
 That keeps constructor choice inside the test harness and avoids changing production code only to satisfy test setup.
-If the selected constructor depends on `IServiceProvider` or `IServiceScopeFactory`, pair the constructor-selection hook with `AddServiceProvider(...)` from the earlier typed-provider section instead of registering only a manually extracted scope factory.
+If the selected constructor depends on `IServiceProvider` or `IServiceScopeFactory`, pair the constructor-selection hook with `AddTypedServiceProvider(...)` from the earlier typed-provider section instead of registering only a manually extracted scope factory.
 
 For `MockerTestBase<TComponent>`, override `ComponentConstructorParameterTypes` when you want a specific signature but still want the default FastMoq creation path:
 
@@ -638,11 +784,13 @@ FastMoq has a built-in `HttpClient` helper path. Every new `Mocker` starts with 
 
 Use that built-in path when the subject depends on `HttpClient` directly or only needs `IHttpClientFactory.CreateClient(...)` to hand back a client. Prefer `WhenHttpRequest(...)` and `WhenHttpRequestJson(...)` for provider-neutral response setup instead of manually composing handlers for every test.
 
+Use `ConfigureHttpClient(...)` when the test only needs to update the built-in compatibility factory and default response behavior before resolving clients later through constructor injection, `GetObject<IHttpClientFactory>()`, or normal `CreateClient(...)` calls. Use `CreateHttpClient(...)` when the test also wants an immediate client instance back from the same helper call.
+
 Use `GetObject<IHttpClientFactory>()`, `GetRequiredObject<IHttpClientFactory>()`, or normal constructor injection when you want that built-in factory. Do not call `GetOrCreateMock<IHttpClientFactory>()` unless you intentionally want to replace the built-in compatibility factory with a tracked mock.
 
 The built-in compatibility factory accepts the requested client name but does not apply per-name configuration.
 
-If you call `CreateHttpClient(...)` again later with a different base address or default response, FastMoq updates that built-in compatibility factory and handler to match the latest helper call.
+If you call `ConfigureHttpClient(...)` or `CreateHttpClient(...)` again later with a different base address or default response, FastMoq updates that built-in compatibility factory and handler to match the latest helper call.
 
 If you intentionally replace `IHttpClientFactory` with `GetOrCreateMock<IHttpClientFactory>()` or `AddType<IHttpClientFactory>(...)`, that replacement wins and you own `CreateClient(...)` setup yourself.
 

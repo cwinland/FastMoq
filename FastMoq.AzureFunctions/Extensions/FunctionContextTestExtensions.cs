@@ -1,6 +1,5 @@
 using Azure.Core;
 using Azure.Core.Serialization;
-using System.Reflection;
 using System.Linq;
 using FastMoq.Extensions;
 using FastMoq.Providers;
@@ -16,25 +15,6 @@ namespace FastMoq.AzureFunctions.Extensions
     public static class FunctionContextTestExtensions
     {
         private static readonly ObjectSerializer DefaultFunctionSerializer = new JsonObjectSerializer();
-
-        private static readonly MethodInfo SetupMockPropertyByNameMethod = typeof(MockerCreationExtensions)
-            .GetMethods(BindingFlags.Public | BindingFlags.Static)
-            .Single(method =>
-                method.Name == nameof(MockerCreationExtensions.SetupMockProperty) &&
-                method.IsGenericMethodDefinition &&
-                method.GetParameters().Length == 3 &&
-                method.GetParameters()[1].ParameterType == typeof(string));
-
-        private static readonly MethodInfo? NSubstituteReturnsMethod = Type.GetType("NSubstitute.SubstituteExtensions, NSubstitute")
-            ?.GetMethods(BindingFlags.Public | BindingFlags.Static)
-            .SingleOrDefault(method =>
-                method.Name == "Returns" &&
-                method.IsGenericMethodDefinition &&
-                method.GetParameters().Length == 3 &&
-                method.GetParameters()[0].ParameterType.IsGenericParameter &&
-                method.GetParameters()[1].ParameterType.IsGenericParameter &&
-                method.GetParameters()[2].ParameterType.IsArray &&
-                method.GetParameters()[2].ParameterType.GetElementType()?.IsGenericParameter == true);
 
         /// <summary>
         /// Configures a tracked <see cref="FunctionContext" /> mock to return the supplied invocation identifier.
@@ -253,7 +233,7 @@ namespace FastMoq.AzureFunctions.Extensions
             ArgumentNullException.ThrowIfNull(fastMock);
             ArgumentNullException.ThrowIfNull(instanceServices);
 
-            TryConfigureNativeMockProperty(fastMock, nameof(FunctionContext.InstanceServices), instanceServices);
+            MockPropertyConfigurationHelper.ConfigureNativeMockProperty(fastMock, nameof(FunctionContext.InstanceServices), instanceServices);
             AssignFunctionContextInstanceServices(fastMock.Instance as FunctionContext, instanceServices);
         }
 
@@ -262,75 +242,7 @@ namespace FastMoq.AzureFunctions.Extensions
             ArgumentNullException.ThrowIfNull(fastMock);
             ArgumentException.ThrowIfNullOrWhiteSpace(invocationId);
 
-            TryConfigureNativeMockProperty(fastMock, nameof(FunctionContext.InvocationId), invocationId);
-        }
-
-        private static void TryConfigureNativeMockProperty(IFastMock fastMock, string propertyName, object value)
-        {
-            if (TryConfigureMoqNativeMockProperty(fastMock.NativeMock, propertyName, value))
-            {
-                return;
-            }
-
-            _ = TryConfigureNSubstitutePropertyGetter(fastMock, propertyName, value);
-        }
-
-        private static bool TryConfigureMoqNativeMockProperty(object? nativeMock, string propertyName, object value)
-        {
-            if (nativeMock is null)
-            {
-                return false;
-            }
-
-            var nativeMockType = nativeMock.GetType();
-            if (nativeMockType.Namespace != "Moq" || !nativeMockType.IsGenericType)
-            {
-                return false;
-            }
-
-            var mockedType = nativeMockType.GetGenericArguments()[0];
-            var closedMethod = SetupMockPropertyByNameMethod.MakeGenericMethod(mockedType);
-            closedMethod.Invoke(null, [nativeMock, propertyName, value]);
-            return true;
-        }
-
-        private static bool TryConfigureNSubstitutePropertyGetter(IFastMock fastMock, string propertyName, object value)
-        {
-            if (NSubstituteReturnsMethod is null)
-            {
-                return false;
-            }
-
-            var propertyInfo = fastMock.MockedType.GetProperty(propertyName, BindingFlags.Public | BindingFlags.Instance);
-            if (propertyInfo?.GetMethod is null)
-            {
-                return false;
-            }
-
-            if (value is null)
-            {
-                if (propertyInfo.PropertyType.IsValueType && Nullable.GetUnderlyingType(propertyInfo.PropertyType) is null)
-                {
-                    return false;
-                }
-            }
-            else if (!propertyInfo.PropertyType.IsAssignableFrom(value.GetType()))
-            {
-                return false;
-            }
-
-            try
-            {
-                var getterResult = propertyInfo.GetMethod.Invoke(fastMock.Instance, Array.Empty<object?>());
-                var closedReturnsMethod = NSubstituteReturnsMethod.MakeGenericMethod(propertyInfo.PropertyType);
-                var emptyReturnSequence = Array.CreateInstance(propertyInfo.PropertyType, 0);
-                closedReturnsMethod.Invoke(null, [getterResult, value, emptyReturnSequence]);
-                return true;
-            }
-            catch
-            {
-                return false;
-            }
+            MockPropertyConfigurationHelper.ConfigureNativeMockProperty(fastMock, nameof(FunctionContext.InvocationId), invocationId);
         }
 
         private static void AssignFunctionContextInstanceServices(FunctionContext? functionContext, IServiceProvider instanceServices)

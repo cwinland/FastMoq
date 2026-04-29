@@ -1,16 +1,27 @@
 using Microsoft.Extensions.Logging;
 using System.Collections.Concurrent;
 using System.Linq.Expressions;
+using System.Reflection;
 
 namespace FastMoq.Providers.NSubstituteProvider
 {
     /// <summary>
     /// Provider implementation that adapts NSubstitute to the provider-neutral FastMoq abstractions.
     /// </summary>
-    public sealed class NSubstituteMockingProvider : IMockingProvider, IMockingProviderCapabilities
+    public sealed class NSubstituteMockingProvider : IMockingProvider, IMockingProviderCapabilities, ITrackedMockPropertyConfigurator
     {
         private static readonly ConcurrentDictionary<object, ConcurrentBag<ICall>> VerifiedCalls = new();
         private static readonly ConcurrentDictionary<object, byte> ConfiguredLoggers = new();
+        private static readonly MethodInfo? NSubstituteReturnsMethod = Type.GetType("NSubstitute.SubstituteExtensions, NSubstitute")
+            ?.GetMethods(BindingFlags.Public | BindingFlags.Static)
+            .SingleOrDefault(method =>
+                method.Name == "Returns" &&
+                method.IsGenericMethodDefinition &&
+                method.GetParameters().Length == 3 &&
+                method.GetParameters()[0].ParameterType.IsGenericParameter &&
+                method.GetParameters()[1].ParameterType.IsGenericParameter &&
+                method.GetParameters()[2].ParameterType.IsArray &&
+                method.GetParameters()[2].ParameterType.GetElementType()?.IsGenericParameter == true);
 
         /// <summary>
         /// Gets the shared singleton instance of the NSubstitute provider.
@@ -236,6 +247,45 @@ namespace FastMoq.Providers.NSubstituteProvider
         }
 
         /// <summary>
+        /// Attempts to configure a single public property getter on the wrapped NSubstitute substitute.
+        /// </summary>
+        public bool TryConfigureMockProperty(IFastMock mock, PropertyInfo propertyInfo, object? value)
+        {
+            ArgumentNullException.ThrowIfNull(mock);
+            ArgumentNullException.ThrowIfNull(propertyInfo);
+
+            if (NSubstituteReturnsMethod is null || propertyInfo.GetMethod is null || !propertyInfo.GetMethod.IsPublic)
+            {
+                return false;
+            }
+
+            if (value is null)
+            {
+                if (propertyInfo.PropertyType.IsValueType && Nullable.GetUnderlyingType(propertyInfo.PropertyType) is null)
+                {
+                    return false;
+                }
+            }
+            else if (!propertyInfo.PropertyType.IsAssignableFrom(value.GetType()))
+            {
+                return false;
+            }
+
+            try
+            {
+                var getterResult = propertyInfo.GetMethod.Invoke(mock.Instance, Array.Empty<object?>());
+                var closedReturnsMethod = NSubstituteReturnsMethod.MakeGenericMethod(propertyInfo.PropertyType);
+                var emptyReturnSequence = Array.CreateInstance(propertyInfo.PropertyType, 0);
+                closedReturnsMethod.Invoke(null, [getterResult, value, emptyReturnSequence]);
+                return true;
+            }
+            catch
+            {
+                return false;
+            }
+        }
+
+        /// <summary>
         /// Attempts to expose a provider-specific legacy mock object from a wrapper.
         /// </summary>
         public object? TryGetLegacy(IFastMock mock) => null;
@@ -439,7 +489,7 @@ namespace FastMoq.Providers.NSubstituteProvider
             }
         }
 
-        private sealed class NSubFastMock<T> : IFastMock<T> where T : class
+        private sealed class NSubFastMock<T> : IFastMock<T>, IProviderBoundFastMock where T : class
         {
             public NSubFastMock(T instance)
             {
@@ -447,6 +497,7 @@ namespace FastMoq.Providers.NSubstituteProvider
             }
 
             public Type MockedType => typeof(T);
+            public IMockingProvider Provider => NSubstituteMockingProvider.Instance;
             public T Instance { get; }
             public object NativeMock => Instance;
             object IFastMock.Instance => Instance!;

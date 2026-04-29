@@ -1,6 +1,6 @@
 namespace FastMoq.Providers.MoqProvider
 {
-    internal class MoqFastMock : IFastMock
+    internal class MoqFastMock : IProviderBoundFastMock
     {
         protected readonly Mock _mock;
 
@@ -13,6 +13,7 @@ namespace FastMoq.Providers.MoqProvider
         public Type MockedType { get; }
         public object Instance => _mock.Object;
         public object NativeMock => _mock;
+        public IMockingProvider Provider => MoqMockingProvider.Instance;
         internal Mock InnerMock => _mock;
 
         public void Reset() => _mock.Reset();

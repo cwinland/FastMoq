@@ -12,6 +12,10 @@ Use it together with [Provider Selection and Setup](./provider-selection.md):
 FastMoq has two different layers of behavior:
 
 - provider-neutral APIs such as `GetOrCreateMock(...)`, `Verify(...)`, `VerifyNoOtherCalls(...)`, and `VerifyLogged(...)`
+- count-oriented verification wrappers such as `VerifyCalledOnce(...)`, `VerifyNotCalled(...)`, `VerifyLoggedOnce(...)`, and `VerifyNotLogged(...)` when the assertion is exactly once or never
+- broader count wrappers such as `VerifyCalledExactly(...)`, `VerifyCalledAtLeast(...)`, `VerifyCalledAtMost(...)`, and the matching `*AnyArgs(...)` variants when the test wants provider-first counts without manual `TimesSpec` construction
+- method-group any-args verification through `VerifyAnyArgs(...)` when the test only cares that one non-overloaded method was called and every argument can stay wildcarded
+- a provider-neutral diagnostics snapshot through `CreateDiagnosticsSnapshot()` when the test needs to inspect tracked mocks, constructor selections, observed registrations, or captured log entries without dropping into provider-native debug surfaces
 - provider-specific capabilities and convenience APIs exposed by the selected provider
 
 The selected provider determines whether features such as protected-member access, automatic property backing, base-call behavior, and logger capture are available.
@@ -68,8 +72,8 @@ When that happens, use this rule:
 
 | Moq-oriented feature | Alternative outside Moq | When Moq is still the right tool |
 | --- | --- | --- |
-| `Setup(...)` expression-based arrangement | Use the selected provider's native arrangement style when it exists. For NSubstitute, translate `Setup(...)` into direct substitute calls such as `substitute.Method(...).Returns(...)`, `substitute.When(...).Do(...)`, `Arg.Any<T>()`, and `Arg.Is<T>(...)`, or replace the collaborator with a fake/stub through `AddType(...)` when you want a provider-neutral path. For FastMoq-owned setup shortcuts on the Moq provider, prefer `FastArg` matchers such as `FastArg.AnyExpression<T>()` over adding new `BuildExpression()` usage. Keep FastMoq's verification APIs for the assert side when possible. | When you are intentionally preserving existing Moq-shaped setup chains with minimal churn, or when the test depends on Moq-only expression setup behavior. |
-| `VerifyLogger(...)` | Prefer `VerifyLogged(...)`. For a first-party registration story, use `AddLoggerFactory()` to register callback-backed `ILoggerFactory`, `ILogger`, and `ILogger<T>` services directly on `Mocker`, or use `CreateLoggerFactory()` when you want to plug the same capture-backed factory into a typed `IServiceProvider` recipe. | When you are intentionally preserving older Moq-shaped logger assertions with minimal churn. |
+| `Setup(...)` expression-based arrangement | For exact-call fixed results, exact-call `Task` completions, exact-call callbacks, or exact-call exceptions, prefer `AddMethodResult(...)`, `AddMethodResultAsync(...)`, `AddMethodCompletionAsync(...)`, `AddMethodCallback(...)`, `AddMethodCallbackAsync(...)`, `AddMethodException(...)`, or `AddMethodExceptionAsync(...)`. Otherwise use the selected provider's native arrangement style when it exists. For NSubstitute, translate `Setup(...)` into direct substitute calls such as `substitute.Method(...).Returns(...)`, `substitute.When(...).Do(...)`, `Arg.Any<T>()`, and `Arg.Is<T>(...)`, or replace the collaborator with a fake/stub through `AddType(...)` when you want a provider-neutral path. For FastMoq-owned setup shortcuts on the Moq provider, prefer `FastArg` matchers such as `FastArg.AnyExpression<T>()` over adding new `BuildExpression()` usage. Keep FastMoq's verification APIs for the assert side when possible. | When you are intentionally preserving existing Moq-shaped setup chains with minimal churn, or when the test depends on Moq-only expression setup behavior. |
+| `VerifyLogger(...)` | Prefer `VerifyLogged(...)`. For a first-party registration story, use `AddCapturedLoggerFactory()` to register callback-backed `ILoggerFactory`, `ILogger`, and `ILogger<T>` services directly on `Mocker`, or use `CreateLoggerFactory()` when you want to plug the same capture-backed factory into a typed `IServiceProvider` recipe. Use `AddLoggerFactory(existingFactory)` when the factory instance already exists outside FastMoq. | When you are intentionally preserving older Moq-shaped logger assertions with minimal churn. |
 | `Protected()` for `HttpMessageHandler` | Prefer `WhenHttpRequest(...)` or `WhenHttpRequestJson(...)` for HTTP behavior. | When the test really depends on direct protected-member interception rather than request/response behavior. |
 | `Protected()` for arbitrary protected members | Prefer testing through a public seam, extracted collaborator, or concrete fake. | When the implementation cannot reasonably be reshaped and protected-member interception is the behavior under test. |
 | `SetupSet(...)` | For simple interface-property cases, prefer `AddPropertySetterCapture<TService, TValue>(...)`. For broader collaborator behavior, prefer a fake or stub registered with `AddType(...)` that captures assigned values, usually with `PropertyValueCapture<TValue>`, or verify the observable downstream behavior instead of the setter interception itself. | When the setter interception is the important behavior and introducing a helper-backed replacement or fake would create more churn than value. |
@@ -133,6 +137,70 @@ dependency.Instance.Publish("alpha");
 
 Mocks.Verify<IOrderGateway>(x => x.Publish("alpha"), TimesSpec.Once);
 ```
+
+For the common once / never cases, the shared verification surface now has explicit wrappers:
+
+```csharp
+Mocks.VerifyCalledOnce<IOrderGateway>(x => x.Publish("alpha"));
+Mocks.VerifyNotCalled<IOrderGateway>(x => x.Publish("beta"));
+Mocks.VerifyCalledExactly<IOrderGateway>(x => x.Publish("alpha"), 2);
+Mocks.VerifyLoggedOnce(LogLevel.Information, "submitted alpha");
+Mocks.VerifyNotLogged(LogLevel.Error, "submission failed");
+Mocks.VerifyAnyArgs<IOrderGateway, Action<string>>(gateway => gateway.Publish, TimesSpec.Once);
+Mocks.VerifyCalledAtLeastAnyArgs<IOrderGateway, Action<string>>(gateway => gateway.Publish, 1);
+```
+
+Detached handles can use the same style without routing through `MockingProviderRegistry.Default` manually:
+
+```csharp
+MockingProviderRegistry.VerifyCalledOnce(orderGateway, x => x.Publish("alpha"));
+MockingProviderRegistry.VerifyNotCalled(orderGateway, x => x.Publish("beta"));
+MockingProviderRegistry.VerifyAnyArgs<IOrderGateway, Action<string>>(orderGateway, gateway => gateway.Publish, TimesSpec.Once);
+MockingProviderRegistry.VerifyNoOtherCalls(orderGateway);
+```
+
+For exact-call fixed results that do not need a broader provider-native setup chain, prefer the shared helper surface first:
+
+```csharp
+var gateway = Mocks.AddMethodResult<IOrderGateway, Order?>(
+    x => x.Load("order-42"),
+    expectedOrder);
+
+gateway.Load("order-42").Should().BeSameAs(expectedOrder);
+Mocks.Verify<IOrderGateway>(x => x.Load("order-42"), TimesSpec.Once);
+```
+
+Use `AddMethodResultAsync(...)` for the same shape when the collaborator returns `Task<T>`, `AddMethodCompletionAsync(...)` when it returns `Task`, `AddMethodCallback(...)` / `AddMethodCallbackAsync(...)` when the exact-call behavior is a simple side effect, and `AddMethodException(...)` / `AddMethodExceptionAsync(...)` when the exact-call behavior is a fixed exception rather than a value.
+
+### Shared setup helper boundary
+
+Use the shared setup helpers when the arranged behavior is narrow enough that FastMoq can own it directly.
+
+| If the arranged behavior is... | Prefer... | Keyed-service note | Fall back when... |
+| --- | --- | --- | --- |
+| one exact-call fixed return, fixed `Task<T>` result, completed `Task`, callback, or exception on an interface collaborator | `AddMethodResult(...)`, `AddMethodResultAsync(...)`, `AddMethodCompletionAsync(...)`, `AddMethodCallback(...)`, `AddMethodCallbackAsync(...)`, `AddMethodException(...)`, or `AddMethodExceptionAsync(...)` | these helpers currently wrap the currently resolved service and do not expose keyed-specific overloads; when the collaborator role is keyed, keep the keyed separation first and then use a keyed tracked mock or keyed fake for that role | the arrangement needs sequencing, conditional behavior, advanced callbacks, or a class target |
+| simple readable and writable property state on an interface collaborator | `AddPropertyState<TService>(...)` | `AddPropertyState(...)` currently wraps the currently resolved service and does not expose keyed-specific overloads; for keyed roles, prefer keyed mocks or keyed fixed instances first | the target is a class, the state model is broader than simple property backing, or the keyed role needs its own explicit fake |
+| capturing assignments to one interface property | `AddPropertySetterCapture<TService, TValue>(...)` | `AddPropertySetterCapture(...)` currently wraps the currently resolved service and does not expose keyed-specific overloads; for keyed roles, prefer keyed mocks or keyed fixed instances first | setter interception is not the real behavior under test, or the target is a class |
+| one fixed keyed dependency instance | `AddKeyedType(...)` plus `GetKeyedObject<T>(...)` when needed | keyed registrations are first-class here | the dependency is still conceptually a mock that you want FastMoq to track |
+
+Practical rule:
+
+- shared setup helpers are the first choice for unkeyed interface collaborators when the behavior is exact-call or simple property state
+- keyed DI contracts should preserve the key boundary first; if the helper shape still matters after that, use a keyed tracked mock or keyed fake instead of expecting the unkeyed helper overloads to retarget themselves
+- when the arrangement needs more than the table above, stay honest and use provider-native setup or an explicit fake/stub
+
+### Shared verification boundary
+
+The shared verification surface is intentionally broader than the shared setup surface, but it still has explicit stop points.
+
+| If the assertion is... | Prefer... | ScenarioBuilder note | Stay provider-native when... |
+| --- | --- | --- | --- |
+| exact-call verification with explicit argument intent | `Verify(...)` with `TimesSpec` and `FastArg` markers where needed | `.Verify<T>(...)` is the inline ScenarioBuilder path | the test fundamentally depends on provider-only verification semantics |
+| once / never / exact count / at-least / at-most count | `VerifyCalledOnce(...)`, `VerifyNotCalled(...)`, `VerifyCalledExactly(...)`, `VerifyCalledAtLeast(...)`, or `VerifyCalledAtMost(...)` | ScenarioBuilder does not currently add separate count-wrapper methods; use `.Verify<T>(..., TimesSpec...)` inside the scenario or call the wrappers on `Mocks` / `MockingProviderRegistry` around execution | the assertion is really about call order, sequences, or another provider-specific concept |
+| any-args verification for one non-overloaded member | `VerifyAnyArgs(...)` and the matching `*AnyArgs(...)` count helpers | use the normal `.Verify<T>(...)` path inside ScenarioBuilder when you need inline verification; use `VerifyAnyArgs(...)` around execution when the scenario only needs wildcard matching | the member shape is provider-specific or the test needs a provider-native sequence / event assertion |
+| no-other-calls on a tracked or detached handle | `VerifyNoOtherCalls(...)` | `.VerifyNoOtherCalls<T>()` is supported inline on ScenarioBuilder | the suite intentionally preserves a provider-native no-other-calls surface |
+| captured logger assertions | `VerifyLogged(...)`, `VerifyLoggedOnce(...)`, and `VerifyNotLogged(...)` when the provider supports logger capture | call the logger verification on `Mocks` around scenario execution; ScenarioBuilder does not add a separate logger-verification wrapper | the selected provider does not support logger capture |
+| call order, sequences, events, protected members, or other provider-bound semantics | the selected provider's native verification APIs | do not expect ScenarioBuilder to flatten these into a shared abstraction | the provider-specific feature is the thing under test |
 
 When you need Moq-native behavior that is not exposed as a tracked shortcut, step through `AsMoq()`:
 
@@ -331,6 +399,7 @@ Important extension-model note:
 - the built-in providers are not inheritance extension points
 - if you want custom behavior, implement a new `IMockingProvider`
 - when the change is incremental rather than a full rewrite, prefer a wrapper or decorator provider that delegates to an existing provider and adjusts only the behavior you need
+- provider-authored tracked helpers can opt into additional FastMoq-owned behavior by implementing optional extension interfaces such as `ITrackedMockPropertyConfigurator` on the provider and exposing the creating provider through `IProviderBoundFastMock` on the wrapper
 
 If your team writes its own provider, treat this matrix format as the minimum documentation bar.
 

@@ -1,6 +1,7 @@
 using FastMoq.Providers.MoqProvider;
 using FastMoq.Providers.ReflectionProvider;
 using System.Collections.Concurrent;
+using System.Linq.Expressions;
 using System.Reflection;
 
 namespace FastMoq.Providers
@@ -171,6 +172,15 @@ namespace FastMoq.Providers
             throw new NotSupportedException($"No registered mocking provider can wrap legacy instance '{legacyMock.GetType().FullName}' for mocked type '{mockedType.FullName}'.");
         }
 
+        internal static IMockingProvider ResolveProvider(IFastMock mock)
+        {
+            ArgumentNullException.ThrowIfNull(mock);
+
+            return mock is IProviderBoundFastMock providerBoundFastMock
+                ? providerBoundFastMock.Provider
+                : Default;
+        }
+
         /// <summary>
         /// Sets the global default provider by name.
         /// </summary>
@@ -221,6 +231,185 @@ namespace FastMoq.Providers
             _defaultSource = DefaultProviderSource.None;
             _lastCompletedDiscoveryVersion = -1;
             _current.Value = null;
+        }
+
+        /// <summary>
+        /// Verifies that the specified invocation occurred exactly once on a detached provider-first mock handle.
+        /// </summary>
+        public static void VerifyCalledOnce<T>(IFastMock<T> mock, Expression<Action<T>> expression) where T : class
+        {
+            ArgumentNullException.ThrowIfNull(mock);
+            ArgumentNullException.ThrowIfNull(expression);
+
+            ResolveProvider(mock).Verify(mock, expression, TimesSpec.Once);
+        }
+
+        /// <summary>
+        /// Verifies that the specified invocation occurred exactly the supplied number of times on a detached provider-first mock handle.
+        /// </summary>
+        public static void VerifyCalledExactly<T>(IFastMock<T> mock, Expression<Action<T>> expression, int times) where T : class
+        {
+            ArgumentNullException.ThrowIfNull(mock);
+            ArgumentNullException.ThrowIfNull(expression);
+
+            ResolveProvider(mock).Verify(mock, expression, TimesSpec.Exactly(times));
+        }
+
+        /// <summary>
+        /// Verifies that the specified invocation occurred at least the supplied number of times on a detached provider-first mock handle.
+        /// </summary>
+        public static void VerifyCalledAtLeast<T>(IFastMock<T> mock, Expression<Action<T>> expression, int times) where T : class
+        {
+            ArgumentNullException.ThrowIfNull(mock);
+            ArgumentNullException.ThrowIfNull(expression);
+
+            ResolveProvider(mock).Verify(mock, expression, TimesSpec.AtLeast(times));
+        }
+
+        /// <summary>
+        /// Verifies that the specified invocation occurred at most the supplied number of times on a detached provider-first mock handle.
+        /// </summary>
+        public static void VerifyCalledAtMost<T>(IFastMock<T> mock, Expression<Action<T>> expression, int times) where T : class
+        {
+            ArgumentNullException.ThrowIfNull(mock);
+            ArgumentNullException.ThrowIfNull(expression);
+
+            ResolveProvider(mock).Verify(mock, expression, TimesSpec.AtMost(times));
+        }
+
+        /// <summary>
+        /// Verifies calls to the named method on a detached provider-first mock handle while treating every argument as a wildcard matcher.
+        /// </summary>
+        public static void VerifyAnyArgs<T>(IFastMock<T> mock, string methodName, TimesSpec? times = null, params Type[] parameterTypes) where T : class
+        {
+            ArgumentNullException.ThrowIfNull(mock);
+
+            ResolveProvider(mock).Verify(mock, VerificationExpressionBuilder.BuildAnyArgsExpression<T>(methodName, parameterTypes), times);
+        }
+
+        /// <summary>
+        /// Verifies calls to the selected method on a detached provider-first mock handle while treating every argument as a wildcard matcher.
+        /// </summary>
+        public static void VerifyAnyArgs<T, TDelegate>(IFastMock<T> mock, Func<T, TDelegate> methodSelector, TimesSpec? times = null)
+            where T : class
+            where TDelegate : Delegate
+        {
+            ArgumentNullException.ThrowIfNull(mock);
+            ArgumentNullException.ThrowIfNull(methodSelector);
+
+            var method = VerificationExpressionBuilder.GetSelectedMethod(mock.Instance, methodSelector);
+            ResolveProvider(mock).Verify(mock, VerificationExpressionBuilder.BuildAnyArgsExpression<T>(method), times);
+        }
+
+        /// <summary>
+        /// Verifies that the specified invocation never occurred on a detached provider-first mock handle.
+        /// </summary>
+        public static void VerifyNotCalled<T>(IFastMock<T> mock, Expression<Action<T>> expression) where T : class
+        {
+            ArgumentNullException.ThrowIfNull(mock);
+            ArgumentNullException.ThrowIfNull(expression);
+
+            ResolveProvider(mock).Verify(mock, expression, TimesSpec.Never());
+        }
+
+        /// <summary>
+        /// Verifies that the named method was called exactly once on a detached provider-first mock handle while treating every argument as a wildcard matcher.
+        /// </summary>
+        public static void VerifyCalledOnceAnyArgs<T>(IFastMock<T> mock, string methodName, params Type[] parameterTypes) where T : class
+        {
+            VerifyAnyArgs(mock, methodName, TimesSpec.Once, parameterTypes);
+        }
+
+        /// <summary>
+        /// Verifies that the named method was called exactly the supplied number of times on a detached provider-first mock handle while treating every argument as a wildcard matcher.
+        /// </summary>
+        public static void VerifyCalledExactlyAnyArgs<T>(IFastMock<T> mock, string methodName, int times, params Type[] parameterTypes) where T : class
+        {
+            VerifyAnyArgs(mock, methodName, TimesSpec.Exactly(times), parameterTypes);
+        }
+
+        /// <summary>
+        /// Verifies that the named method was called at least the supplied number of times on a detached provider-first mock handle while treating every argument as a wildcard matcher.
+        /// </summary>
+        public static void VerifyCalledAtLeastAnyArgs<T>(IFastMock<T> mock, string methodName, int times, params Type[] parameterTypes) where T : class
+        {
+            VerifyAnyArgs(mock, methodName, TimesSpec.AtLeast(times), parameterTypes);
+        }
+
+        /// <summary>
+        /// Verifies that the named method was called at most the supplied number of times on a detached provider-first mock handle while treating every argument as a wildcard matcher.
+        /// </summary>
+        public static void VerifyCalledAtMostAnyArgs<T>(IFastMock<T> mock, string methodName, int times, params Type[] parameterTypes) where T : class
+        {
+            VerifyAnyArgs(mock, methodName, TimesSpec.AtMost(times), parameterTypes);
+        }
+
+        /// <summary>
+        /// Verifies that the selected method was called exactly once on a detached provider-first mock handle while treating every argument as a wildcard matcher.
+        /// </summary>
+        public static void VerifyCalledOnceAnyArgs<T, TDelegate>(IFastMock<T> mock, Func<T, TDelegate> methodSelector)
+            where T : class
+            where TDelegate : Delegate
+        {
+            VerifyAnyArgs(mock, methodSelector, TimesSpec.Once);
+        }
+
+        /// <summary>
+        /// Verifies that the selected method was called exactly the supplied number of times on a detached provider-first mock handle while treating every argument as a wildcard matcher.
+        /// </summary>
+        public static void VerifyCalledExactlyAnyArgs<T, TDelegate>(IFastMock<T> mock, Func<T, TDelegate> methodSelector, int times)
+            where T : class
+            where TDelegate : Delegate
+        {
+            VerifyAnyArgs(mock, methodSelector, TimesSpec.Exactly(times));
+        }
+
+        /// <summary>
+        /// Verifies that the selected method was called at least the supplied number of times on a detached provider-first mock handle while treating every argument as a wildcard matcher.
+        /// </summary>
+        public static void VerifyCalledAtLeastAnyArgs<T, TDelegate>(IFastMock<T> mock, Func<T, TDelegate> methodSelector, int times)
+            where T : class
+            where TDelegate : Delegate
+        {
+            VerifyAnyArgs(mock, methodSelector, TimesSpec.AtLeast(times));
+        }
+
+        /// <summary>
+        /// Verifies that the selected method was called at most the supplied number of times on a detached provider-first mock handle while treating every argument as a wildcard matcher.
+        /// </summary>
+        public static void VerifyCalledAtMostAnyArgs<T, TDelegate>(IFastMock<T> mock, Func<T, TDelegate> methodSelector, int times)
+            where T : class
+            where TDelegate : Delegate
+        {
+            VerifyAnyArgs(mock, methodSelector, TimesSpec.AtMost(times));
+        }
+
+        /// <summary>
+        /// Verifies that the named method was never called on a detached provider-first mock handle while treating every argument as a wildcard matcher.
+        /// </summary>
+        public static void VerifyNotCalledAnyArgs<T>(IFastMock<T> mock, string methodName, params Type[] parameterTypes) where T : class
+        {
+            VerifyAnyArgs(mock, methodName, TimesSpec.Never(), parameterTypes);
+        }
+
+        /// <summary>
+        /// Verifies that the selected method was never called on a detached provider-first mock handle while treating every argument as a wildcard matcher.
+        /// </summary>
+        public static void VerifyNotCalledAnyArgs<T, TDelegate>(IFastMock<T> mock, Func<T, TDelegate> methodSelector)
+            where T : class
+            where TDelegate : Delegate
+        {
+            VerifyAnyArgs(mock, methodSelector, TimesSpec.Never());
+        }
+
+        /// <summary>
+        /// Verifies that no other invocations were recorded on a detached provider-first mock handle.
+        /// </summary>
+        public static void VerifyNoOtherCalls(IFastMock mock)
+        {
+            ArgumentNullException.ThrowIfNull(mock);
+
+            ResolveProvider(mock).VerifyNoOtherCalls(mock);
         }
 
         internal static void InitializeBuiltInProviders(bool includeMoqProvider = true)

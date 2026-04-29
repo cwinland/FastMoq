@@ -233,7 +233,7 @@ using Xunit; // Example only; replace with the test framework namespace your pro
 
 `Mocker` and `MockerTestBase<T>` live in `FastMoq`.
 
-`FastMoq.Extensions` is the shared core helper namespace. It is optional and includes helpers such as `VerifyLogged(...)`, `AddServiceProvider(...)`, `AddPropertyState(...)`, `AddPropertySetterCapture(...)`, and `CreateHttpClient(...)`.
+`FastMoq.Extensions` is the shared core helper namespace. It is optional and includes helpers such as `VerifyLogged(...)`, `AddServiceProvider(...)`, `AddMethodResult(...)`, `AddMethodResultAsync(...)`, `AddMethodCompletionAsync(...)`, `AddMethodCallback(...)`, `AddMethodCallbackAsync(...)`, `AddMethodException(...)`, `AddMethodExceptionAsync(...)`, `AddPropertyState(...)`, `AddPropertySetterCapture(...)`, and `CreateHttpClient(...)`.
 
 If you intentionally want Moq-specific tracked `.Setup(...)`, `SetupSequence(...)`, or `Protected()` syntax, add the provider package first. A single visible Moq provider can be enough, but select or register `moq` explicitly before copying those examples when the suite should not depend on discovery remaining unambiguous:
 
@@ -593,7 +593,7 @@ Now that you understand the basics, explore these advanced topics:
 
 Prefer `Mocks.VerifyLogged(...)` for new code. It is provider-safe because FastMoq captures `ILogger` callbacks through the active `IMockingProvider` and verifies the captured entries in core.
 
-If the test suite needs a first-party registration story for `ILoggerFactory`, `ILogger`, or `ILogger<T>`, use `Mocks.AddLoggerFactory()` for direct FastMoq resolution, or `Mocks.CreateLoggerFactory()` when you want to plug the same callback-backed factory into a typed `IServiceProvider` recipe. When the test also needs to mirror log output to a local sink after `Mocker` already exists, use the sink-aware overloads such as `Mocks.AddLoggerFactory(output.WriteLine, replace: true)` or `Mocks.CreateLoggerFactory((logLevel, eventId, message, exception) => ...)` instead of maintaining a private logger wrapper.
+If the test suite needs a first-party registration story for `ILoggerFactory`, `ILogger`, or `ILogger<T>`, use `Mocks.AddCapturedLoggerFactory()` for direct FastMoq resolution when the helper should create the capture-backed factory for you, or `Mocks.CreateLoggerFactory()` when you want to plug the same callback-backed factory into a typed `IServiceProvider` recipe. Use `Mocks.AddLoggerFactory(existingFactory, replace: true)` when you already have a factory instance to register. When the test also needs to mirror log output to a local sink after `Mocker` already exists, use the sink-aware overloads such as `Mocks.AddCapturedLoggerFactory(output.WriteLine, replace: true)` or `Mocks.CreateLoggerFactory((logLevel, eventId, message, exception) => ...)` instead of maintaining a private logger wrapper.
 
 When the test already relies on FastMoq-managed logger mocks and only needs to mirror the normalized captured entries to a local sink, use `Mocks.SetupLoggerCallback((logLevel, eventId, message, exception) => ...)` instead of rebuilding the logger mock with provider-specific `ILogger.Log<TState>` setup code.
 

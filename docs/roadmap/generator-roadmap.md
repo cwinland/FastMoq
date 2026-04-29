@@ -22,9 +22,8 @@ The current public backlog for this design is:
 
 - [#120](https://github.com/cwinland/FastMoq/issues/120) `FastMoq.Generators` package shape and MVP contract
 - [#121](https://github.com/cwinland/FastMoq/issues/121) runtime prerequisite umbrella for generator-targeted output
-- [#132](https://github.com/cwinland/FastMoq/issues/132) provider-first setup helpers for common generator-friendly arrangements
-- [#133](https://github.com/cwinland/FastMoq/issues/133) provider-first verification helpers for stable shared abstractions
-- [#135](https://github.com/cwinland/FastMoq/issues/135) v4 quick helper-surface cleanups for logging, HTTP, and typed DI
+- [#146](https://github.com/cwinland/FastMoq/issues/146) analyzer guidance for exact-call provider-first setup helpers
+- [#147](https://github.com/cwinland/FastMoq/issues/147) analyzer guidance for shared verification wrappers
 - [#125](https://github.com/cwinland/FastMoq/issues/125) graph metadata hooks and constructor-selection primitives
 - [#126](https://github.com/cwinland/FastMoq/issues/126) `ScenarioBuilder` scaffolding hooks for generated output
 - [#127](https://github.com/cwinland/FastMoq/issues/127) package-detection and target-test-shape rules for generated tests
@@ -40,7 +39,8 @@ The current public backlog for this design is:
 Crosswalk summary:
 
 - `#121` is the runtime-prerequisite umbrella.
-- `#132`, `#133`, and `#135` are the narrower v4-style quick wins that can improve normal authoring before generators ship.
+- `#132`, `#133`, and `#135` are the narrower v4-style quick wins that are now implemented on the current milestone branch.
+- `#146` and `#147` carry the near-term analyzer follow-up for those landed helper surfaces.
 - `#120`, `#125`, `#126`, `#127`, and `#134` are the pre-v5 contract and blocking prerequisite slices.
 - `#122`, `#136`, `#137`, `#123`, and `#124` are the phased implementation and authoring-flow outcomes once the prerequisites are stable enough.
 - `#138` and `#139` are intentionally late evaluation tracks after the main provider-first generator story is already working.
@@ -224,15 +224,15 @@ Without those runtime targets, generators would be forced to emit provider-nativ
 
 ### Likely v4 quick wins
 
-Some runtime preparation work is narrow enough that it could land before v5 if the implementation stays focused and does not force a wider public-contract redesign.
+Some runtime preparation work was narrow enough to land before v5 without forcing a wider public-contract redesign.
 
-Best candidates:
+Completed on the current milestone branch:
 
 - expanded provider-first setup helpers for common simple arrangements
 - expanded provider-first verification helpers where a shared abstraction is still clear and stable
-- small helper-surface cleanups for logging, HTTP, or typed DI setup where the FastMoq-owned runtime surface already exists and only needs a more generator-friendly shape
+- small helper-surface cleanups for logging, HTTP, or typed DI setup where the FastMoq-owned runtime surface already exists and only needed a more generator-friendly shape
 
-These are valuable early because they improve normal authoring even before source generators ship.
+These landed early because they improve normal authoring even before source generators ship. The remaining near-term follow-up is narrower analyzer guidance in [#146](https://github.com/cwinland/FastMoq/issues/146) and [#147](https://github.com/cwinland/FastMoq/issues/147), plus broader helper normalization in [#134](https://github.com/cwinland/FastMoq/issues/134).
 
 ### Likely v5 blocking prerequisites
 

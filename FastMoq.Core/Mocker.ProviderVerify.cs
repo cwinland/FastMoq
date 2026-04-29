@@ -215,10 +215,182 @@ namespace FastMoq
             var model = GetMockModelFast(typeof(T));
             if (model.FastMock is IFastMock<T> typed)
             {
-                var provider = MockingProviderRegistry.Default;
+                var provider = MockingProviderRegistry.ResolveProvider(typed);
                 provider.Verify(typed, expression, times);
             }
             // If the stored fast mock is not strongly typed (should not occur normally), no-op.
+        }
+
+        /// <summary>
+        /// Verifies calls to the named method while treating every argument as a wildcard matcher.
+        /// </summary>
+        /// <typeparam name="T">The tracked mock type to verify.</typeparam>
+        /// <param name="methodName">The instance method name to verify.</param>
+        /// <param name="times">The expected invocation count. When omitted, the helper expects at least one matching call.</param>
+        /// <param name="parameterTypes">Optional parameter types used to disambiguate overloaded methods.</param>
+        /// <remarks>
+        /// Use this helper when a provider-neutral verification would otherwise require a long list of repeated <see cref="FastArg.Any{T}()" /> markers.
+        /// If the target method is overloaded, supply <paramref name="parameterTypes" /> to choose the intended signature explicitly.
+        /// </remarks>
+        public void VerifyAnyArgs<T>(string methodName, TimesSpec? times = null, params Type[] parameterTypes) where T : class
+        {
+            Verify(VerificationExpressionBuilder.BuildAnyArgsExpression<T>(methodName, parameterTypes), times);
+        }
+
+        /// <summary>
+        /// Verifies calls to the selected method while treating every argument as a wildcard matcher.
+        /// </summary>
+        /// <typeparam name="T">The tracked mock type to verify.</typeparam>
+        /// <typeparam name="TDelegate">The delegate type used to identify the selected method.</typeparam>
+        /// <param name="methodSelector">A method-group selector such as <c>x => x.Publish</c>.</param>
+        /// <param name="times">The expected invocation count. When omitted, the helper expects at least one matching call.</param>
+        /// <remarks>
+        /// Prefer this overload when the method is not overloaded and you want compiler-verified member selection.
+        /// For overloaded methods, use <see cref="VerifyAnyArgs{T}(string, TimesSpec?, Type[])" /> with explicit parameter types.
+        /// </remarks>
+        public void VerifyAnyArgs<T, TDelegate>(Func<T, TDelegate> methodSelector, TimesSpec? times = null)
+            where T : class
+            where TDelegate : Delegate
+        {
+            ArgumentNullException.ThrowIfNull(methodSelector);
+
+            var model = GetMockModelFast(typeof(T));
+            if (model.FastMock is IFastMock<T> typed)
+            {
+                var method = VerificationExpressionBuilder.GetSelectedMethod(typed.Instance, methodSelector);
+                var provider = MockingProviderRegistry.ResolveProvider(typed);
+                provider.Verify(typed, VerificationExpressionBuilder.BuildAnyArgsExpression<T>(method), times);
+            }
+        }
+
+        /// <summary>
+        /// Verifies that the specified invocation occurred exactly once on the tracked mock.
+        /// </summary>
+        public void VerifyCalledOnce<T>(Expression<Action<T>> expression) where T : class
+        {
+            Verify(expression, TimesSpec.Once);
+        }
+
+        /// <summary>
+        /// Verifies that the specified invocation occurred exactly the supplied number of times on the tracked mock.
+        /// </summary>
+        public void VerifyCalledExactly<T>(Expression<Action<T>> expression, int times) where T : class
+        {
+            Verify(expression, TimesSpec.Exactly(times));
+        }
+
+        /// <summary>
+        /// Verifies that the specified invocation occurred at least the supplied number of times on the tracked mock.
+        /// </summary>
+        public void VerifyCalledAtLeast<T>(Expression<Action<T>> expression, int times) where T : class
+        {
+            Verify(expression, TimesSpec.AtLeast(times));
+        }
+
+        /// <summary>
+        /// Verifies that the specified invocation occurred at most the supplied number of times on the tracked mock.
+        /// </summary>
+        public void VerifyCalledAtMost<T>(Expression<Action<T>> expression, int times) where T : class
+        {
+            Verify(expression, TimesSpec.AtMost(times));
+        }
+
+        /// <summary>
+        /// Verifies that the specified invocation never occurred on the tracked mock.
+        /// </summary>
+        public void VerifyNotCalled<T>(Expression<Action<T>> expression) where T : class
+        {
+            Verify(expression, TimesSpec.Never());
+        }
+
+        /// <summary>
+        /// Verifies that the named method was called exactly once while treating every argument as a wildcard matcher.
+        /// </summary>
+        public void VerifyCalledOnceAnyArgs<T>(string methodName, params Type[] parameterTypes) where T : class
+        {
+            VerifyAnyArgs<T>(methodName, TimesSpec.Once, parameterTypes);
+        }
+
+        /// <summary>
+        /// Verifies that the named method was called exactly the supplied number of times while treating every argument as a wildcard matcher.
+        /// </summary>
+        public void VerifyCalledExactlyAnyArgs<T>(string methodName, int times, params Type[] parameterTypes) where T : class
+        {
+            VerifyAnyArgs<T>(methodName, TimesSpec.Exactly(times), parameterTypes);
+        }
+
+        /// <summary>
+        /// Verifies that the named method was called at least the supplied number of times while treating every argument as a wildcard matcher.
+        /// </summary>
+        public void VerifyCalledAtLeastAnyArgs<T>(string methodName, int times, params Type[] parameterTypes) where T : class
+        {
+            VerifyAnyArgs<T>(methodName, TimesSpec.AtLeast(times), parameterTypes);
+        }
+
+        /// <summary>
+        /// Verifies that the named method was called at most the supplied number of times while treating every argument as a wildcard matcher.
+        /// </summary>
+        public void VerifyCalledAtMostAnyArgs<T>(string methodName, int times, params Type[] parameterTypes) where T : class
+        {
+            VerifyAnyArgs<T>(methodName, TimesSpec.AtMost(times), parameterTypes);
+        }
+
+        /// <summary>
+        /// Verifies that the selected method was called exactly once while treating every argument as a wildcard matcher.
+        /// </summary>
+        public void VerifyCalledOnceAnyArgs<T, TDelegate>(Func<T, TDelegate> methodSelector)
+            where T : class
+            where TDelegate : Delegate
+        {
+            VerifyAnyArgs(methodSelector, TimesSpec.Once);
+        }
+
+        /// <summary>
+        /// Verifies that the selected method was called exactly the supplied number of times while treating every argument as a wildcard matcher.
+        /// </summary>
+        public void VerifyCalledExactlyAnyArgs<T, TDelegate>(Func<T, TDelegate> methodSelector, int times)
+            where T : class
+            where TDelegate : Delegate
+        {
+            VerifyAnyArgs(methodSelector, TimesSpec.Exactly(times));
+        }
+
+        /// <summary>
+        /// Verifies that the selected method was called at least the supplied number of times while treating every argument as a wildcard matcher.
+        /// </summary>
+        public void VerifyCalledAtLeastAnyArgs<T, TDelegate>(Func<T, TDelegate> methodSelector, int times)
+            where T : class
+            where TDelegate : Delegate
+        {
+            VerifyAnyArgs(methodSelector, TimesSpec.AtLeast(times));
+        }
+
+        /// <summary>
+        /// Verifies that the selected method was called at most the supplied number of times while treating every argument as a wildcard matcher.
+        /// </summary>
+        public void VerifyCalledAtMostAnyArgs<T, TDelegate>(Func<T, TDelegate> methodSelector, int times)
+            where T : class
+            where TDelegate : Delegate
+        {
+            VerifyAnyArgs(methodSelector, TimesSpec.AtMost(times));
+        }
+
+        /// <summary>
+        /// Verifies that the named method was never called while treating every argument as a wildcard matcher.
+        /// </summary>
+        public void VerifyNotCalledAnyArgs<T>(string methodName, params Type[] parameterTypes) where T : class
+        {
+            VerifyAnyArgs<T>(methodName, TimesSpec.Never(), parameterTypes);
+        }
+
+        /// <summary>
+        /// Verifies that the selected method was never called while treating every argument as a wildcard matcher.
+        /// </summary>
+        public void VerifyNotCalledAnyArgs<T, TDelegate>(Func<T, TDelegate> methodSelector)
+            where T : class
+            where TDelegate : Delegate
+        {
+            VerifyAnyArgs(methodSelector, TimesSpec.Never());
         }
 
         /// <summary>
@@ -227,7 +399,7 @@ namespace FastMoq
         public void VerifyNoOtherCalls<T>() where T : class
         {
             var model = GetMockModelFast(typeof(T));
-            var provider = MockingProviderRegistry.Default;
+            var provider = MockingProviderRegistry.ResolveProvider(model.FastMock);
             provider.VerifyNoOtherCalls(model.FastMock);
         }
 

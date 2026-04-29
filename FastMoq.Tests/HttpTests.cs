@@ -218,6 +218,23 @@ namespace FastMoq.Tests
         }
 
         [Fact]
+        public async Task ConfigureHttpClient_ShouldUpdateBuiltInHttpClientFactoryConfiguration_WithoutCreatingClientImmediately()
+        {
+            Mocks.ConfigureHttpClient(
+                baseAddress: "https://configured.fastmoq.test/",
+                statusCode: HttpStatusCode.Created,
+                stringContent: "{\"status\":\"configured\"}");
+
+            var factory = Mocks.GetObject<IHttpClientFactory>();
+            using var factoryClient = factory!.CreateClient("configured-name");
+            var response = await factoryClient.GetAsync("orders");
+
+            factoryClient.BaseAddress.Should().Be(new Uri("https://configured.fastmoq.test/"));
+            response.StatusCode.Should().Be(HttpStatusCode.Created);
+            (await Mocks.GetStringContent(response.Content)).Should().Be("{\"status\":\"configured\"}");
+        }
+
+        [Fact]
         public void GetObject_IHttpClientFactory_ShouldPreferTrackedMock_OverBuiltInCompatibilityFactory()
         {
             using var expected = new HttpClient

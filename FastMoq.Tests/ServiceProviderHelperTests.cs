@@ -11,6 +11,7 @@ using FastMoq.Providers.NSubstituteProvider;
 using FastMoq.Providers.ReflectionProvider;
 using Microsoft.Azure.Functions.Worker;
 using Microsoft.Azure.Functions.Worker.Http;
+using Microsoft.DurableTask;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
@@ -20,6 +21,8 @@ using System.Security.Claims;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Linq;
+using System.Linq.Expressions;
+using System.Reflection;
 
 namespace FastMoq.Tests
 {
@@ -138,6 +141,21 @@ namespace FastMoq.Tests
         }
 
         [Fact]
+        public void AddTypedServiceProvider_ShouldBuildAndRegisterTypedProviderAndScopeFactory()
+        {
+            var mocker = new Mocker();
+
+            mocker.AddTypedServiceProvider(services => services.AddOptions(), replace: true);
+
+            var provider = mocker.GetObject<IServiceProvider>();
+
+            provider.Should().NotBeNull();
+            provider!.GetService(typeof(IOptions<SampleOptions>)).Should().NotBeNull();
+            mocker.GetObject<IServiceScopeFactory>().Should().NotBeNull();
+            mocker.GetObject<IServiceProviderIsService>().Should().NotBeNull();
+        }
+
+        [Fact]
         public void AddServiceScope_ShouldRegisterTypedScopeAndScopeOwnedProvider()
         {
             var mocker = new Mocker();
@@ -147,6 +165,20 @@ namespace FastMoq.Tests
 
             mocker.GetObject<IServiceScope>().Should().BeSameAs(scope);
             mocker.GetObject<IServiceProvider>().Should().BeSameAs(scope.ServiceProvider);
+            mocker.GetObject<IServiceProvider>()!.GetRequiredService<ScopedProbe>().Should().NotBeNull();
+        }
+
+        [Fact]
+        public void AddTypedServiceScope_ShouldBuildAndRegisterTypedScopeAndScopeOwnedProvider()
+        {
+            var mocker = new Mocker();
+
+            mocker.AddTypedServiceScope(services => services.AddScoped<ScopedProbe>(), replace: true);
+
+            var scope = mocker.GetObject<IServiceScope>();
+
+            scope.Should().NotBeNull();
+            mocker.GetObject<IServiceProvider>().Should().BeSameAs(scope!.ServiceProvider);
             mocker.GetObject<IServiceProvider>()!.GetRequiredService<ScopedProbe>().Should().NotBeNull();
         }
 
@@ -315,6 +347,30 @@ namespace FastMoq.Tests
         [InlineData("moq")]
         [InlineData("nsubstitute")]
         [InlineData("reflection")]
+        public void AddCapturedLoggerFactory_ShouldRegisterLoggerFactoryAndTypedLoggers(string providerName)
+        {
+            using var providerScope = PushProviderScope(providerName);
+            var mocker = new Mocker();
+
+            mocker.AddCapturedLoggerFactory(replace: true);
+
+            var loggerFactory = mocker.GetObject<ILoggerFactory>();
+            var logger = mocker.GetObject<ILogger<ServiceProviderHelperTests>>();
+
+            loggerFactory.Should().NotBeNull();
+            logger.Should().NotBeNull();
+
+            loggerFactory!.CreateLogger("fastmoq.tests").LogInformation("captured factory logger");
+            logger!.LogWarning("captured typed logger");
+
+            mocker.VerifyLogged(LogLevel.Information, "captured factory logger");
+            mocker.VerifyLogged(LogLevel.Warning, "captured typed logger");
+        }
+
+        [Theory]
+        [InlineData("moq")]
+        [InlineData("nsubstitute")]
+        [InlineData("reflection")]
         public void AddLoggerFactory_WithSink_ShouldMirrorLogsAndPreserveVerification(string providerName)
         {
             using var providerScope = PushProviderScope(providerName);
@@ -344,6 +400,32 @@ namespace FastMoq.Tests
 
             mocker.VerifyLogged(LogLevel.Information, "factory sink logger");
             mocker.VerifyLogged(LogLevel.Error, "typed sink logger", new InvalidOperationException("sink boom"), 12, TimesSpec.Once);
+        }
+
+        [Fact]
+        public void AddCapturedLoggerFactory_WithLineWriter_ShouldMirrorLogsAndPreserveVerification()
+        {
+            using var providerScope = PushProviderScope("reflection");
+            var lines = new List<string>();
+            var mocker = new Mocker();
+
+            mocker.AddCapturedLoggerFactory(lines.Add, replace: true);
+
+            var loggerFactory = mocker.GetObject<ILoggerFactory>();
+            var logger = mocker.GetObject<ILogger<ServiceProviderHelperTests>>();
+
+            loggerFactory.Should().NotBeNull();
+            logger.Should().NotBeNull();
+
+            loggerFactory!.CreateLogger("fastmoq.line-sink").LogInformation("captured line logger");
+            logger!.LogError(7, new InvalidOperationException("captured line boom"), "captured typed line logger");
+
+            lines.Should().HaveCount(2);
+            lines[0].Should().Contain("captured line logger");
+            lines[1].Should().Contain("captured typed line logger");
+            lines[1].Should().Contain("captured line boom");
+            mocker.VerifyLogged(LogLevel.Information, "captured line logger");
+            mocker.VerifyLogged(LogLevel.Error, "captured typed line logger", new InvalidOperationException("captured line boom"), 7, TimesSpec.Once);
         }
 
         [Fact]
@@ -656,6 +738,120 @@ namespace FastMoq.Tests
         [Theory]
         [InlineData("moq")]
         [InlineData("nsubstitute")]
+        [InlineData("reflection")]
+        public void AddTaskOrchestrationReplaySafeLogging_ShouldCaptureLogs_WhenNotReplaying(string providerName)
+        {
+            using var providerScope = PushProviderScope(providerName);
+            var mocker = new Mocker();
+
+            mocker.AddTaskOrchestrationReplaySafeLogging(replace: true);
+
+            var context = mocker.GetObject<TaskOrchestrationContext>();
+            var logger = context!.CreateReplaySafeLogger<ServiceProviderHelperTests>();
+
+            logger.LogInformation("orchestrator info");
+
+            mocker.VerifyLogged(LogLevel.Information, "orchestrator info", TimesSpec.Once);
+        }
+
+        [Theory]
+        [InlineData("moq")]
+        [InlineData("nsubstitute")]
+        [InlineData("reflection")]
+        public void AddTaskOrchestrationReplaySafeLogging_ShouldRegisterLoggerFactoryWithoutDuplicateRegistration_WhenUsingDefaults(string providerName)
+        {
+            using var providerScope = PushProviderScope(providerName);
+            var mocker = new Mocker();
+
+            Action action = () => mocker.AddTaskOrchestrationReplaySafeLogging();
+
+            action.Should().NotThrow();
+            mocker.GetObject<ILoggerFactory>().Should().NotBeNull();
+        }
+
+        [Theory]
+        [InlineData("moq")]
+        [InlineData("nsubstitute")]
+        [InlineData("reflection")]
+        public void AddTaskOrchestrationReplaySafeLogging_ShouldSuppressLogs_WhenReplaying(string providerName)
+        {
+            using var providerScope = PushProviderScope(providerName);
+            var mocker = new Mocker();
+
+            mocker.AddTaskOrchestrationReplaySafeLogging(isReplaying: true, replace: true);
+
+            var context = mocker.GetObject<TaskOrchestrationContext>();
+            var logger = context!.CreateReplaySafeLogger("orchestrator");
+
+            logger.LogWarning("replayed log");
+
+            mocker.LogEntries.Should().BeEmpty();
+        }
+
+        [Fact]
+        public void AddTaskOrchestrationReplaySafeLogging_OnTrackedMock_ShouldUseSuppliedLoggerFactory()
+        {
+            using var providerScope = PushProviderScope("moq");
+            var mocker = new Mocker();
+            var loggerFactory = mocker.CreateLoggerFactory();
+            var context = mocker.GetOrCreateMock<TaskOrchestrationContext>();
+
+            context.AddTaskOrchestrationReplaySafeLogging(loggerFactory);
+
+            var logger = context.Instance.CreateReplaySafeLogger("tracked orchestrator");
+            logger.LogError("tracked replay-safe");
+
+            mocker.VerifyLogged(LogLevel.Error, "tracked replay-safe", TimesSpec.Once);
+        }
+
+        [Fact]
+        public void AddTaskOrchestrationReplaySafeLogging_OnTrackedMock_ShouldFailBeforeConfiguringReplayStateSuppression()
+        {
+            using var providerScope = PushProviderScope("moq");
+            var mocker = new Mocker();
+            var loggerFactory = mocker.CreateLoggerFactory();
+            var context = mocker.GetOrCreateMock<TaskOrchestrationContext>();
+
+            Action action = () => context.AddTaskOrchestrationReplaySafeLogging(loggerFactory, isReplaying: true);
+
+            action.Should().Throw<NotSupportedException>()
+                .WithMessage("*replay-state suppression is not supported*");
+
+            Action loggerAction = () => context.Instance.CreateReplaySafeLogger("tracked orchestrator");
+            loggerAction.Should().Throw<Exception>();
+        }
+
+        [Fact]
+        public void AddTaskOrchestrationReplaySafeLogging_OnTrackedMock_ShouldThrow_WhenProviderCannotConfigureProtectedDurableMembers()
+        {
+            using var providerScope = PushProviderScope("nsubstitute");
+            var mocker = new Mocker();
+            var loggerFactory = mocker.CreateLoggerFactory();
+            var context = mocker.GetOrCreateMock<TaskOrchestrationContext>();
+
+            Action action = () => context.AddTaskOrchestrationReplaySafeLogging(loggerFactory);
+
+            action.Should().Throw<NotSupportedException>()
+                .WithMessage("*tracked-property configuration contract*");
+        }
+
+        [Fact]
+        public void AddFunctionContextInvocationId_ShouldWork_WithCustomProviderThatImplementsTrackedPropertyConfiguration()
+        {
+            const string providerName = "custom-moq-ext";
+            EnsureCustomProviderRegistered(providerName);
+            using var providerScope = MockingProviderRegistry.Push(providerName);
+            var mocker = new Mocker();
+            var context = mocker.GetOrCreateMock(typeof(FunctionContext));
+
+            context.AddFunctionContextInvocationId("custom-inv-123");
+
+            ((FunctionContext)context.Instance).InvocationId.Should().Be("custom-inv-123");
+        }
+
+        [Theory]
+        [InlineData("moq")]
+        [InlineData("nsubstitute")]
         public async Task CreateHttpRequestData_ShouldCreateConfiguredRequestAndDefaultResponse(string providerName)
         {
             using var providerScope = PushProviderScope(providerName);
@@ -864,11 +1060,138 @@ namespace FastMoq.Tests
             throw new InvalidOperationException($"Unknown provider '{providerName}'.");
         }
 
+        private static void EnsureCustomProviderRegistered(string providerName)
+        {
+            if (MockingProviderRegistry.TryGet(providerName, out _))
+            {
+                return;
+            }
+
+            MockingProviderRegistry.Register(providerName, new DelegatingMoqPropertyConfiguratorProvider(), setAsDefault: false);
+        }
+
         private sealed class TriggerPayload
         {
             public int Count { get; set; }
 
             public string? Name { get; set; }
+        }
+
+        private sealed class DelegatingMoqPropertyConfiguratorProvider : IMockingProvider, IMockingProviderCapabilities, ITrackedMockPropertyConfigurator
+        {
+            private readonly MoqMockingProvider _inner = MoqMockingProvider.Instance;
+
+            public IMockingProviderCapabilities Capabilities => this;
+            public bool SupportsCallBase => _inner.SupportsCallBase;
+            public bool SupportsSetupAllProperties => _inner.SupportsSetupAllProperties;
+            public bool SupportsProtectedMembers => _inner.SupportsProtectedMembers;
+            public bool SupportsInvocationTracking => _inner.SupportsInvocationTracking;
+            public bool SupportsLoggerCapture => _inner.SupportsLoggerCapture;
+
+            public Expression<Func<T, bool>> BuildExpression<T>()
+            {
+                return _inner.BuildExpression<T>();
+            }
+
+            public IFastMock<T> CreateMock<T>(MockCreationOptions? options = null) where T : class
+            {
+                return new ProviderBoundFastMock<T>(_inner.CreateMock<T>(options), this);
+            }
+
+            public IFastMock CreateMock(Type type, MockCreationOptions? options = null)
+            {
+                return new ProviderBoundFastMock(_inner.CreateMock(type, options), this);
+            }
+
+            public void SetupAllProperties(IFastMock mock)
+            {
+                _inner.SetupAllProperties(Unwrap(mock));
+            }
+
+            public void SetCallBase(IFastMock mock, bool value)
+            {
+                _inner.SetCallBase(Unwrap(mock), value);
+            }
+
+            public void Verify<T>(IFastMock<T> mock, Expression<Action<T>> expression, TimesSpec? times = null) where T : class
+            {
+                _inner.Verify((IFastMock<T>)Unwrap(mock), expression, times);
+            }
+
+            public void VerifyNoOtherCalls(IFastMock mock)
+            {
+                _inner.VerifyNoOtherCalls(Unwrap(mock));
+            }
+
+            public void ConfigureProperties(IFastMock mock)
+            {
+                _inner.ConfigureProperties(Unwrap(mock));
+            }
+
+            public void ConfigureLogger(IFastMock mock, Action<LogLevel, EventId, string, Exception?> callback)
+            {
+                _inner.ConfigureLogger(Unwrap(mock), callback);
+            }
+
+            public object? TryGetLegacy(IFastMock mock)
+            {
+                return _inner.TryGetLegacy(Unwrap(mock));
+            }
+
+            public IFastMock? TryWrapLegacy(object legacyMock, Type mockedType)
+            {
+                var wrapped = _inner.TryWrapLegacy(legacyMock, mockedType);
+                return wrapped is null ? null : new ProviderBoundFastMock(wrapped, this);
+            }
+
+            public bool TryConfigureMockProperty(IFastMock mock, PropertyInfo propertyInfo, object? value)
+            {
+                return ((ITrackedMockPropertyConfigurator)_inner).TryConfigureMockProperty(Unwrap(mock), propertyInfo, value);
+            }
+
+            private static IFastMock Unwrap(IFastMock mock)
+            {
+                return mock is ProviderBoundFastMock providerBound ? providerBound.Inner : mock;
+            }
+        }
+
+        private class ProviderBoundFastMock : IProviderBoundFastMock
+        {
+            public ProviderBoundFastMock(IFastMock inner, IMockingProvider provider)
+            {
+                Inner = inner;
+                Provider = provider;
+            }
+
+            internal IFastMock Inner { get; }
+
+            public Type MockedType => Inner.MockedType;
+
+            public object Instance => Inner.Instance;
+
+            public object NativeMock => Inner.NativeMock;
+
+            public IMockingProvider Provider { get; }
+
+            public void Reset()
+            {
+                Inner.Reset();
+            }
+        }
+
+        private sealed class ProviderBoundFastMock<T> : ProviderBoundFastMock, IFastMock<T> where T : class
+        {
+            private readonly IFastMock<T> _typedInner;
+
+            public ProviderBoundFastMock(IFastMock<T> inner, IMockingProvider provider)
+                : base(inner, provider)
+            {
+                _typedInner = inner;
+            }
+
+            public new T Instance => _typedInner.Instance;
+
+            T IFastMock<T>.Instance => _typedInner.Instance;
         }
 
         private sealed class TestFunctionContext : FunctionContext
@@ -883,7 +1206,7 @@ namespace FastMoq.Tests
 
             public override BindingContext BindingContext { get; } = new TestBindingContext();
 
-            public override RetryContext RetryContext { get; } = new TestRetryContext();
+            public override Microsoft.Azure.Functions.Worker.RetryContext RetryContext { get; } = new TestRetryContext();
 
             public override IServiceProvider InstanceServices
             {
@@ -912,7 +1235,7 @@ namespace FastMoq.Tests
             public override IReadOnlyDictionary<string, object?> BindingData { get; } = new Dictionary<string, object?>();
         }
 
-        private sealed class TestRetryContext : RetryContext
+        private sealed class TestRetryContext : Microsoft.Azure.Functions.Worker.RetryContext
         {
             public override int RetryCount { get; } = 0;
 

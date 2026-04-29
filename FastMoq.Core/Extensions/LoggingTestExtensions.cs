@@ -116,7 +116,23 @@ namespace FastMoq.Extensions
         /// mocker.VerifyLogged(LogLevel.Information, "submitted order");
         /// ]]></code>
         /// </example>
+        /// <remarks>
+        /// Prefer <see cref="AddCapturedLoggerFactory(Mocker, Action{ILoggingBuilder}?, bool)" /> for new builder-based registrations that should capture log entries into the current <see cref="Mocker" /> instance.
+        /// Use <see cref="AddLoggerFactory(Mocker, ILoggerFactory, bool)" /> when you already have a logger factory instance to register.
+        /// </remarks>
         public static Mocker AddLoggerFactory(this Mocker mocker, Action<ILoggingBuilder>? configureLogging = null, bool replace = false)
+        {
+            return mocker.AddCapturedLoggerFactory(configureLogging, replace);
+        }
+
+        /// <summary>
+        /// Creates and registers a capture-backed logger factory along with direct <see cref="ILogger" /> and <see cref="ILogger{TCategoryName}" /> resolution support.
+        /// </summary>
+        /// <param name="mocker">The current <see cref="Mocker" /> instance.</param>
+        /// <param name="configureLogging">Optional logging builder customization applied before the FastMoq capture provider is added.</param>
+        /// <param name="replace">True to replace existing logger registrations.</param>
+        /// <returns>The current <see cref="Mocker" /> instance.</returns>
+        public static Mocker AddCapturedLoggerFactory(this Mocker mocker, Action<ILoggingBuilder>? configureLogging = null, bool replace = false)
         {
             ArgumentNullException.ThrowIfNull(mocker);
 
@@ -134,6 +150,19 @@ namespace FastMoq.Extensions
         /// <returns>The current <see cref="Mocker" /> instance.</returns>
         public static Mocker AddLoggerFactory(this Mocker mocker, Action<LogLevel, EventId, string, Exception?> sink, Action<ILoggingBuilder>? configureLogging = null, bool replace = false)
         {
+            return mocker.AddCapturedLoggerFactory(sink, configureLogging, replace);
+        }
+
+        /// <summary>
+        /// Creates and registers a capture-backed logger factory that mirrors captured log entries to the supplied sink while still forwarding them into the current <see cref="Mocker" /> instance.
+        /// </summary>
+        /// <param name="mocker">The current <see cref="Mocker" /> instance.</param>
+        /// <param name="sink">A sink that receives each captured log entry after FastMoq records it.</param>
+        /// <param name="configureLogging">Optional logging builder customization applied before the FastMoq capture provider is added.</param>
+        /// <param name="replace">True to replace existing logger registrations.</param>
+        /// <returns>The current <see cref="Mocker" /> instance.</returns>
+        public static Mocker AddCapturedLoggerFactory(this Mocker mocker, Action<LogLevel, EventId, string, Exception?> sink, Action<ILoggingBuilder>? configureLogging = null, bool replace = false)
+        {
             ArgumentNullException.ThrowIfNull(mocker);
             ArgumentNullException.ThrowIfNull(sink);
 
@@ -150,6 +179,19 @@ namespace FastMoq.Extensions
         /// <param name="replace">True to replace existing logger registrations.</param>
         /// <returns>The current <see cref="Mocker" /> instance.</returns>
         public static Mocker AddLoggerFactory(this Mocker mocker, Action<string> lineWriter, Action<ILoggingBuilder>? configureLogging = null, bool replace = false)
+        {
+            return mocker.AddCapturedLoggerFactory(lineWriter, configureLogging, replace);
+        }
+
+        /// <summary>
+        /// Creates and registers a capture-backed logger factory that mirrors formatted log lines to the supplied writer while still forwarding captured entries into the current <see cref="Mocker" /> instance.
+        /// </summary>
+        /// <param name="mocker">The current <see cref="Mocker" /> instance.</param>
+        /// <param name="lineWriter">A line writer that receives a formatted representation of each captured log entry.</param>
+        /// <param name="configureLogging">Optional logging builder customization applied before the FastMoq capture provider is added.</param>
+        /// <param name="replace">True to replace existing logger registrations.</param>
+        /// <returns>The current <see cref="Mocker" /> instance.</returns>
+        public static Mocker AddCapturedLoggerFactory(this Mocker mocker, Action<string> lineWriter, Action<ILoggingBuilder>? configureLogging = null, bool replace = false)
         {
             ArgumentNullException.ThrowIfNull(mocker);
             ArgumentNullException.ThrowIfNull(lineWriter);
@@ -171,6 +213,19 @@ namespace FastMoq.Extensions
         /// </remarks>
         public static Mocker AddLoggerFactory(this Mocker mocker, ILoggerProvider provider, Action<ILoggingBuilder>? configureLogging = null, bool replace = false)
         {
+            return mocker.AddCapturedLoggerFactory(provider, configureLogging, replace);
+        }
+
+        /// <summary>
+        /// Creates and registers a capture-backed logger factory that adds a custom <see cref="ILoggerProvider" /> while still forwarding captured entries into the current <see cref="Mocker" /> instance.
+        /// </summary>
+        /// <param name="mocker">The current <see cref="Mocker" /> instance.</param>
+        /// <param name="provider">A custom logger provider that processes all logged entries alongside FastMoq capture.</param>
+        /// <param name="configureLogging">Optional logging builder customization applied before the FastMoq capture provider is added.</param>
+        /// <param name="replace">True to replace existing logger registrations.</param>
+        /// <returns>The current <see cref="Mocker" /> instance.</returns>
+        public static Mocker AddCapturedLoggerFactory(this Mocker mocker, ILoggerProvider provider, Action<ILoggingBuilder>? configureLogging = null, bool replace = false)
+        {
             ArgumentNullException.ThrowIfNull(mocker);
             ArgumentNullException.ThrowIfNull(provider);
 
@@ -186,7 +241,7 @@ namespace FastMoq.Extensions
         /// <param name="replace">True to replace existing logger registrations.</param>
         /// <returns>The current <see cref="Mocker" /> instance.</returns>
         /// <remarks>
-        /// Prefer <see cref="CreateLoggerFactory(Mocker, Action{ILoggingBuilder}?)" /> when you want log output to flow into <see cref="Mocker.LogEntries" /> and <see cref="TestClassExtensions.VerifyLogged(Mocker, LogLevel, string)" />.
+        /// Prefer <see cref="AddCapturedLoggerFactory(Mocker, Action{ILoggingBuilder}?, bool)" /> when you want FastMoq to create and register the capture-backed factory for the current <see cref="Mocker" /> instance.
         /// </remarks>
         public static Mocker AddLoggerFactory(this Mocker mocker, ILoggerFactory loggerFactory, bool replace = false)
         {

@@ -476,7 +476,11 @@ namespace FastMoq.Extensions
             var instanceParam = Expression.Parameter(typeof(TMock), "instance");
 
             // Create an expression to access the property
-            var propertyAccess = Expression.Property(instanceParam, propertyInfo);
+            Expression propertyAccess = Expression.Property(instanceParam, propertyInfo);
+            if (propertyInfo.PropertyType.IsValueType)
+            {
+                propertyAccess = Expression.Convert(propertyAccess, typeof(object));
+            }
 
             // Create a lambda expression that represents the getter
             var getterExpression = Expression.Lambda<Func<TMock, object>>(propertyAccess, instanceParam);
