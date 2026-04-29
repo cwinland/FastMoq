@@ -8,14 +8,23 @@ namespace FastMoq.Providers.MoqProvider
     /// <summary>
     /// Provider implementation that adapts Moq to the provider-neutral FastMoq abstractions.
     /// </summary>
-    public sealed class MoqMockingProvider : IMockingProvider, IMockingProviderCapabilities, ITrackedMockPropertyConfigurator
+    public sealed class MoqMockingProvider : IMockingProvider, IMethodVerifyingMockingProvider, IMockingProviderCapabilities, ITrackedMockPropertyConfigurator
     {
+        private static readonly MethodInfo ItIsAnyMethodDefinition = typeof(It)
+            .GetMethods(BindingFlags.Public | BindingFlags.Static)
+            .Single(method =>
+                method.Name == nameof(It.IsAny) &&
+                method.IsGenericMethodDefinition &&
+                method.GetParameters().Length == 0);
         private static readonly MethodInfo SetupLoggerCallbackGenericMethod = typeof(MoqMockingProvider)
             .GetMethod(nameof(SetupLoggerCallbackGeneric), BindingFlags.NonPublic | BindingFlags.Static)
             ?? throw new InvalidOperationException($"Could not resolve {nameof(SetupLoggerCallbackGeneric)} for logger setup dispatch.");
         private static readonly MethodInfo ConfigureMockPropertyGenericMethod = typeof(MoqMockingProvider)
             .GetMethod(nameof(TryConfigureMockPropertyGeneric), BindingFlags.NonPublic | BindingFlags.Static)
             ?? throw new InvalidOperationException($"Could not resolve {nameof(TryConfigureMockPropertyGeneric)} for property setup dispatch.");
+        private static readonly MethodInfo VerifyMethodWithReturnGenericMethod = typeof(MoqMockingProvider)
+            .GetMethod(nameof(VerifyMethodWithReturnGeneric), BindingFlags.NonPublic | BindingFlags.Static)
+            ?? throw new InvalidOperationException($"Could not resolve {nameof(VerifyMethodWithReturnGeneric)} for wildcard method verification.");
         private static readonly ConcurrentDictionary<Type, Action<Mock, Action<LogLevel, EventId, string, Exception?>>> LoggerSetupDispatchCache = new();
         private static readonly ConcurrentDictionary<Type, Func<Mock, PropertyInfo, object?, bool>> PropertySetupDispatchCache = new();
 
@@ -184,6 +193,38 @@ namespace FastMoq.Providers.MoqProvider
         }
 
         /// <summary>
+        /// Verifies that the supplied method was invoked on the wrapped Moq mock while treating every argument as a wildcard matcher.
+        /// </summary>
+        public void VerifyMethod<T>(IFastMock<T> mock, MethodInfo method, TimesSpec? times = null) where T : class
+        {
+            ArgumentNullException.ThrowIfNull(method);
+
+            Mock<T>? moqMock = null;
+            try
+            {
+                moqMock = Mock.Get(mock.Instance);
+            }
+            catch
+            {
+            }
+
+            if (moqMock == null)
+            {
+                return;
+            }
+
+            if (method.ReturnType == typeof(void))
+            {
+                moqMock.Verify(BuildAnyArgsActionExpression<T>(method), times.ToMoq());
+                return;
+            }
+
+            VerifyMethodWithReturnGenericMethod
+                .MakeGenericMethod(typeof(T), method.ReturnType)
+                .Invoke(null, [moqMock, method, times]);
+        }
+
+        /// <summary>
         /// Verifies that no unverified Moq calls remain on the supplied mock.
         /// </summary>
         public void VerifyNoOtherCalls(IFastMock mock)
@@ -323,6 +364,75 @@ namespace FastMoq.Providers.MoqProvider
                     .CreateDelegate(typeof(Action<Mock, Action<LogLevel, EventId, string, Exception?>>)));
 
             dispatcher(logger, callback);
+        }
+
+        private static Expression<Action<T>> BuildAnyArgsActionExpression<T>(MethodInfo method) where T : class
+        {
+            var resolvedMethod = ResolveMethod(typeof(T), method);
+            var mockParameter = Expression.Parameter(typeof(T), "mock");
+            var arguments = resolvedMethod
+                .GetParameters()
+                .Select(parameter => CreateAnyArgumentExpression(parameter.ParameterType))
+                .ToArray();
+
+            return Expression.Lambda<Action<T>>(Expression.Call(mockParameter, resolvedMethod, arguments), mockParameter);
+        }
+
+        private static void VerifyMethodWithReturnGeneric<T, TResult>(Mock<T> mock, MethodInfo method, TimesSpec? times)
+            where T : class
+        {
+            mock.Verify(BuildAnyArgsFuncExpression<T, TResult>(method), times.ToMoq());
+        }
+
+        private static Expression<Func<T, TResult>> BuildAnyArgsFuncExpression<T, TResult>(MethodInfo method) where T : class
+        {
+            var resolvedMethod = ResolveMethod(typeof(T), method);
+            if (resolvedMethod.ReturnType != typeof(TResult))
+            {
+                throw new InvalidOperationException($"Method '{resolvedMethod.DeclaringType?.FullName}.{resolvedMethod.Name}' does not return '{typeof(TResult).FullName}'.");
+            }
+
+            var mockParameter = Expression.Parameter(typeof(T), "mock");
+            var arguments = resolvedMethod
+                .GetParameters()
+                .Select(parameter => CreateAnyArgumentExpression(parameter.ParameterType))
+                .ToArray();
+
+            return Expression.Lambda<Func<T, TResult>>(Expression.Call(mockParameter, resolvedMethod, arguments), mockParameter);
+        }
+
+        private static MethodInfo ResolveMethod(Type serviceType, MethodInfo selectedMethod)
+        {
+            if (selectedMethod.DeclaringType == serviceType)
+            {
+                return selectedMethod;
+            }
+
+            var parameterTypes = selectedMethod.GetParameters().Select(parameter => parameter.ParameterType).ToArray();
+            var resolvedMethod = serviceType.GetMethod(
+                selectedMethod.Name,
+                BindingFlags.Instance | BindingFlags.Public,
+                binder: null,
+                types: parameterTypes,
+                modifiers: null);
+
+            if (resolvedMethod is not null && resolvedMethod.ReturnType == selectedMethod.ReturnType)
+            {
+                return resolvedMethod;
+            }
+
+            throw new InvalidOperationException(
+                $"Unable to map selected method '{selectedMethod.DeclaringType?.FullName}.{selectedMethod.Name}' back to '{serviceType.FullName}'. Use the method-name overload with explicit parameter types for this member.");
+        }
+
+        private static Expression CreateAnyArgumentExpression(Type parameterType)
+        {
+            if (parameterType.IsByRef)
+            {
+                throw new NotSupportedException($"Any-args verification does not support by-ref parameters. Parameter type: '{parameterType}'.");
+            }
+
+            return Expression.Call(ItIsAnyMethodDefinition.MakeGenericMethod(parameterType));
         }
 
         private static void SetupLoggerCallbackGeneric<TLogger>(Mock logger, Action<LogLevel, EventId, string, Exception?> callback)

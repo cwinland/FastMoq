@@ -284,7 +284,14 @@ namespace FastMoq.Providers
         {
             ArgumentNullException.ThrowIfNull(mock);
 
-            ResolveProvider(mock).Verify(mock, VerificationExpressionBuilder.BuildAnyArgsExpression<T>(methodName, parameterTypes), times);
+            var method = VerificationExpressionBuilder.GetSelectedMethod<T>(methodName, parameterTypes);
+            var provider = ResolveProvider(mock);
+            if (provider is not IMethodVerifyingMockingProvider methodVerifyingProvider)
+            {
+                throw new NotSupportedException($"The current mocking provider '{provider.GetType().FullName}' does not support wildcard method verification. Implement {nameof(IMethodVerifyingMockingProvider)} to enable VerifyAnyArgs for non-void methods.");
+            }
+
+            methodVerifyingProvider.VerifyMethod(mock, method, times);
         }
 
         /// <summary>
@@ -298,7 +305,13 @@ namespace FastMoq.Providers
             ArgumentNullException.ThrowIfNull(methodSelector);
 
             var method = VerificationExpressionBuilder.GetSelectedMethod(mock.Instance, methodSelector);
-            ResolveProvider(mock).Verify(mock, VerificationExpressionBuilder.BuildAnyArgsExpression<T>(method), times);
+            var provider = ResolveProvider(mock);
+            if (provider is not IMethodVerifyingMockingProvider methodVerifyingProvider)
+            {
+                throw new NotSupportedException($"The current mocking provider '{provider.GetType().FullName}' does not support wildcard method verification. Implement {nameof(IMethodVerifyingMockingProvider)} to enable VerifyAnyArgs for non-void methods.");
+            }
+
+            methodVerifyingProvider.VerifyMethod(mock, method, times);
         }
 
         /// <summary>

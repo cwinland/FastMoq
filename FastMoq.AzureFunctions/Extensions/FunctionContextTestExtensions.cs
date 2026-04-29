@@ -99,9 +99,11 @@ namespace FastMoq.AzureFunctions.Extensions
             ArgumentNullException.ThrowIfNull(mocker);
             ArgumentNullException.ThrowIfNull(instanceServices);
 
+            EnsureFunctionContextKnownTypeCanBeUpdated(mocker, replace);
             mocker.AddServiceProvider(instanceServices, replace);
             AddOrUpdateFunctionContextKnownTypeRegistration(
                 mocker,
+                replace,
                 configureMock: fastMock => ConfigureFunctionContextInstanceServices(fastMock, instanceServices),
                 applyObjectDefaults: functionContext => AssignFunctionContextInstanceServices(functionContext, instanceServices));
 
@@ -145,8 +147,10 @@ namespace FastMoq.AzureFunctions.Extensions
             ArgumentNullException.ThrowIfNull(mocker);
             ArgumentException.ThrowIfNullOrWhiteSpace(invocationId);
 
+            EnsureFunctionContextKnownTypeCanBeUpdated(mocker, replace);
             AddOrUpdateFunctionContextKnownTypeRegistration(
                 mocker,
+                replace,
                 configureMock: fastMock => ConfigureFunctionContextInvocationId(fastMock, invocationId));
 
             if (mocker.Contains(typeof(FunctionContext)))
@@ -159,6 +163,7 @@ namespace FastMoq.AzureFunctions.Extensions
 
         private static void AddOrUpdateFunctionContextKnownTypeRegistration(
             Mocker mocker,
+            bool replace,
             Action<IFastMock>? configureMock = null,
             Action<FunctionContext>? applyObjectDefaults = null)
         {
@@ -174,7 +179,22 @@ namespace FastMoq.AzureFunctions.Extensions
                 ApplyObjectDefaults = ComposeFunctionContextObjectDefaults(existingRegistration?.ApplyObjectDefaults, applyObjectDefaults),
             };
 
-            mocker.AddKnownType(mergedRegistration, replace: existingRegistration is not null);
+            mocker.AddKnownType(mergedRegistration, replace);
+        }
+
+        private static void EnsureFunctionContextKnownTypeCanBeUpdated(Mocker mocker, bool replace)
+        {
+            ArgumentNullException.ThrowIfNull(mocker);
+
+            if (replace)
+            {
+                return;
+            }
+
+            if (mocker.KnownTypeRegistrations.Any(registration => registration.ServiceType == typeof(FunctionContext)))
+            {
+                typeof(FunctionContext).ThrowAlreadyExists();
+            }
         }
 
         private static Action<Mocker, Type, IFastMock>? ComposeFunctionContextConfigureMock(

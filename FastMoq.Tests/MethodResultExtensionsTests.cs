@@ -319,6 +319,24 @@ namespace FastMoq.Tests
             exception.StackTrace.Should().Contain(nameof(ThrowingGatewayDispatchProxy));
         }
 
+        [Fact]
+        public void AddMethodResult_ShouldOverrideConfiguredCall_OnStrictTrackedMock()
+        {
+            using var providerScope = MockingProviderRegistry.Push("moq");
+            var mocker = new Mocker
+            {
+                DefaultStrictMockCreation = true,
+            };
+
+            _ = mocker.GetOrCreateMock<IMethodResultGateway>();
+            var gateway = mocker.AddMethodResult<IMethodResultGateway, string?>(x => x.Fetch("alpha"), "configured");
+
+            var configured = gateway.Fetch("alpha");
+
+            configured.Should().Be("configured");
+            mocker.Verify<IMethodResultGateway>(x => x.Fetch("alpha"), TimesSpec.Once);
+        }
+
         public interface IMethodResultGateway
         {
             string? Fetch(string key);

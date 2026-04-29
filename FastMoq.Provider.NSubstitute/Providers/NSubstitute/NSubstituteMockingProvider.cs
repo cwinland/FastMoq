@@ -8,7 +8,7 @@ namespace FastMoq.Providers.NSubstituteProvider
     /// <summary>
     /// Provider implementation that adapts NSubstitute to the provider-neutral FastMoq abstractions.
     /// </summary>
-    public sealed class NSubstituteMockingProvider : IMockingProvider, IMockingProviderCapabilities, ITrackedMockPropertyConfigurator
+    public sealed class NSubstituteMockingProvider : IMockingProvider, IMethodVerifyingMockingProvider, IMockingProviderCapabilities, ITrackedMockPropertyConfigurator
     {
         private static readonly ConcurrentDictionary<object, ConcurrentBag<ICall>> VerifiedCalls = new();
         private static readonly ConcurrentDictionary<object, byte> ConfiguredLoggers = new();
@@ -202,6 +202,26 @@ namespace FastMoq.Providers.NSubstituteProvider
         }
 
         /// <summary>
+        /// Verifies that the supplied method was invoked on the wrapped NSubstitute mock while treating every argument as a wildcard matcher.
+        /// </summary>
+        public void VerifyMethod<T>(IFastMock<T> mock, MethodInfo method, TimesSpec? times = null) where T : class
+        {
+            ArgumentNullException.ThrowIfNull(method);
+
+            times ??= default;
+            var target = mock.Instance;
+            var methodCalls = target.ReceivedCalls()
+                .Where(call => MethodsMatch(call.GetMethodInfo(), method))
+                .ToList();
+
+            AssertExpectedInvocationCount(method.Name, methodCalls.Count, times.Value);
+            if (times.Value.Mode != TimesSpecMode.Never && methodCalls.Count > 0)
+            {
+                MarkSpecificCallsVerified(target, methodCalls);
+            }
+        }
+
+        /// <summary>
         /// Verifies that no unverified calls remain on the supplied mock.
         /// </summary>
         public void VerifyNoOtherCalls(IFastMock mock)
@@ -390,6 +410,36 @@ namespace FastMoq.Providers.NSubstituteProvider
             }
 
             return (null, 0);
+        }
+
+        private static bool MethodsMatch(MethodInfo actualMethod, MethodInfo expectedMethod)
+        {
+            if (actualMethod == expectedMethod)
+            {
+                return true;
+            }
+
+            if (actualMethod.Name != expectedMethod.Name || actualMethod.ReturnType != expectedMethod.ReturnType)
+            {
+                return false;
+            }
+
+            var actualParameters = actualMethod.GetParameters();
+            var expectedParameters = expectedMethod.GetParameters();
+            if (actualParameters.Length != expectedParameters.Length)
+            {
+                return false;
+            }
+
+            for (var index = 0; index < actualParameters.Length; index++)
+            {
+                if (actualParameters[index].ParameterType != expectedParameters[index].ParameterType)
+                {
+                    return false;
+                }
+            }
+
+            return true;
         }
 
         private static void MarkCallsVerified<T>(T target, Expression<Action<T>> expression, int expected) where T : class

@@ -276,6 +276,20 @@ namespace FastMoq.Tests
 
         [Theory]
         [MemberData(nameof(ProviderNames))]
+        public void VerifyAnyArgs_ShouldSupportNonVoidMethods_ForSelectedProvider(string providerName)
+        {
+            using var providerScope = PushProvider(providerName);
+            var mocker = new Mocker();
+            var dependency = mocker.GetOrCreateMock<IProviderResultDependency>();
+
+            _ = dependency.Instance.Lookup("alpha");
+
+            mocker.VerifyAnyArgs<IProviderResultDependency>(nameof(IProviderResultDependency.Lookup), TimesSpec.Once, typeof(string));
+            mocker.VerifyNoOtherCalls<IProviderResultDependency>();
+        }
+
+        [Theory]
+        [MemberData(nameof(ProviderNames))]
         public void DetachedVerifyAnyArgs_ShouldSupportDelegateSelector_ForSelectedProvider(string providerName)
         {
             using var providerScope = PushProvider(providerName);
@@ -1688,6 +1702,11 @@ namespace FastMoq.Tests
             void Run(string value);
         }
 
+        public interface IProviderResultDependency
+        {
+            string? Lookup(string value);
+        }
+
         public interface IPropertySetterDependency
         {
             string? Value { get; set; }
@@ -1760,7 +1779,7 @@ namespace FastMoq.Tests
         /// <summary>
         /// Test-only abstract base provider used by convention-discovery tests to delegate behavior to NSubstitute.
         /// </summary>
-        public abstract class ConventionDiscoveredDelegatingMockingProviderBase : IMockingProvider
+        public abstract class ConventionDiscoveredDelegatingMockingProviderBase : IMockingProvider, IMethodVerifyingMockingProvider
         {
             /// <inheritdoc />
             public IMockingProviderCapabilities Capabilities => NSubstituteMockingProvider.Instance.Capabilities;
@@ -1799,6 +1818,12 @@ namespace FastMoq.Tests
             public void Verify<T>(IFastMock<T> mock, Expression<Action<T>> expression, TimesSpec? times = null) where T : class
             {
                 NSubstituteMockingProvider.Instance.Verify(mock, expression, times);
+            }
+
+            /// <inheritdoc />
+            public void VerifyMethod<T>(IFastMock<T> mock, MethodInfo method, TimesSpec? times = null) where T : class
+            {
+                NSubstituteMockingProvider.Instance.VerifyMethod(mock, method, times);
             }
 
             /// <inheritdoc />
