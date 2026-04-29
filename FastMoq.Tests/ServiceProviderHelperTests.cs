@@ -659,6 +659,23 @@ namespace FastMoq.Tests
             existing.Instance.InvocationId.Should().Be("inv-456");
         }
 
+        [Fact]
+        public void AddFunctionContextInvocationId_ShouldRequireReplace_WhenHelperAlreadyConfigured()
+        {
+            using var providerScope = PushProviderScope("moq");
+            var mocker = new Mocker();
+
+            mocker.AddFunctionContextInvocationId("inv-123");
+
+            Action action = () => mocker.AddFunctionContextInvocationId("inv-456");
+
+            action.Should().Throw<ArgumentException>()
+                .WithMessage("*FunctionContext*already exists*");
+
+            var request = mocker.CreateHttpRequestData();
+            request.FunctionContext.InvocationId.Should().Be("inv-123");
+        }
+
         [Theory]
         [InlineData("moq", true)]
         [InlineData("moq", false)]
@@ -1116,6 +1133,11 @@ namespace FastMoq.Tests
             public void Verify<T>(IFastMock<T> mock, Expression<Action<T>> expression, TimesSpec? times = null) where T : class
             {
                 _inner.Verify((IFastMock<T>)Unwrap(mock), expression, times);
+            }
+
+            public void VerifyMethod<T>(IFastMock<T> mock, MethodInfo method, TimesSpec? times = null) where T : class
+            {
+                _inner.VerifyMethod((IFastMock<T>)Unwrap(mock), method, times);
             }
 
             public void VerifyNoOtherCalls(IFastMock mock)

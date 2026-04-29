@@ -223,7 +223,8 @@ namespace FastMoq.Extensions
 
             var proxy = DispatchProxy.Create<TService, MethodResultProxy<TService>>();
             var proxyController = (MethodResultProxy<TService>) (object) proxy;
-            proxyController.Initialize(currentInstance, mocker.TryGetTrackedMock<TService>(out var trackedMock) && ReferenceEquals(trackedMock.Instance, currentInstance));
+            var shouldForwardConfiguredCallsToInner = mocker.TryGetTrackedMock<TService>(out var trackedMock) && ReferenceEquals(trackedMock.Instance, currentInstance);
+            proxyController.Initialize(currentInstance, shouldForwardConfiguredCallsToInner, shouldForwardConfiguredCallsToInner && mocker.ShouldCreateStrictMocks());
             proxyController.AddBehavior(callExpression, () => resultFactory()!, helperName);
 
             mocker.AddType<TService>(proxy, replace);
@@ -254,7 +255,8 @@ namespace FastMoq.Extensions
 
             var proxy = DispatchProxy.Create<TService, MethodResultProxy<TService>>();
             var proxyController = (MethodResultProxy<TService>) (object) proxy;
-            proxyController.Initialize(currentInstance, mocker.TryGetTrackedMock<TService>(out var trackedMock) && ReferenceEquals(trackedMock.Instance, currentInstance));
+            var shouldForwardConfiguredCallsToInner = mocker.TryGetTrackedMock<TService>(out var trackedMock) && ReferenceEquals(trackedMock.Instance, currentInstance);
+            proxyController.Initialize(currentInstance, shouldForwardConfiguredCallsToInner, shouldForwardConfiguredCallsToInner && mocker.ShouldCreateStrictMocks());
             proxyController.AddBehavior(callExpression, () =>
             {
                 behavior();
@@ -272,13 +274,15 @@ namespace FastMoq.Extensions
 
         private TService? _inner;
         private bool _forwardConfiguredCallsToInner;
+        private bool _suppressConfiguredInnerExceptions;
 
-        public void Initialize(TService inner, bool forwardConfiguredCallsToInner)
+        public void Initialize(TService inner, bool forwardConfiguredCallsToInner, bool suppressConfiguredInnerExceptions)
         {
             ArgumentNullException.ThrowIfNull(inner);
 
             _inner = inner;
             _forwardConfiguredCallsToInner = forwardConfiguredCallsToInner;
+            _suppressConfiguredInnerExceptions = suppressConfiguredInnerExceptions;
         }
 
         public void AddBehavior(LambdaExpression callExpression, Func<object?> resultFactory, string helperName)
@@ -314,7 +318,13 @@ namespace FastMoq.Extensions
 
                 if (_forwardConfiguredCallsToInner)
                 {
-                    _ = InvokeInner(targetMethod, actualArguments);
+                    try
+                    {
+                        _ = InvokeInner(targetMethod, actualArguments);
+                    }
+                    catch when (_suppressConfiguredInnerExceptions)
+                    {
+                    }
                 }
 
                 return registration.ResultFactory();

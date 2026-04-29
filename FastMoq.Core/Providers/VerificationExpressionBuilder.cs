@@ -14,6 +14,11 @@ namespace FastMoq.Providers
 
         internal static Expression<Action<T>> BuildAnyArgsExpression<T>(string methodName, params Type[] parameterTypes) where T : class
         {
+            return BuildAnyArgsExpression<T>(GetSelectedMethod<T>(methodName, parameterTypes));
+        }
+
+        internal static MethodInfo GetSelectedMethod<T>(string methodName, params Type[] parameterTypes) where T : class
+        {
             ArgumentException.ThrowIfNullOrWhiteSpace(methodName);
 
             var serviceType = typeof(T);
@@ -27,8 +32,7 @@ namespace FastMoq.Providers
                 throw new InvalidOperationException($"Type '{serviceType.FullName}' does not contain an instance method named '{methodName}'.");
             }
 
-            var selectedMethod = SelectMethod(serviceType, methodName, methods, parameterTypes);
-            return BuildAnyArgsExpression<T>(selectedMethod);
+            return SelectMethod(serviceType, methodName, methods, parameterTypes);
         }
 
         internal static Expression<Action<T>> BuildAnyArgsExpression<T>(MethodInfo method) where T : class

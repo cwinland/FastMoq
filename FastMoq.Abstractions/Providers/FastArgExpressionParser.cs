@@ -217,7 +217,7 @@ namespace FastMoq.Providers
         {
             ArgumentNullException.ThrowIfNull(expression);
 
-            if (expression.Body is not MethodCallExpression methodCallExpression)
+            if (TryExtractMethodCall(expression.Body) is not MethodCallExpression methodCallExpression)
             {
                 throw new NotSupportedException("Only direct method call expressions are supported by the FastMoq matcher parser.");
             }
@@ -230,6 +230,41 @@ namespace FastMoq.Providers
             }
 
             return new FastInvocationMatcher(methodCallExpression.Method, arguments);
+        }
+
+        private static MethodCallExpression? TryExtractMethodCall(Expression expression)
+        {
+            ArgumentNullException.ThrowIfNull(expression);
+
+            expression = StripConvert(expression);
+            if (expression is MethodCallExpression methodCallExpression)
+            {
+                return methodCallExpression;
+            }
+
+            if (expression is not BlockExpression blockExpression || blockExpression.Expressions.Count == 0)
+            {
+                return null;
+            }
+
+            var leadingExpression = StripConvert(blockExpression.Expressions[0]);
+            if (leadingExpression is not MethodCallExpression blockMethodCallExpression)
+            {
+                return null;
+            }
+
+            for (var index = 1; index < blockExpression.Expressions.Count; index++)
+            {
+                var trailingExpression = StripConvert(blockExpression.Expressions[index]);
+                if (trailingExpression is DefaultExpression { Type: not null } defaultExpression && defaultExpression.Type == typeof(void))
+                {
+                    continue;
+                }
+
+                return null;
+            }
+
+            return blockMethodCallExpression;
         }
 
         /// <summary>

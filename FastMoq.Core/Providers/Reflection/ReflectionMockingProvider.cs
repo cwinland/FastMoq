@@ -108,6 +108,69 @@ namespace FastMoq.Providers.ReflectionProvider
             MarkVerified(records);
         }
 
+        public void VerifyMethod<T>(IFastMock<T> mock, MethodInfo method, TimesSpec? times = null) where T : class
+        {
+            ArgumentNullException.ThrowIfNull(method);
+
+            var records = GetInvocations(mock.Instance)
+                .Where(record => MethodsMatch(record.Method, method))
+                .ToList();
+
+            times ??= default;
+            if (times.Value.Mode == TimesSpecMode.Never)
+            {
+                if (records.Count > 0)
+                {
+                    throw new InvalidOperationException($"Expected no calls to {method.Name} but found {records.Count}.");
+                }
+
+                return;
+            }
+
+            if (times.Value.Mode == TimesSpecMode.Exactly)
+            {
+                var expected = times.Value.Count ?? throw new InvalidOperationException("TimesSpec.Exactly requires a count.");
+                if (records.Count != expected)
+                {
+                    throw new InvalidOperationException($"Expected exactly {expected} call(s) to {method.Name} but found {records.Count}.");
+                }
+
+                MarkVerified(records);
+                return;
+            }
+
+            if (times.Value.Mode == TimesSpecMode.AtLeast)
+            {
+                var minimum = times.Value.Count ?? throw new InvalidOperationException("TimesSpec.AtLeast requires a count.");
+                if (records.Count < minimum)
+                {
+                    throw new InvalidOperationException($"Expected at least {minimum} call(s) to {method.Name} but found {records.Count}.");
+                }
+
+                MarkVerified(records);
+                return;
+            }
+
+            if (times.Value.Mode == TimesSpecMode.AtMost)
+            {
+                var maximum = times.Value.Count ?? throw new InvalidOperationException("TimesSpec.AtMost requires a count.");
+                if (records.Count > maximum)
+                {
+                    throw new InvalidOperationException($"Expected at most {maximum} call(s) to {method.Name} but found {records.Count}.");
+                }
+
+                MarkVerified(records);
+                return;
+            }
+
+            if (records.Count == 0)
+            {
+                throw new InvalidOperationException($"Expected at least one call to {method.Name} but none were recorded.");
+            }
+
+            MarkVerified(records);
+        }
+
         public void VerifyNoOtherCalls(IFastMock mock)
         {
             var inv = GetInvocations(mock.Instance);
@@ -137,6 +200,37 @@ namespace FastMoq.Providers.ReflectionProvider
         {
             foreach (var r in list) r.Verified = true;
         }
+
+        private static bool MethodsMatch(MethodInfo actualMethod, MethodInfo expectedMethod)
+        {
+            if (actualMethod == expectedMethod)
+            {
+                return true;
+            }
+
+            if (actualMethod.Name != expectedMethod.Name || actualMethod.ReturnType != expectedMethod.ReturnType)
+            {
+                return false;
+            }
+
+            var actualParameters = actualMethod.GetParameters();
+            var expectedParameters = expectedMethod.GetParameters();
+            if (actualParameters.Length != expectedParameters.Length)
+            {
+                return false;
+            }
+
+            for (var index = 0; index < actualParameters.Length; index++)
+            {
+                if (actualParameters[index].ParameterType != expectedParameters[index].ParameterType)
+                {
+                    return false;
+                }
+            }
+
+            return true;
+        }
+
         private sealed record InvocationRecord(MethodInfo Method, object?[] Arguments)
         {
             public bool Verified { get; set; }

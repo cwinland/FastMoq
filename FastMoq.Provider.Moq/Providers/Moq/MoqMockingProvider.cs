@@ -184,6 +184,39 @@ namespace FastMoq.Providers.MoqProvider
         }
 
         /// <summary>
+        /// Verifies that the supplied method was invoked on the wrapped Moq mock while treating every argument as a wildcard matcher.
+        /// </summary>
+        public void VerifyMethod<T>(IFastMock<T> mock, MethodInfo method, TimesSpec? times = null) where T : class
+        {
+            ArgumentNullException.ThrowIfNull(method);
+
+            Mock<T>? moqMock = null;
+            try
+            {
+                moqMock = Mock.Get(mock.Instance);
+            }
+            catch
+            {
+            }
+
+            if (moqMock == null)
+            {
+                return;
+            }
+
+            times ??= default;
+            var matchingInvocations = moqMock.Invocations
+                .Where(invocation => MethodsMatch(invocation.Method, method))
+                .ToList();
+
+            AssertExpectedInvocationCount(method.Name, matchingInvocations.Count, times.Value);
+            if (times.Value.Mode != TimesSpecMode.Never && matchingInvocations.Count > 0)
+            {
+                MarkInvocationsVerified(matchingInvocations);
+            }
+        }
+
+        /// <summary>
         /// Verifies that no unverified Moq calls remain on the supplied mock.
         /// </summary>
         public void VerifyNoOtherCalls(IFastMock mock)
@@ -323,6 +356,97 @@ namespace FastMoq.Providers.MoqProvider
                     .CreateDelegate(typeof(Action<Mock, Action<LogLevel, EventId, string, Exception?>>)));
 
             dispatcher(logger, callback);
+        }
+
+        private static void AssertExpectedInvocationCount(string methodName, int count, TimesSpec times)
+        {
+            if (times.Mode == TimesSpecMode.Never)
+            {
+                if (count > 0)
+                {
+                    throw new InvalidOperationException($"Expected no calls to {methodName} but found {count}.");
+                }
+
+                return;
+            }
+
+            if (times.Mode == TimesSpecMode.Exactly)
+            {
+                var expected = times.Count ?? throw new InvalidOperationException("TimesSpec.Exactly requires a count.");
+                if (count != expected)
+                {
+                    throw new InvalidOperationException($"Expected exactly {expected} call(s) to {methodName} but found {count}.");
+                }
+
+                return;
+            }
+
+            if (times.Mode == TimesSpecMode.AtLeast)
+            {
+                var minimum = times.Count ?? throw new InvalidOperationException("TimesSpec.AtLeast requires a count.");
+                if (count < minimum)
+                {
+                    throw new InvalidOperationException($"Expected at least {minimum} call(s) to {methodName} but found {count}.");
+                }
+
+                return;
+            }
+
+            if (times.Mode == TimesSpecMode.AtMost)
+            {
+                var maximum = times.Count ?? throw new InvalidOperationException("TimesSpec.AtMost requires a count.");
+                if (count > maximum)
+                {
+                    throw new InvalidOperationException($"Expected at most {maximum} call(s) to {methodName} but found {count}.");
+                }
+
+                return;
+            }
+
+            if (count == 0)
+            {
+                throw new InvalidOperationException($"Expected at least one call to {methodName} but found none.");
+            }
+        }
+
+        private static void MarkInvocationsVerified(IEnumerable<IInvocation> invocations)
+        {
+            foreach (var invocation in invocations)
+            {
+                invocation.GetType()
+                    .GetMethod("MarkAsVerified", BindingFlags.Instance | BindingFlags.NonPublic)
+                    ?.Invoke(invocation, null);
+            }
+        }
+
+        private static bool MethodsMatch(MethodInfo actualMethod, MethodInfo expectedMethod)
+        {
+            if (actualMethod == expectedMethod)
+            {
+                return true;
+            }
+
+            if (actualMethod.Name != expectedMethod.Name || actualMethod.ReturnType != expectedMethod.ReturnType)
+            {
+                return false;
+            }
+
+            var actualParameters = actualMethod.GetParameters();
+            var expectedParameters = expectedMethod.GetParameters();
+            if (actualParameters.Length != expectedParameters.Length)
+            {
+                return false;
+            }
+
+            for (var index = 0; index < actualParameters.Length; index++)
+            {
+                if (actualParameters[index].ParameterType != expectedParameters[index].ParameterType)
+                {
+                    return false;
+                }
+            }
+
+            return true;
         }
 
         private static void SetupLoggerCallbackGeneric<TLogger>(Mock logger, Action<LogLevel, EventId, string, Exception?> callback)

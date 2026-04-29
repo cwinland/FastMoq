@@ -284,7 +284,8 @@ namespace FastMoq.Providers
         {
             ArgumentNullException.ThrowIfNull(mock);
 
-            ResolveProvider(mock).Verify(mock, VerificationExpressionBuilder.BuildAnyArgsExpression<T>(methodName, parameterTypes), times);
+            var method = VerificationExpressionBuilder.GetSelectedMethod<T>(methodName, parameterTypes);
+            ResolveProvider(mock).VerifyMethod(mock, method, times);
         }
 
         /// <summary>
@@ -298,7 +299,7 @@ namespace FastMoq.Providers
             ArgumentNullException.ThrowIfNull(methodSelector);
 
             var method = VerificationExpressionBuilder.GetSelectedMethod(mock.Instance, methodSelector);
-            ResolveProvider(mock).Verify(mock, VerificationExpressionBuilder.BuildAnyArgsExpression<T>(method), times);
+            ResolveProvider(mock).VerifyMethod(mock, method, times);
         }
 
         /// <summary>
