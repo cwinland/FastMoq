@@ -8,7 +8,7 @@ namespace FastMoq.Providers.MoqProvider
     /// <summary>
     /// Provider implementation that adapts Moq to the provider-neutral FastMoq abstractions.
     /// </summary>
-    public sealed class MoqMockingProvider : IMockingProvider, IMockingProviderCapabilities, ITrackedMockPropertyConfigurator
+    public sealed class MoqMockingProvider : IMockingProvider, IMethodVerifyingMockingProvider, IMockingProviderCapabilities, ITrackedMockPropertyConfigurator
     {
         private static readonly MethodInfo ItIsAnyMethodDefinition = typeof(It)
             .GetMethods(BindingFlags.Public | BindingFlags.Static)

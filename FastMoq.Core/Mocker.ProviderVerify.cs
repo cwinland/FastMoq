@@ -239,7 +239,12 @@ namespace FastMoq
             if (model.FastMock is IFastMock<T> typed)
             {
                 var provider = MockingProviderRegistry.ResolveProvider(typed);
-                provider.VerifyMethod(typed, method, times);
+                if (provider is not IMethodVerifyingMockingProvider methodVerifyingProvider)
+                {
+                    throw new NotSupportedException($"The current mocking provider '{provider.GetType().FullName}' does not support wildcard method verification. Implement {nameof(IMethodVerifyingMockingProvider)} to enable VerifyAnyArgs for non-void methods.");
+                }
+
+                methodVerifyingProvider.VerifyMethod(typed, method, times);
             }
         }
 
@@ -265,7 +270,12 @@ namespace FastMoq
             {
                 var method = VerificationExpressionBuilder.GetSelectedMethod(typed.Instance, methodSelector);
                 var provider = MockingProviderRegistry.ResolveProvider(typed);
-                provider.VerifyMethod(typed, method, times);
+                if (provider is not IMethodVerifyingMockingProvider methodVerifyingProvider)
+                {
+                    throw new NotSupportedException($"The current mocking provider '{provider.GetType().FullName}' does not support wildcard method verification. Implement {nameof(IMethodVerifyingMockingProvider)} to enable VerifyAnyArgs for non-void methods.");
+                }
+
+                methodVerifyingProvider.VerifyMethod(typed, method, times);
             }
         }
 

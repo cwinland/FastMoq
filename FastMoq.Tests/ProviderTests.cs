@@ -1779,7 +1779,7 @@ namespace FastMoq.Tests
         /// <summary>
         /// Test-only abstract base provider used by convention-discovery tests to delegate behavior to NSubstitute.
         /// </summary>
-        public abstract class ConventionDiscoveredDelegatingMockingProviderBase : IMockingProvider
+        public abstract class ConventionDiscoveredDelegatingMockingProviderBase : IMockingProvider, IMethodVerifyingMockingProvider
         {
             /// <inheritdoc />
             public IMockingProviderCapabilities Capabilities => NSubstituteMockingProvider.Instance.Capabilities;

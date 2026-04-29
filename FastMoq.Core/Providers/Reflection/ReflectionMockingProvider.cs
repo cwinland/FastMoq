@@ -11,7 +11,7 @@ namespace FastMoq.Providers.ReflectionProvider
     /// Does NOT support: strict mode, call base, property auto-setup, protected members.
     /// Intended as a fallback / baseline provider so FastMoq can operate without external mocking libraries.
     /// </summary>
-    internal sealed class ReflectionMockingProvider : IMockingProvider, IMockingProviderCapabilities, ITrackedMockPropertyConfigurator
+    internal sealed class ReflectionMockingProvider : IMockingProvider, IMethodVerifyingMockingProvider, IMockingProviderCapabilities, ITrackedMockPropertyConfigurator
     {
         public static readonly ReflectionMockingProvider Instance = new();
         private ReflectionMockingProvider() { }

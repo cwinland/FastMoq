@@ -1,6 +1,5 @@
 using Microsoft.Extensions.Logging;
 using System.Linq.Expressions;
-using System.Reflection;
 
 namespace FastMoq.Providers
 {
@@ -58,21 +57,6 @@ namespace FastMoq.Providers
         /// <param name="expression">The invocation expression to verify.</param>
         /// <param name="times">The expected invocation count.</param>
         void Verify<T>(IFastMock<T> mock, Expression<Action<T>> expression, TimesSpec? times = null) where T : class;
-
-        /// <summary>
-        /// Verifies that the specified method was invoked on the mock while treating every argument as a wildcard matcher.
-        /// </summary>
-        /// <typeparam name="T">The mocked type.</typeparam>
-        /// <param name="mock">The mock to verify.</param>
-        /// <param name="method">The method to verify.</param>
-        /// <param name="times">The expected invocation count.</param>
-        /// <exception cref="NotSupportedException">
-        /// Thrown when the current provider does not implement wildcard method verification.
-        /// </exception>
-        void VerifyMethod<T>(IFastMock<T> mock, MethodInfo method, TimesSpec? times = null) where T : class
-        {
-            throw new NotSupportedException("The current mocking provider does not support VerifyMethod<T>. Implement IMockingProvider.VerifyMethod<T> to enable wildcard method verification.");
-        }
 
         /// <summary>
         /// Verifies that no unexpected invocations remain on the mock.

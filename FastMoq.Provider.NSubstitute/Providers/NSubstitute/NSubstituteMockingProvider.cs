@@ -8,7 +8,7 @@ namespace FastMoq.Providers.NSubstituteProvider
     /// <summary>
     /// Provider implementation that adapts NSubstitute to the provider-neutral FastMoq abstractions.
     /// </summary>
-    public sealed class NSubstituteMockingProvider : IMockingProvider, IMockingProviderCapabilities, ITrackedMockPropertyConfigurator
+    public sealed class NSubstituteMockingProvider : IMockingProvider, IMethodVerifyingMockingProvider, IMockingProviderCapabilities, ITrackedMockPropertyConfigurator
     {
         private static readonly ConcurrentDictionary<object, ConcurrentBag<ICall>> VerifiedCalls = new();
         private static readonly ConcurrentDictionary<object, byte> ConfiguredLoggers = new();

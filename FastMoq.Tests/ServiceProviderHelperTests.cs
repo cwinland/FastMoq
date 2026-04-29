@@ -1094,7 +1094,7 @@ namespace FastMoq.Tests
             public string? Name { get; set; }
         }
 
-        private sealed class DelegatingMoqPropertyConfiguratorProvider : IMockingProvider, IMockingProviderCapabilities, ITrackedMockPropertyConfigurator
+        private sealed class DelegatingMoqPropertyConfiguratorProvider : IMockingProvider, IMethodVerifyingMockingProvider, IMockingProviderCapabilities, ITrackedMockPropertyConfigurator
         {
             private readonly MoqMockingProvider _inner = MoqMockingProvider.Instance;
 
