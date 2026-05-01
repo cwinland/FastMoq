@@ -561,6 +561,82 @@ interface IDependency
         }
 
         [Fact]
+        public async Task BareTrackedVerifyAnalyzer_ShouldNotThrowAd0001_WhenTrackedMockHelperPropertyLivesInAnotherSyntaxTree()
+        {
+            var sources = new (string fileName, string source)[]
+            {
+                (
+                    "VerifyHelper.cs",
+                    @"
+using FastMoq;
+using FastMoq.Providers.MoqProvider;
+using Moq;
+
+class VerifyHelper
+{
+    public Mocker M => Mocks;
+
+    public Mocker Mocks { get; } = new();
+
+    public Mock<IDependency> Dependency => M.GetOrCreateMock<IDependency>().AsMoq();
+}
+
+interface IDependency
+{
+    void Run(string value);
+}"
+                ),
+                (
+                    "Sample.cs",
+                    @"
+class Sample
+{
+    private VerifyHelper Helper { get; } = new();
+
+    void Execute()
+    {
+        Helper.Dependency.Verify();
+    }
+}"
+                ),
+            };
+
+            var diagnostics = await AnalyzerTestHelpers.GetDiagnosticsAsync(sources, new BareTrackedVerifyAnalyzer());
+
+            Assert.DoesNotContain(diagnostics, diagnostic => diagnostic.Id == "AD0001");
+
+            var diagnostic = Assert.Single(diagnostics.Where(item => item.Id == DiagnosticIds.AvoidBareTrackedVerify));
+            Assert.Equal(DiagnosticIds.AvoidBareTrackedVerify, diagnostic.Id);
+        }
+
+        [Fact]
+        public async Task BareTrackedVerifyAnalyzer_ShouldIgnore_StandaloneRawMockVerify()
+        {
+            const string SOURCE = @"
+using Moq;
+
+class Sample
+{
+    private readonly Mock<IDependency> _dependency = new();
+
+    void Execute()
+    {
+        _dependency.Verify();
+    }
+}
+
+interface IDependency
+{
+    void Run(string value);
+}";
+
+            var diagnostics = await AnalyzerTestHelpers.GetDiagnosticsAsync(SOURCE, new BareTrackedVerifyAnalyzer());
+
+            Assert.DoesNotContain(diagnostics, diagnostic => diagnostic.Id == "AD0001");
+            Assert.DoesNotContain(diagnostics, diagnostic => diagnostic.Id == DiagnosticIds.AvoidBareTrackedVerify);
+        }
+
+        [Fact]
         public async Task FastMockVerifyHelperAnalyzer_ShouldReportAndFix_WhenTrackedCallSiteUsesProviderSpecificVerifyWrapper()
         {
             const string SOURCE = @"
