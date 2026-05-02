@@ -26,6 +26,7 @@ namespace FastMoq.Analyzers.CodeFixes
             DiagnosticIds.UseProviderFirstReset,
             DiagnosticIds.UseVerifyLogged,
             DiagnosticIds.PreferSetupLoggerCallbackHelper,
+            DiagnosticIds.DirectMockerTestBaseInheritance,
             DiagnosticIds.UseProviderFirstVerify,
             DiagnosticIds.AvoidFastMockVerifyHelperWrappers,
             DiagnosticIds.AvoidProviderSpecificFastMockVerifyHelperWrappers,
@@ -124,6 +125,30 @@ namespace FastMoq.Analyzers.CodeFixes
                                 "Use SetupLoggerCallback(...)",
                                 cancellationToken => ReplaceSetupLoggerCallbackInvocationAsync(document, invocationExpression, cancellationToken),
                                 nameof(DiagnosticIds.PreferSetupLoggerCallbackHelper)),
+                            diagnostic);
+                        break;
+                    }
+
+                case DiagnosticIds.DirectMockerTestBaseInheritance:
+                    {
+                        var classDeclaration = root.FindNode(diagnostic.Location.SourceSpan).FirstAncestorOrSelf<ClassDeclarationSyntax>();
+                        if (classDeclaration is null)
+                        {
+                            return;
+                        }
+
+                        var semanticModel = await document.GetSemanticModelAsync(context.CancellationToken).ConfigureAwait(false);
+                        if (semanticModel is null ||
+                            !TryBuildDirectMockerTestBaseInheritanceFix(classDeclaration, semanticModel, context.CancellationToken, out _))
+                        {
+                            return;
+                        }
+
+                        context.RegisterCodeFix(
+                            CodeAction.Create(
+                                "Use direct MockerTestBase inheritance",
+                                cancellationToken => ReplaceDirectMockerTestBaseInheritanceAsync(document, classDeclaration, cancellationToken),
+                                nameof(DiagnosticIds.DirectMockerTestBaseInheritance)),
                             diagnostic);
                         break;
                     }
@@ -602,6 +627,108 @@ namespace FastMoq.Analyzers.CodeFixes
             {
                 updatedRoot = AddUsingDirectiveIfMissing(updatedRoot, FastMoqAnalysisHelpers.FastMoqProvidersNamespace);
             }
+
+            return document.WithSyntaxRoot(updatedRoot);
+        }
+
+        private static async Task<Document> ReplaceDirectMockerTestBaseInheritanceAsync(Document document, ClassDeclarationSyntax classDeclaration, CancellationToken cancellationToken)
+        {
+            var root = await document.GetSyntaxRootAsync(cancellationToken).ConfigureAwait(false);
+            var semanticModel = await document.GetSemanticModelAsync(cancellationToken).ConfigureAwait(false);
+            if (root is null || semanticModel is null ||
+                !TryBuildDirectMockerTestBaseInheritanceFix(classDeclaration, semanticModel, cancellationToken, out var fix))
+            {
+                return document;
+            }
+
+            var outerAnnotation = new SyntaxAnnotation();
+            var helperDeclarationAnnotation = new SyntaxAnnotation();
+            var helperFieldAnnotation = new SyntaxAnnotation();
+            var memberAccessAnnotations = fix.MemberAccessReplacements
+                .Select(item => (Replacement: item, Annotation: new SyntaxAnnotation()))
+                .ToArray();
+            var statementAnnotations = fix.StatementsToRemove
+                .Select(item => (Statement: item, Annotation: new SyntaxAnnotation()))
+                .ToArray();
+            var nodesToAnnotate = new List<SyntaxNode>
+            {
+                fix.OuterClassDeclaration,
+                fix.HelperTypeDeclaration,
+                fix.HelperFieldDeclaration,
+            };
+            nodesToAnnotate.AddRange(memberAccessAnnotations.Select(item => (SyntaxNode) item.Replacement.MemberAccess));
+            nodesToAnnotate.AddRange(statementAnnotations.Select(item => (SyntaxNode) item.Statement));
+
+            var updatedRoot = root.ReplaceNodes(
+                nodesToAnnotate,
+                (originalNode, rewrittenNode) =>
+                {
+                    if (originalNode == fix.OuterClassDeclaration)
+                    {
+                        return rewrittenNode.WithAdditionalAnnotations(outerAnnotation);
+                    }
+
+                    if (originalNode == fix.HelperTypeDeclaration)
+                    {
+                        return rewrittenNode.WithAdditionalAnnotations(helperDeclarationAnnotation);
+                    }
+
+                    if (originalNode == fix.HelperFieldDeclaration)
+                    {
+                        return rewrittenNode.WithAdditionalAnnotations(helperFieldAnnotation);
+                    }
+
+                    var memberAccessAnnotation = memberAccessAnnotations.SingleOrDefault(item => item.Replacement.MemberAccess == originalNode).Annotation;
+                    if (memberAccessAnnotation is not null)
+                    {
+                        return rewrittenNode.WithAdditionalAnnotations(memberAccessAnnotation);
+                    }
+
+                    var statementAnnotation = statementAnnotations.Single(item => item.Statement == originalNode).Annotation;
+                    return rewrittenNode.WithAdditionalAnnotations(statementAnnotation);
+                });
+
+            foreach (var (replacement, annotation) in memberAccessAnnotations)
+            {
+                var currentMemberAccess = updatedRoot.GetAnnotatedNodes(annotation).OfType<MemberAccessExpressionSyntax>().SingleOrDefault();
+                if (currentMemberAccess is null)
+                {
+                    continue;
+                }
+
+                updatedRoot = updatedRoot.ReplaceNode(
+                    currentMemberAccess,
+                    SyntaxFactory.ParseExpression(replacement.ReplacementText).WithTriviaFrom(currentMemberAccess));
+            }
+
+            foreach (var (_, annotation) in statementAnnotations)
+            {
+                var currentStatement = updatedRoot.GetAnnotatedNodes(annotation).OfType<StatementSyntax>().SingleOrDefault();
+                if (currentStatement is not null)
+                {
+                    updatedRoot = updatedRoot.RemoveNode(currentStatement, SyntaxRemoveOptions.KeepExteriorTrivia) ?? updatedRoot;
+                }
+            }
+
+            var helperDeclarationNode = updatedRoot.GetAnnotatedNodes(helperDeclarationAnnotation).SingleOrDefault();
+            if (helperDeclarationNode is not null)
+            {
+                updatedRoot = updatedRoot.RemoveNode(helperDeclarationNode, SyntaxRemoveOptions.KeepExteriorTrivia) ?? updatedRoot;
+            }
+
+            var helperFieldNode = updatedRoot.GetAnnotatedNodes(helperFieldAnnotation).SingleOrDefault();
+            if (helperFieldNode is not null)
+            {
+                updatedRoot = updatedRoot.RemoveNode(helperFieldNode, SyntaxRemoveOptions.KeepExteriorTrivia) ?? updatedRoot;
+            }
+
+            var annotatedOuter = (ClassDeclarationSyntax) updatedRoot.GetAnnotatedNodes(outerAnnotation).Single();
+            var replacementOuter = annotatedOuter.WithBaseList(
+                SyntaxFactory.BaseList(
+                    SyntaxFactory.SingletonSeparatedList<BaseTypeSyntax>(
+                        SyntaxFactory.SimpleBaseType(
+                            SyntaxFactory.ParseTypeName($"MockerTestBase<{fix.TargetTypeName}>")))));
+            updatedRoot = updatedRoot.ReplaceNode(annotatedOuter, replacementOuter);
 
             return document.WithSyntaxRoot(updatedRoot);
         }
@@ -1298,6 +1425,194 @@ namespace FastMoq.Analyzers.CodeFixes
             parsedStatements[0] = parsedStatements[0].WithLeadingTrivia(originalStatement.GetLeadingTrivia());
             parsedStatements[parsedStatements.Length - 1] = parsedStatements[parsedStatements.Length - 1].WithTrailingTrivia(originalStatement.GetTrailingTrivia());
             return parsedStatements;
+        }
+
+        private static bool TryBuildDirectMockerTestBaseInheritanceFix(
+            ClassDeclarationSyntax classDeclaration,
+            SemanticModel semanticModel,
+            CancellationToken cancellationToken,
+            out DirectMockerTestBaseInheritanceFix fix)
+        {
+            fix = default;
+
+            if (!FastMoqAnalysisHelpers.TryGetDirectMockerTestBaseInheritanceCandidate(classDeclaration, semanticModel, cancellationToken, out var candidate) ||
+                !candidate.IsFixable ||
+                candidate.HelperMember is not IFieldSymbol helperField ||
+                helperField.DeclaringSyntaxReferences.SingleOrDefault()?.GetSyntax(cancellationToken) is not VariableDeclaratorSyntax helperVariable ||
+                helperVariable.Parent?.Parent is not FieldDeclarationSyntax helperFieldDeclaration ||
+                helperFieldDeclaration.Declaration.Variables.Count != 1 ||
+                !TryGetHelperAliasMap(candidate.HelperTypeDeclaration, out var aliasMap))
+            {
+                return false;
+            }
+
+            var memberAccessReplacements = new List<DirectMockerTestBaseInheritanceReplacement>();
+            var statementsToRemove = new List<StatementSyntax>();
+
+            foreach (var member in classDeclaration.Members)
+            {
+                if (member == candidate.HelperTypeDeclaration || member == helperFieldDeclaration)
+                {
+                    continue;
+                }
+
+                foreach (var identifierName in member.DescendantNodesAndSelf().OfType<IdentifierNameSyntax>())
+                {
+                    if (!SymbolEqualityComparer.Default.Equals(semanticModel.GetSymbolInfo(identifierName, cancellationToken).Symbol, helperField))
+                    {
+                        continue;
+                    }
+
+                    if (identifierName.Parent is MemberAccessExpressionSyntax memberAccess && memberAccess.Expression == identifierName)
+                    {
+                        if (!aliasMap.TryGetValue(memberAccess.Name.Identifier.ValueText, out var baseMemberName))
+                        {
+                            return false;
+                        }
+
+                        memberAccessReplacements.Add(new DirectMockerTestBaseInheritanceReplacement(memberAccess, $"base.{baseMemberName}"));
+                        continue;
+                    }
+
+                    if (identifierName.Parent is AssignmentExpressionSyntax assignmentExpression &&
+                        assignmentExpression.Left == identifierName &&
+                        assignmentExpression.Parent is ExpressionStatementSyntax expressionStatement &&
+                        TryIsHelperConstructionAssignment(assignmentExpression.Right, candidate.HelperType, semanticModel, cancellationToken))
+                    {
+                        statementsToRemove.Add(expressionStatement);
+                        continue;
+                    }
+
+                    return false;
+                }
+            }
+
+            fix = new DirectMockerTestBaseInheritanceFix(
+                classDeclaration,
+                candidate.HelperTypeDeclaration,
+                helperFieldDeclaration,
+                candidate.TargetType.ToDisplayString(SymbolDisplayFormat.MinimallyQualifiedFormat),
+                memberAccessReplacements,
+                statementsToRemove);
+            return true;
+        }
+
+        private static bool TryGetHelperAliasMap(TypeDeclarationSyntax helperTypeDeclaration, out Dictionary<string, string> aliasMap)
+        {
+            aliasMap = new Dictionary<string, string>(StringComparer.Ordinal);
+
+            foreach (var propertyDeclaration in helperTypeDeclaration.Members.OfType<PropertyDeclarationSyntax>())
+            {
+                if (!TryGetPropertyReturnExpression(propertyDeclaration, out var expression))
+                {
+                    return false;
+                }
+
+                expression = UnwrapExpression(expression);
+                string? baseMemberName = expression switch
+                {
+                    IdentifierNameSyntax identifierName when identifierName.Identifier.ValueText is "Component" or "Mocks" => identifierName.Identifier.ValueText,
+                    MemberAccessExpressionSyntax memberAccess when memberAccess.Expression is ThisExpressionSyntax && memberAccess.Name.Identifier.ValueText is "Component" or "Mocks" => memberAccess.Name.Identifier.ValueText,
+                    _ => null,
+                };
+
+                if (baseMemberName is null)
+                {
+                    return false;
+                }
+
+                aliasMap[propertyDeclaration.Identifier.ValueText] = baseMemberName;
+            }
+
+            return aliasMap.Count > 0;
+        }
+
+        private static bool TryGetPropertyReturnExpression(PropertyDeclarationSyntax propertyDeclaration, out ExpressionSyntax expression)
+        {
+            if (propertyDeclaration.ExpressionBody is not null)
+            {
+                expression = propertyDeclaration.ExpressionBody.Expression;
+                return true;
+            }
+
+            if (propertyDeclaration.AccessorList?.Accessors.Count == 1 && propertyDeclaration.AccessorList.Accessors[0].Keyword.IsKind(SyntaxKind.GetKeyword))
+            {
+                var getter = propertyDeclaration.AccessorList.Accessors[0];
+                if (getter.ExpressionBody is not null)
+                {
+                    expression = getter.ExpressionBody.Expression;
+                    return true;
+                }
+
+                if (getter.Body?.Statements.Count == 1 && getter.Body.Statements[0] is ReturnStatementSyntax returnStatement && returnStatement.Expression is not null)
+                {
+                    expression = returnStatement.Expression;
+                    return true;
+                }
+            }
+
+            expression = default!;
+            return false;
+        }
+
+        private static ExpressionSyntax UnwrapExpression(ExpressionSyntax expression)
+        {
+            while (expression is ParenthesizedExpressionSyntax parenthesizedExpression)
+            {
+                expression = parenthesizedExpression.Expression;
+            }
+
+            return expression;
+        }
+
+        private static bool TryIsHelperConstructionAssignment(ExpressionSyntax expression, INamedTypeSymbol helperType, SemanticModel semanticModel, CancellationToken cancellationToken)
+        {
+            var type = semanticModel.GetTypeInfo(expression, cancellationToken).Type as INamedTypeSymbol;
+            return type is not null && SymbolEqualityComparer.Default.Equals(type, helperType);
+        }
+
+        private readonly struct DirectMockerTestBaseInheritanceFix
+        {
+            public DirectMockerTestBaseInheritanceFix(
+                ClassDeclarationSyntax outerClassDeclaration,
+                TypeDeclarationSyntax helperTypeDeclaration,
+                FieldDeclarationSyntax helperFieldDeclaration,
+                string targetTypeName,
+                IReadOnlyList<DirectMockerTestBaseInheritanceReplacement> memberAccessReplacements,
+                IReadOnlyList<StatementSyntax> statementsToRemove)
+            {
+                OuterClassDeclaration = outerClassDeclaration;
+                HelperTypeDeclaration = helperTypeDeclaration;
+                HelperFieldDeclaration = helperFieldDeclaration;
+                TargetTypeName = targetTypeName;
+                MemberAccessReplacements = memberAccessReplacements;
+                StatementsToRemove = statementsToRemove;
+            }
+
+            public ClassDeclarationSyntax OuterClassDeclaration { get; }
+
+            public TypeDeclarationSyntax HelperTypeDeclaration { get; }
+
+            public FieldDeclarationSyntax HelperFieldDeclaration { get; }
+
+            public string TargetTypeName { get; }
+
+            public IReadOnlyList<DirectMockerTestBaseInheritanceReplacement> MemberAccessReplacements { get; }
+
+            public IReadOnlyList<StatementSyntax> StatementsToRemove { get; }
+        }
+
+        private readonly struct DirectMockerTestBaseInheritanceReplacement
+        {
+            public DirectMockerTestBaseInheritanceReplacement(MemberAccessExpressionSyntax memberAccess, string replacementText)
+            {
+                MemberAccess = memberAccess;
+                ReplacementText = replacementText;
+            }
+
+            public MemberAccessExpressionSyntax MemberAccess { get; }
+
+            public string ReplacementText { get; }
         }
 
         private static bool TryBuildProviderNeutralHttpHelperEdit(InvocationExpressionSyntax invocationExpression, SemanticModel semanticModel, CancellationToken cancellationToken, out ProviderNeutralHttpHelperEdit edit)
