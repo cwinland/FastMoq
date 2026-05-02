@@ -1,8 +1,6 @@
 using FastMoq.Models;
 using System;
 using System.IO.Abstractions;
-using AwesomeAssertionExtensions = AwesomeAssertions.AssertionExtensions;
-using AwesomeEnumAssertionExtensions = AwesomeAssertions.EnumAssertionsExtensions;
 
 namespace FastMoq.Tests
 {
@@ -15,11 +13,11 @@ namespace FastMoq.Tests
 
             var plan = harness.DescribeComponentConstruction();
 
-            AwesomeAssertionExtensions.Should(plan.RequestedType).Be(typeof(ConstructorSelectionTarget));
-            AwesomeAssertionExtensions.Should(plan.ResolvedType).Be(typeof(ConstructorSelectionTarget));
-            AwesomeAssertionExtensions.Should(plan.Parameters).HaveCount(2);
-            AwesomeAssertionExtensions.Should(plan.Parameters[0].ParameterType).Be(typeof(IFileSystem));
-            AwesomeAssertionExtensions.Should(plan.Parameters[1].ParameterType).Be(typeof(string));
+            plan.RequestedType.Should().Be(typeof(ConstructorSelectionTarget));
+            plan.ResolvedType.Should().Be(typeof(ConstructorSelectionTarget));
+            plan.Parameters.Should().HaveCount(2);
+            plan.Parameters[0].ParameterType.Should().Be(typeof(IFileSystem));
+            plan.Parameters[1].ParameterType.Should().Be(typeof(string));
         }
 
         [Fact]
@@ -29,9 +27,9 @@ namespace FastMoq.Tests
 
             var plan = harness.DescribeComponentConstruction();
 
-            AwesomeAssertionExtensions.Should(plan.UsedNonPublicConstructor).BeTrue();
-            AwesomeAssertionExtensions.Should(plan.Parameters).HaveCount(1);
-            AwesomeEnumAssertionExtensions.Should(plan.Parameters[0].Source).Be(InstanceConstructionParameterSource.AutoMock);
+            plan.UsedNonPublicConstructor.Should().BeTrue();
+            plan.Parameters.Should().HaveCount(1);
+            plan.Parameters[0].Source.Should().Be(InstanceConstructionParameterSource.AutoMock);
         }
 
         [Fact]
@@ -41,7 +39,7 @@ namespace FastMoq.Tests
 
             var plan = harness.DescribeComponentConstruction();
 
-            AwesomeAssertionExtensions.Should(plan.Parameters).BeEmpty();
+            plan.Parameters.Should().BeEmpty();
         }
 
         private sealed class ConstructorTypesHarness : MockerTestBase<ConstructorSelectionTarget>

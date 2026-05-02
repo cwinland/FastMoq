@@ -1,8 +1,6 @@
 using FastMoq.Models;
 using Microsoft.Extensions.DependencyInjection;
 using System.IO.Abstractions;
-using AwesomeAssertionExtensions = AwesomeAssertions.AssertionExtensions;
-using AwesomeEnumAssertionExtensions = AwesomeAssertions.EnumAssertionsExtensions;
 using PublicInstanceConstructionRequest = FastMoq.Models.InstanceConstructionRequest;
 
 namespace FastMoq.Tests
@@ -17,9 +15,9 @@ namespace FastMoq.Tests
 
             var plan = mocker.CreateConstructionPlan(new PublicInstanceConstructionRequest(typeof(IMappedService)));
 
-            AwesomeAssertionExtensions.Should(plan.RequestedType).Be(typeof(IMappedService));
-            AwesomeAssertionExtensions.Should(plan.ResolvedType).Be(typeof(MappedService));
-            AwesomeAssertionExtensions.Should(plan.Parameters).BeEmpty();
+            plan.RequestedType.Should().Be(typeof(IMappedService));
+            plan.ResolvedType.Should().Be(typeof(MappedService));
+            plan.Parameters.Should().BeEmpty();
         }
 
         [Fact]
@@ -30,8 +28,8 @@ namespace FastMoq.Tests
 
             var plan = mocker.CreateConstructionPlan(new PublicInstanceConstructionRequest(typeof(TargetWithDependency)));
 
-            AwesomeAssertionExtensions.Should(plan.Parameters).HaveCount(1);
-            AwesomeEnumAssertionExtensions.Should(plan.Parameters[0].Source).Be(InstanceConstructionParameterSource.CustomRegistration);
+            plan.Parameters.Should().HaveCount(1);
+            plan.Parameters[0].Source.Should().Be(InstanceConstructionParameterSource.CustomRegistration);
         }
 
         [Fact]
@@ -41,9 +39,9 @@ namespace FastMoq.Tests
 
             var plan = mocker.CreateConstructionPlan(new PublicInstanceConstructionRequest(typeof(TargetWithFileSystem)));
 
-            AwesomeAssertionExtensions.Should(plan.Parameters).HaveCount(1);
-            AwesomeAssertionExtensions.Should(plan.Parameters[0].ParameterType).Be(typeof(IFileSystem));
-            AwesomeEnumAssertionExtensions.Should(plan.Parameters[0].Source).Be(InstanceConstructionParameterSource.KnownType);
+            plan.Parameters.Should().HaveCount(1);
+            plan.Parameters[0].ParameterType.Should().Be(typeof(IFileSystem));
+            plan.Parameters[0].Source.Should().Be(InstanceConstructionParameterSource.KnownType);
         }
 
         [Fact]
@@ -53,9 +51,9 @@ namespace FastMoq.Tests
 
             var plan = mocker.CreateConstructionPlan(new PublicInstanceConstructionRequest(typeof(TargetWithKeyedDependency)));
 
-            AwesomeAssertionExtensions.Should(plan.Parameters).HaveCount(1);
-            AwesomeEnumAssertionExtensions.Should(plan.Parameters[0].Source).Be(InstanceConstructionParameterSource.KeyedService);
-            AwesomeAssertionExtensions.Should(plan.Parameters[0].ServiceKey).Be("primary");
+            plan.Parameters.Should().HaveCount(1);
+            plan.Parameters[0].Source.Should().Be(InstanceConstructionParameterSource.KeyedService);
+            plan.Parameters[0].ServiceKey.Should().Be("primary");
         }
 
         [Fact]
@@ -65,9 +63,9 @@ namespace FastMoq.Tests
 
             var plan = mocker.CreateConstructionPlan(new PublicInstanceConstructionRequest(typeof(TargetWithOptionalDependency)));
 
-            AwesomeAssertionExtensions.Should(plan.Parameters).HaveCount(1);
-            AwesomeAssertionExtensions.Should(plan.Parameters[0].IsOptional).BeTrue();
-            AwesomeEnumAssertionExtensions.Should(plan.Parameters[0].Source).Be(InstanceConstructionParameterSource.OptionalDefault);
+            plan.Parameters.Should().HaveCount(1);
+            plan.Parameters[0].IsOptional.Should().BeTrue();
+            plan.Parameters[0].Source.Should().Be(InstanceConstructionParameterSource.OptionalDefault);
         }
 
         [Fact]
@@ -77,9 +75,9 @@ namespace FastMoq.Tests
 
             var plan = mocker.CreateConstructionPlan(new PublicInstanceConstructionRequest(typeof(TargetWithMixedDependencies)));
 
-            AwesomeAssertionExtensions.Should(plan.Parameters).HaveCount(2);
-            AwesomeEnumAssertionExtensions.Should(plan.Parameters[0].Source).Be(InstanceConstructionParameterSource.AutoMock);
-            AwesomeEnumAssertionExtensions.Should(plan.Parameters[1].Source).Be(InstanceConstructionParameterSource.TypeDefault);
+            plan.Parameters.Should().HaveCount(2);
+            plan.Parameters[0].Source.Should().Be(InstanceConstructionParameterSource.AutoMock);
+            plan.Parameters[1].Source.Should().Be(InstanceConstructionParameterSource.TypeDefault);
         }
 
         [Fact]
@@ -89,9 +87,9 @@ namespace FastMoq.Tests
 
             var plan = mocker.CreateConstructionPlan(new PublicInstanceConstructionRequest(typeof(TargetWithConcreteDependency)));
 
-            AwesomeAssertionExtensions.Should(plan.Parameters).HaveCount(1);
-            AwesomeAssertionExtensions.Should(plan.Parameters[0].ParameterType).Be(typeof(ConcreteDependency));
-            AwesomeEnumAssertionExtensions.Should(plan.Parameters[0].Source).Be(InstanceConstructionParameterSource.AutoMock);
+            plan.Parameters.Should().HaveCount(1);
+            plan.Parameters[0].ParameterType.Should().Be(typeof(ConcreteDependency));
+            plan.Parameters[0].Source.Should().Be(InstanceConstructionParameterSource.AutoMock);
         }
 
         [Fact]
@@ -101,9 +99,9 @@ namespace FastMoq.Tests
 
             var plan = mocker.CreateConstructionPlan(new PublicInstanceConstructionRequest(typeof(TargetWithSealedConcreteDependency)));
 
-            AwesomeAssertionExtensions.Should(plan.Parameters).HaveCount(1);
-            AwesomeAssertionExtensions.Should(plan.Parameters[0].ParameterType).Be(typeof(SealedConcreteDependency));
-            AwesomeEnumAssertionExtensions.Should(plan.Parameters[0].Source).Be(InstanceConstructionParameterSource.TypeDefault);
+            plan.Parameters.Should().HaveCount(1);
+            plan.Parameters[0].ParameterType.Should().Be(typeof(SealedConcreteDependency));
+            plan.Parameters[0].Source.Should().Be(InstanceConstructionParameterSource.TypeDefault);
         }
 
         [Fact]
@@ -113,8 +111,8 @@ namespace FastMoq.Tests
 
             var plan = mocker.CreateConstructionPlan(new PublicInstanceConstructionRequest(typeof(TargetWithPreferredConstructor)));
 
-            AwesomeAssertionExtensions.Should(plan.UsedPreferredConstructorAttribute).BeTrue();
-            AwesomeAssertionExtensions.Should(plan.Parameters).HaveCount(1);
+            plan.UsedPreferredConstructorAttribute.Should().BeTrue();
+            plan.Parameters.Should().HaveCount(1);
         }
 
         [Fact]
@@ -127,8 +125,8 @@ namespace FastMoq.Tests
                 ConstructorAmbiguityBehavior = ConstructorAmbiguityBehavior.PreferParameterlessConstructor,
             });
 
-            AwesomeAssertionExtensions.Should(plan.UsedAmbiguityFallback).BeTrue();
-            AwesomeAssertionExtensions.Should(plan.Parameters).BeEmpty();
+            plan.UsedAmbiguityFallback.Should().BeTrue();
+            plan.Parameters.Should().BeEmpty();
         }
 
         [Fact]
@@ -141,8 +139,8 @@ namespace FastMoq.Tests
                 PublicOnly = false,
             });
 
-            AwesomeAssertionExtensions.Should(plan.UsedNonPublicConstructor).BeTrue();
-            AwesomeAssertionExtensions.Should(plan.Parameters).HaveCount(1);
+            plan.UsedNonPublicConstructor.Should().BeTrue();
+            plan.Parameters.Should().HaveCount(1);
         }
 
         private interface IMappedService;

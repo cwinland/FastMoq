@@ -3,8 +3,6 @@ using Microsoft.Extensions.DependencyInjection;
 using System;
 using System.IO.Abstractions;
 using System.Linq;
-using AwesomeAssertionExtensions = AwesomeAssertions.AssertionExtensions;
-using AwesomeEnumAssertionExtensions = AwesomeAssertions.EnumAssertionsExtensions;
 
 namespace FastMoq.Tests
 {
@@ -17,25 +15,25 @@ namespace FastMoq.Tests
 
             var graph = mocker.CreateConstructionGraph(new InstanceConstructionRequest(typeof(TargetWithGraphDependencies)));
 
-            AwesomeAssertionExtensions.Should(graph.Request.RequestedType).Be(typeof(TargetWithGraphDependencies));
-            AwesomeEnumAssertionExtensions.Should(graph.Root.Kind).Be(InstanceConstructionGraphNodeKind.Root);
-            AwesomeAssertionExtensions.Should(graph.Root.Plan).NotBeNull();
-            AwesomeAssertionExtensions.Should(graph.Root.Plan!.ResolvedType).Be(typeof(TargetWithGraphDependencies));
-            AwesomeAssertionExtensions.Should(graph.Nodes).HaveCount(4);
-            AwesomeAssertionExtensions.Should(graph.Edges).HaveCount(3);
-            AwesomeAssertionExtensions.Should(graph.Edges.Select(edge => edge.ParameterName)).Equal(["fileSystem", "dependency", "name"]);
-            AwesomeAssertionExtensions.Should(graph.Edges.Select(edge => edge.ParameterPosition)).Equal([0, 1, 2]);
+            graph.Request.RequestedType.Should().Be(typeof(TargetWithGraphDependencies));
+            graph.Root.Kind.Should().Be(InstanceConstructionGraphNodeKind.Root);
+            graph.Root.Plan.Should().NotBeNull();
+            graph.Root.Plan!.ResolvedType.Should().Be(typeof(TargetWithGraphDependencies));
+            graph.Nodes.Should().HaveCount(4);
+            graph.Edges.Should().HaveCount(3);
+            graph.Edges.Select(edge => edge.ParameterName).Should().Equal(["fileSystem", "dependency", "name"]);
+            graph.Edges.Select(edge => edge.ParameterPosition).Should().Equal([0, 1, 2]);
 
             var dependencyNodes = graph.Nodes.Skip(1).ToArray();
-            AwesomeEnumAssertionExtensions.Should(dependencyNodes[0].Kind).Be(InstanceConstructionGraphNodeKind.Dependency);
-            AwesomeAssertionExtensions.Should(dependencyNodes[0].Parameter).NotBeNull();
-            AwesomeAssertionExtensions.Should(dependencyNodes[0].NodeType).Be(typeof(IFileSystem));
-            AwesomeEnumAssertionExtensions.Should(dependencyNodes[0].Parameter!.Source).Be(InstanceConstructionParameterSource.KnownType);
-            AwesomeAssertionExtensions.Should(dependencyNodes[1].NodeType).Be(typeof(IDependency));
-            AwesomeEnumAssertionExtensions.Should(dependencyNodes[1].Parameter!.Source).Be(InstanceConstructionParameterSource.KeyedService);
-            AwesomeAssertionExtensions.Should(dependencyNodes[1].Parameter!.ServiceKey).Be("primary");
-            AwesomeAssertionExtensions.Should(dependencyNodes[2].NodeType).Be(typeof(string));
-            AwesomeEnumAssertionExtensions.Should(dependencyNodes[2].Parameter!.Source).Be(InstanceConstructionParameterSource.OptionalDefault);
+            dependencyNodes[0].Kind.Should().Be(InstanceConstructionGraphNodeKind.Dependency);
+            dependencyNodes[0].Parameter.Should().NotBeNull();
+            dependencyNodes[0].NodeType.Should().Be(typeof(IFileSystem));
+            dependencyNodes[0].Parameter!.Source.Should().Be(InstanceConstructionParameterSource.KnownType);
+            dependencyNodes[1].NodeType.Should().Be(typeof(IDependency));
+            dependencyNodes[1].Parameter!.Source.Should().Be(InstanceConstructionParameterSource.KeyedService);
+            dependencyNodes[1].Parameter!.ServiceKey.Should().Be("primary");
+            dependencyNodes[2].NodeType.Should().Be(typeof(string));
+            dependencyNodes[2].Parameter!.Source.Should().Be(InstanceConstructionParameterSource.OptionalDefault);
         }
 
         [Fact]
@@ -45,12 +43,12 @@ namespace FastMoq.Tests
 
             var graph = harness.GetComponentConstructionGraph();
 
-            AwesomeAssertionExtensions.Should(graph.Request.ConstructorParameterTypes).NotBeNull();
-            AwesomeAssertionExtensions.Should(graph.Request.ConstructorParameterTypes!).Equal([typeof(IFileSystem), typeof(string)]);
-            AwesomeAssertionExtensions.Should(graph.Root.Plan).NotBeNull();
-            AwesomeAssertionExtensions.Should(graph.Root.Plan!.Parameters).HaveCount(2);
-            AwesomeAssertionExtensions.Should(graph.Edges.Select(edge => edge.ParameterName)).Equal(["fileSystem", "value"]);
-            AwesomeAssertionExtensions.Should(graph.Nodes.Skip(1).Select(node => node.NodeType)).Equal([typeof(IFileSystem), typeof(string)]);
+            graph.Request.ConstructorParameterTypes.Should().NotBeNull();
+            graph.Request.ConstructorParameterTypes!.Should().Equal([typeof(IFileSystem), typeof(string)]);
+            graph.Root.Plan.Should().NotBeNull();
+            graph.Root.Plan!.Parameters.Should().HaveCount(2);
+            graph.Edges.Select(edge => edge.ParameterName).Should().Equal(["fileSystem", "value"]);
+            graph.Nodes.Skip(1).Select(node => node.NodeType).Should().Equal([typeof(IFileSystem), typeof(string)]);
         }
 
         private sealed class ConstructorTypesGraphHarness : MockerTestBase<ConstructorSelectionTarget>
