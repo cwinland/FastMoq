@@ -150,11 +150,19 @@ Current package and MVP contract direction for [#120](https://github.com/cwinlan
 
 Current constructor-contract direction for [#125](https://github.com/cwinland/FastMoq/issues/125):
 
-- [#121](https://github.com/cwinland/FastMoq/issues/121) remains the umbrella tracker, while [#125](https://github.com/cwinland/FastMoq/issues/125) is the active blocking contract before [#122](https://github.com/cwinland/FastMoq/issues/122)
+- [#121](https://github.com/cwinland/FastMoq/issues/121) remains the umbrella tracker; [#125](https://github.com/cwinland/FastMoq/issues/125) is complete, and the public constructor-planning contract is now the settled runtime boundary that the first real [#122](https://github.com/cwinland/FastMoq/issues/122) generator output should target
 - the proposed public contract is `InstanceConstructionRequest`, `InstanceConstructionPlan`, `InstanceConstructionParameterPlan`, and `InstanceConstructionParameterSource`, with `Mocker.CreateConstructionPlan(InstanceConstructionRequest request)` as the preferred entry point
 - the first graph and harness MVP should keep that `Mocker` surface request-only; the first harness-side consumer can sit on `MockerTestBase<TComponent>` instead of adding a companion generic overload on `Mocker`
 - the proposed first-slice parameter-source enum members are `CustomRegistration`, `KnownType`, `KeyedService`, `AutoMock`, `OptionalDefault`, and `TypeDefault`; `ConstructedByMocker` is deferred until the runtime model exposes a distinct recursive-construction parameter category
 - the new contract stays narrow while existing public diagnostics, models, creation APIs, and current public reflection-metadata resolution behavior remain part of the compatibility boundary
+
+Current implementation status for [#127](https://github.com/cwinland/FastMoq/issues/127):
+
+- done: `FastMoq.Analyzers` now exposes a shared package-layout and target-test-shape matrix for aggregate, core-only, and split helper-package layouts
+- done: supported generated test shapes are explicit for core, web, Blazor, database, Azure, and Azure Functions targets based on the referenced FastMoq package set
+- done: `MissingHelperPackageAnalyzer` now consumes the same package matrix instead of ad hoc helper-package checks
+- done: analyzer tests now cover the core-only, split-helper, and aggregate package layouts that later generator and analyzer flows need to respect
+- next: continue [#122](https://github.com/cwinland/FastMoq/issues/122) with the first real source-generator output against the settled planning, graph, harness-bootstrap, and package-shape runtime contracts
 
 Current implementation status for [#122](https://github.com/cwinland/FastMoq/issues/122):
 
@@ -162,7 +170,7 @@ Current implementation status for [#122](https://github.com/cwinland/FastMoq/iss
 - done: `MockerTestBase<TComponent>` has the first graph-facing harness consumer through `GetComponentConstructionGraph()`
 - done: an internal harness-bootstrap descriptor now projects `ComponentCreationFlags`, ordered constructor-signature hooks, and explicit-request-override detection on top of the current graph metadata
 - done: focused runtime coverage now proves both the root-node mapping and the first harness-bootstrap descriptor paths
-- next: update the `#122` tracker or checklist to mark the graph metadata and first harness-bootstrap descriptor steps complete while leaving real source-generator output, representative consuming-scenario compilation, and benchmark work open
+- done: the `#122` tracker now records the graph metadata and first harness-bootstrap descriptor groundwork as complete while leaving real source-generator output, representative consuming-scenario compilation, and benchmark work open
 - next: continue `#122` by implementing the first real source-generator path against the settled planning, graph, and harness-bootstrap runtime contracts, adding only the minimum remaining dependency-order metadata if generator compilation proves it is needed
 
 For the current detailed direction, design constraints, and fuller generator issue mapping, see [Generator roadmap and design](./generator-roadmap.md).

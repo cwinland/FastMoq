@@ -22,8 +22,9 @@ namespace FastMoq.Analyzers.Analyzers
         private static void AnalyzeInvocation(SyntaxNodeAnalysisContext context)
         {
             var invocationExpression = (InvocationExpressionSyntax) context.Node;
+            var packageMatrix = FastMoqAnalysisHelpers.GetGeneratedTestPackageMatrix(context.SemanticModel.Compilation);
             if (context.ContainingSymbol?.ContainingAssembly?.Name != "FastMoq.Web" &&
-                !FastMoqAnalysisHelpers.HasWebHelperPackage(context.SemanticModel) &&
+                !packageMatrix.HasWebHelpers &&
                 FastMoqAnalysisHelpers.TryGetMethodSymbol(invocationExpression, context.SemanticModel, context.CancellationToken, out var webMethod) &&
                 webMethod is not null &&
                 FastMoqAnalysisHelpers.TryGetFastMoqWebHelperSuggestion(webMethod, out var webHelperName, out _))
@@ -38,7 +39,7 @@ namespace FastMoq.Analyzers.Analyzers
             }
 
             if (context.ContainingSymbol?.ContainingAssembly?.Name != "FastMoq.AzureFunctions" &&
-                !FastMoqAnalysisHelpers.HasFunctionContextInvocationIdMockHelper(context.SemanticModel) &&
+                !packageMatrix.HasAzureFunctionsHelpers &&
                 FastMoqAnalysisHelpers.TryGetFunctionContextInvocationIdHelperSuggestion(invocationExpression, context.SemanticModel, context.CancellationToken, out _))
             {
                 context.ReportDiagnostic(Diagnostic.Create(
@@ -51,7 +52,7 @@ namespace FastMoq.Analyzers.Analyzers
             }
 
             if (context.ContainingSymbol?.ContainingAssembly?.Name == "FastMoq.AzureFunctions" ||
-                FastMoqAnalysisHelpers.HasFunctionContextInstanceServicesMockHelper(context.SemanticModel) ||
+                packageMatrix.HasAzureFunctionsHelpers ||
                 !FastMoqAnalysisHelpers.TryGetFunctionContextInstanceServicesHelperSuggestion(invocationExpression, context.SemanticModel, context.CancellationToken, out _))
             {
                 return;
@@ -68,8 +69,9 @@ namespace FastMoq.Analyzers.Analyzers
         private static void AnalyzeObjectCreation(SyntaxNodeAnalysisContext context)
         {
             var expression = (ExpressionSyntax) context.Node;
+            var packageMatrix = FastMoqAnalysisHelpers.GetGeneratedTestPackageMatrix(context.SemanticModel.Compilation);
             if (context.ContainingSymbol?.ContainingAssembly?.Name == "FastMoq.Web" ||
-                FastMoqAnalysisHelpers.HasWebHelperPackage(context.SemanticModel) ||
+                packageMatrix.HasWebHelpers ||
                 !FastMoqAnalysisHelpers.TryGetRawWebHelperSuggestion(expression, context.SemanticModel, context.CancellationToken, out var helperName, out _))
             {
                 return;

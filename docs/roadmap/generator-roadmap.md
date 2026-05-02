@@ -238,14 +238,17 @@ These landed early because they improve normal authoring even before source gene
 
 Some work is more foundational and should be treated as explicit prerequisites for the generator implementation itself.
 
-Blocking areas:
+Completed on the current milestone branch:
 
-- stable graph metadata hooks or reusable constructor-selection primitives for generator output
-- clearer scenario-builder extension points for generated scaffolding
+- stable graph metadata hooks and reusable constructor-selection primitives for generator output
 - clear package-detection and target-test-shape rules so generated tests do not assume helper packages that are not referenced
+
+Still-open follow-up that composes with the generator line but no longer blocks the first real `#122` source-generator slice:
+
+- clearer scenario-builder extension points for generated scaffolding
 - broader generator-friendly helper normalization across logging, HTTP, Azure, Azure Functions, and DI-heavy setup when generated output needs those shapes to stay consistent across projects
 
-Those pieces are less about convenience and more about preventing the generator from emitting unstable, provider-native, or package-guessing code.
+The completed groundwork is what prevents the first generator slice from emitting unstable, provider-native, or package-guessing code too early. The remaining follow-up still matters, but it is now later-slice scope rather than a blocker for the first implementation-facing `#122` output.
 
 ## Package Shape And MVP Contract
 
@@ -489,7 +492,7 @@ The current doc plan now maps to these issue slices:
 5. Tighten the existing logging, HTTP, and typed DI helper surfaces that are small enough to land as v4 quick wins.
 6. Define graph metadata hooks and constructor-selection contracts for generator-targeted output.
 7. Define `ScenarioBuilder` scaffolding hooks and regeneration-safe extension points for generated output.
-8. Define package-detection and target-test-shape rules for package-aware generation.
+8. Define package-detection and target-test-shape rules for package-aware generation. This is now implemented on the current milestone branch through the shared analyzer package matrix.
 9. Normalize the broader blocking helper surfaces for logging, HTTP, Azure, Azure Functions, and typed DI-heavy setup.
 10. Implement compile-time test graph and harness generation MVP.
 11. Implement generated scenario and suite scaffolding after the graph and harness MVP.

@@ -132,18 +132,58 @@ namespace FastMoq.Analyzers.Tests
                 .ToFullString();
         }
 
-        public static Document CreateDocumentForTest(string source, bool includeAzureFunctionsHelpers = false, bool includeMoqProviderPackage = true, bool includeNSubstituteProviderPackage = true, bool includeWebHelpers = true)
+        public static Document CreateDocumentForTest(
+            string source,
+            bool includeAzureFunctionsHelpers = false,
+            bool includeMoqProviderPackage = true,
+            bool includeNSubstituteProviderPackage = true,
+            bool includeWebHelpers = true,
+            bool includeDatabaseHelpers = false,
+            bool includeAzureHelpers = false,
+            bool includeAggregatePackage = false)
         {
-            return CreateDocument(source, includeAzureFunctionsHelpers, includeMoqProviderPackage, includeNSubstituteProviderPackage, includeWebHelpers);
+            return CreateDocument(
+                source,
+                includeAzureFunctionsHelpers,
+                includeMoqProviderPackage,
+                includeNSubstituteProviderPackage,
+                includeWebHelpers,
+                includeDatabaseHelpers,
+                includeAzureHelpers,
+                includeAggregatePackage);
         }
 
-        private static Document CreateDocument(string source, bool includeAzureFunctionsHelpers = false, bool includeMoqProviderPackage = true, bool includeNSubstituteProviderPackage = true, bool includeWebHelpers = true)
+        private static Document CreateDocument(
+            string source,
+            bool includeAzureFunctionsHelpers = false,
+            bool includeMoqProviderPackage = true,
+            bool includeNSubstituteProviderPackage = true,
+            bool includeWebHelpers = true,
+            bool includeDatabaseHelpers = false,
+            bool includeAzureHelpers = false,
+            bool includeAggregatePackage = false)
         {
-            var project = CreateProject([("Test.cs", source)], includeAzureFunctionsHelpers, includeMoqProviderPackage, includeNSubstituteProviderPackage, includeWebHelpers);
+            var project = CreateProject(
+                [("Test.cs", source)],
+                includeAzureFunctionsHelpers,
+                includeMoqProviderPackage,
+                includeNSubstituteProviderPackage,
+                includeWebHelpers,
+                includeDatabaseHelpers,
+                includeAzureHelpers,
+                includeAggregatePackage);
             return project.Documents.Single();
         }
 
-        private static Project CreateProject(IReadOnlyList<(string fileName, string source)> sources, bool includeAzureFunctionsHelpers = false, bool includeMoqProviderPackage = true, bool includeNSubstituteProviderPackage = true, bool includeWebHelpers = true)
+        private static Project CreateProject(
+            IReadOnlyList<(string fileName, string source)> sources,
+            bool includeAzureFunctionsHelpers = false,
+            bool includeMoqProviderPackage = true,
+            bool includeNSubstituteProviderPackage = true,
+            bool includeWebHelpers = true,
+            bool includeDatabaseHelpers = false,
+            bool includeAzureHelpers = false,
+            bool includeAggregatePackage = false)
         {
             var workspace = new AdhocWorkspace();
             var projectId = ProjectId.CreateNewId();
@@ -153,7 +193,14 @@ namespace FastMoq.Analyzers.Tests
                 .WithProjectParseOptions(projectId, new CSharpParseOptions(LanguageVersion.Preview))
                 .WithProjectCompilationOptions(projectId, new CSharpCompilationOptions(OutputKind.DynamicallyLinkedLibrary));
 
-            foreach (var metadataReference in GetMetadataReferences(includeAzureFunctionsHelpers, includeMoqProviderPackage, includeNSubstituteProviderPackage, includeWebHelpers))
+            foreach (var metadataReference in GetMetadataReferences(
+                includeAzureFunctionsHelpers,
+                includeMoqProviderPackage,
+                includeNSubstituteProviderPackage,
+                includeWebHelpers,
+                includeDatabaseHelpers,
+                includeAzureHelpers,
+                includeAggregatePackage))
             {
                 solution = solution.AddMetadataReference(projectId, metadataReference);
             }
@@ -167,13 +214,46 @@ namespace FastMoq.Analyzers.Tests
             return solution.GetProject(projectId)!;
         }
 
-        private static IEnumerable<MetadataReference> GetMetadataReferences(bool includeAzureFunctionsHelpers, bool includeMoqProviderPackage, bool includeNSubstituteProviderPackage, bool includeWebHelpers)
+        private static IEnumerable<MetadataReference> GetMetadataReferences(
+            bool includeAzureFunctionsHelpers,
+            bool includeMoqProviderPackage,
+            bool includeNSubstituteProviderPackage,
+            bool includeWebHelpers,
+            bool includeDatabaseHelpers,
+            bool includeAzureHelpers,
+            bool includeAggregatePackage)
         {
+            if (includeAggregatePackage)
+            {
+                includeAzureFunctionsHelpers = true;
+                includeAzureHelpers = true;
+                includeDatabaseHelpers = true;
+                includeWebHelpers = true;
+            }
+
             var references = new HashSet<string>(StringComparer.OrdinalIgnoreCase);
             if (AppContext.GetData("TRUSTED_PLATFORM_ASSEMBLIES") is string trustedPlatformAssemblies)
             {
                 foreach (var assemblyPath in trustedPlatformAssemblies.Split(Path.PathSeparator))
                 {
+                    if (!includeAggregatePackage &&
+                        string.Equals(Path.GetFileNameWithoutExtension(assemblyPath), "FastMoq", StringComparison.OrdinalIgnoreCase))
+                    {
+                        continue;
+                    }
+
+                    if (!includeDatabaseHelpers &&
+                        string.Equals(Path.GetFileNameWithoutExtension(assemblyPath), "FastMoq.Database", StringComparison.OrdinalIgnoreCase))
+                    {
+                        continue;
+                    }
+
+                    if (!includeAzureHelpers &&
+                        string.Equals(Path.GetFileNameWithoutExtension(assemblyPath), "FastMoq.Azure", StringComparison.OrdinalIgnoreCase))
+                    {
+                        continue;
+                    }
+
                     if (!includeWebHelpers &&
                         string.Equals(Path.GetFileNameWithoutExtension(assemblyPath), "FastMoq.Web", StringComparison.OrdinalIgnoreCase))
                     {
@@ -204,9 +284,28 @@ namespace FastMoq.Analyzers.Tests
 
             references.Add(typeof(FastMoq.Mocker).Assembly.Location);
 
+            if (includeAggregatePackage)
+            {
+                var aggregateAssemblyPath = Path.Combine(Path.GetDirectoryName(typeof(FastMoq.Mocker).Assembly.Location)!, "FastMoq.dll");
+                if (File.Exists(aggregateAssemblyPath))
+                {
+                    references.Add(aggregateAssemblyPath);
+                }
+            }
+
             if (includeWebHelpers)
             {
                 references.Add(typeof(FastMoq.Web.Extensions.TestWebExtensions).Assembly.Location);
+            }
+
+            if (includeDatabaseHelpers)
+            {
+                references.Add(typeof(FastMoq.DbContextMockerExtensions).Assembly.Location);
+            }
+
+            if (includeAzureHelpers)
+            {
+                references.Add(typeof(FastMoq.Azure.Pageable.PageableBuilder).Assembly.Location);
             }
 
             if (includeMoqProviderPackage)
@@ -229,7 +328,7 @@ namespace FastMoq.Analyzers.Tests
             {
                 references.Add(typeof(FastMoq.AzureFunctions.Extensions.FunctionContextTestExtensions).Assembly.Location);
                 references.Add(typeof(Microsoft.Azure.Functions.Worker.FunctionContext).Assembly.Location);
-                references.Add(typeof(Azure.Core.Serialization.ObjectSerializer).Assembly.Location);
+                references.Add(typeof(global::Azure.Core.Serialization.ObjectSerializer).Assembly.Location);
             }
 
             return references.Select(path => MetadataReference.CreateFromFile(path));
