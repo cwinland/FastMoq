@@ -343,7 +343,7 @@ namespace FastMoq.Analyzers
             Category,
             DiagnosticSeverity.Warning,
             isEnabledByDefault: true,
-            description: "When a local nested helper only wraps MockerTestBase<TComponent> for a single outer test class, prefer direct inheritance on the outer class or a manually authored shared intermediate base instead of keeping the helper as an extra instance-composition layer. Phase 1 keeps the automatic fix narrow and only rewrites clearly mechanical local wrapper shapes.");
+            description: "When a nested helper only wraps MockerTestBase<T> for one test class, prefer inheriting from MockerTestBase<T> on the test class itself or extracting a shared base when multiple tests need the same setup. Keep the helper only when it adds meaningful behavior beyond forwarding the inherited FastMoq surface.");
 
         public static readonly DiagnosticDescriptor UnnecessaryMockerTestBaseHelperIndirection = new(
             DiagnosticIds.UnnecessaryMockerTestBaseHelperIndirection,
@@ -352,6 +352,6 @@ namespace FastMoq.Analyzers
             Category,
             DiagnosticSeverity.Info,
             isEnabledByDefault: true,
-            description: "Thin aliases such as helper-backed Component or Mocks accessors, and helper members that only forward to inherited tracked-mock retrieval, can add another indirection layer without improving behavior. Keep the advisory rule conservative and leave readability- or behavior-improving wrappers alone.");
+            description: "When a helper property or method only forwards to inherited MockerTestBase<T> members such as Component or Mocks, prefer using the inherited member directly instead of keeping an extra wrapper. Keep the wrapper when it adds readability, setup, naming value, or other behavior that the inherited member does not provide.");
     }
 }
