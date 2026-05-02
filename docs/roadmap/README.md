@@ -160,9 +160,10 @@ Current implementation status for [#122](https://github.com/cwinland/FastMoq/iss
 
 - done: an internal construction-graph metadata model now layers over `Mocker.CreateConstructionPlan(...)` without widening the public planning API
 - done: `MockerTestBase<TComponent>` has the first graph-facing harness consumer through `GetComponentConstructionGraph()`
-- done: focused runtime coverage now proves the root-node and ordered dependency-node mapping for the first graph slice
-- next: update the `#122` tracker or checklist to mark internal graph metadata and the first harness consumer complete while leaving harness bootstrap, dependency-order enrichment, and benchmark work open
-- next: continue `#122` by deciding whether the next runtime-facing slice should add richer dependency-order metadata or the first explicit harness-bootstrap descriptor on top of the current internal graph model
+- done: an internal harness-bootstrap descriptor now projects `ComponentCreationFlags`, ordered constructor-signature hooks, and explicit-request-override detection on top of the current graph metadata
+- done: focused runtime coverage now proves both the root-node mapping and the first harness-bootstrap descriptor paths
+- next: update the `#122` tracker or checklist to mark the graph metadata and first harness-bootstrap descriptor steps complete while leaving real source-generator output, representative consuming-scenario compilation, and benchmark work open
+- next: continue `#122` by implementing the first real source-generator path against the settled planning, graph, and harness-bootstrap runtime contracts, adding only the minimum remaining dependency-order metadata if generator compilation proves it is needed
 
 For the current detailed direction, design constraints, and fuller generator issue mapping, see [Generator roadmap and design](./generator-roadmap.md).
 

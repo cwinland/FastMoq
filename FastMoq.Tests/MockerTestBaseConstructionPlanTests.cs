@@ -42,11 +42,58 @@ namespace FastMoq.Tests
             plan.Parameters.Should().BeEmpty();
         }
 
+        [Fact]
+        public void GetComponentHarnessBootstrapDescriptor_ShouldDescribeDefaultHookBootstrap()
+        {
+            var harness = new ConstructorTypesHarness();
+
+            var descriptor = harness.DescribeComponentBootstrap();
+
+            descriptor.RequiresExplicitConstructionRequestOverride.Should().BeFalse();
+            descriptor.ComponentCreationFlags.Should().Be(InstanceCreationFlags.None);
+            descriptor.ComponentConstructorParameterTypes.Should().NotBeNull();
+            descriptor.ComponentConstructorParameterTypes!.Should().Equal([typeof(IFileSystem), typeof(string)]);
+            descriptor.Graph.Root.Plan.Should().NotBeNull();
+            descriptor.Graph.Root.Plan!.Parameters.Should().HaveCount(2);
+        }
+
+        [Fact]
+        public void GetComponentHarnessBootstrapDescriptor_ShouldPreserveComponentCreationFlags()
+        {
+            var harness = new NonPublicConstructorHarness();
+
+            var descriptor = harness.DescribeComponentBootstrap();
+
+            descriptor.RequiresExplicitConstructionRequestOverride.Should().BeFalse();
+            descriptor.ComponentCreationFlags.Should().Be(InstanceCreationFlags.AllowNonPublicConstructorFallback);
+            descriptor.ComponentConstructorParameterTypes.Should().BeNull();
+            descriptor.Graph.Root.Plan.Should().NotBeNull();
+            descriptor.Graph.Root.Plan!.UsedNonPublicConstructor.Should().BeTrue();
+        }
+
+        [Fact]
+        public void GetComponentHarnessBootstrapDescriptor_ShouldRequireExplicitRequestOverride_WhenHooksDoNotMatchRequest()
+        {
+            var harness = new CustomRequestHarness();
+
+            var descriptor = harness.DescribeComponentBootstrap();
+
+            descriptor.RequiresExplicitConstructionRequestOverride.Should().BeTrue();
+            descriptor.ComponentCreationFlags.Should().Be(InstanceCreationFlags.None);
+            descriptor.ComponentConstructorParameterTypes.Should().BeNull();
+            descriptor.Graph.Request.ConstructorParameterTypes.Should().NotBeNull();
+            descriptor.Graph.Request.ConstructorParameterTypes.Should().BeEmpty();
+            descriptor.Graph.Root.Plan.Should().NotBeNull();
+            descriptor.Graph.Root.Plan!.Parameters.Should().BeEmpty();
+        }
+
         private sealed class ConstructorTypesHarness : MockerTestBase<ConstructorSelectionTarget>
         {
             protected override Type?[]? ComponentConstructorParameterTypes => [typeof(IFileSystem), typeof(string)];
 
             public InstanceConstructionPlan DescribeComponentConstruction() => GetComponentConstructionPlan();
+
+            public ComponentHarnessBootstrapDescriptor DescribeComponentBootstrap() => GetComponentHarnessBootstrapDescriptor();
         }
 
         private sealed class NonPublicConstructorHarness : MockerTestBase<NonPublicConstructorTarget>
@@ -54,6 +101,8 @@ namespace FastMoq.Tests
             protected override InstanceCreationFlags ComponentCreationFlags => InstanceCreationFlags.AllowNonPublicConstructorFallback;
 
             public InstanceConstructionPlan DescribeComponentConstruction() => GetComponentConstructionPlan();
+
+            public ComponentHarnessBootstrapDescriptor DescribeComponentBootstrap() => GetComponentHarnessBootstrapDescriptor();
         }
 
         private sealed class CustomRequestHarness : MockerTestBase<ManualConstructionTarget>
@@ -66,6 +115,8 @@ namespace FastMoq.Tests
             };
 
             public InstanceConstructionPlan DescribeComponentConstruction() => GetComponentConstructionPlan();
+
+            public ComponentHarnessBootstrapDescriptor DescribeComponentBootstrap() => GetComponentHarnessBootstrapDescriptor();
         }
 
         private sealed class ConstructorSelectionTarget

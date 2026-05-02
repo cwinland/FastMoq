@@ -380,19 +380,21 @@ Done in the current branch:
 
 - an internal `InstanceConstructionGraph` model now projects the selected root constructor plan plus ordered dependency nodes and edges from `Mocker.CreateConstructionPlan(...)`
 - `MockerTestBase<TComponent>` now exposes the first harness-side consumer through `GetComponentConstructionGraph()`
-- focused tests cover both direct graph creation and the harness-mapped component path without widening the public planning contract beyond `InstanceConstructionRequest` and `InstanceConstructionPlan`
+- an internal harness-bootstrap descriptor now sits on top of the current graph model and captures the default `MockerTestBase<TComponent>` bootstrap knobs plus whether generated output would need an explicit `CreateComponentConstructionRequest()` override
+- focused tests cover direct graph creation, the harness-mapped component path, and the first harness-bootstrap descriptor cases without widening the public planning contract beyond `InstanceConstructionRequest` and `InstanceConstructionPlan`
 
 What still keeps [#122](https://github.com/cwinland/FastMoq/issues/122) open:
 
-- the current graph model is still a narrow first slice; it does not yet describe richer dependency-order metadata beyond the selected constructor parameter list
-- the branch does not yet expose an explicit harness-bootstrap descriptor that generated output can consume directly
-- benchmark evidence for reduced reflection and setup overhead still needs to land after the next concrete consumer is chosen
+- the branch still does not contain a real source-generator implementation or representative generated consuming scenarios
+- additional dependency-order metadata may still be required once the first generator-emission path proves exactly what bootstrap output needs
+- benchmark evidence for reduced reflection and setup overhead still needs to land after the first concrete generator consumer is chosen
 
 Preferred next `#122` decision:
 
 - keep the public planning API unchanged
-- choose one internal follow-up slice: either enrich the internal graph model with additional dependency-order metadata that future emitted output will need, or define the first explicit harness-bootstrap descriptor that sits on top of the current graph model
-- once that choice is made, update the [#122](https://github.com/cwinland/FastMoq/issues/122) issue body or checklist so the completed internal graph-metadata step is marked done and the remaining bootstrap or benchmark work is explicitly named
+- start the first real source-generator slice against the existing planning, graph, and harness-bootstrap descriptor contracts
+- only enrich the internal graph model further if the generator path proves that more dependency-order metadata is actually required for compilation or parity
+- update the [#122](https://github.com/cwinland/FastMoq/issues/122) issue body or checklist so the completed internal graph and harness-bootstrap groundwork is marked done and the remaining generator-output or benchmark work is explicitly named
 
 ## Suggested v5 Delivery Phases
 

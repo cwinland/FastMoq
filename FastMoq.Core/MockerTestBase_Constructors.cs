@@ -42,6 +42,20 @@ namespace FastMoq
         internal InstanceConstructionGraph GetComponentConstructionGraph() =>
             Mocks.CreateConstructionGraph(CreateComponentConstructionRequest());
 
+        internal ComponentHarnessBootstrapDescriptor GetComponentHarnessBootstrapDescriptor()
+        {
+            var componentCreationFlags = ComponentCreationFlags;
+            var componentConstructorParameterTypes = ComponentConstructorParameterTypes;
+            var defaultRequest = Mocks.CreateConstructionPlanRequest(typeof(TComponent), componentCreationFlags, componentConstructorParameterTypes);
+            var request = CreateComponentConstructionRequest();
+
+            return new ComponentHarnessBootstrapDescriptor(
+                Mocks.CreateConstructionGraph(request),
+                componentCreationFlags,
+                componentConstructorParameterTypes,
+                requiresExplicitConstructionRequestOverride: !RequestsAreEquivalent(defaultRequest, request));
+        }
+
         private Func<Mocker, TComponent> DefaultCreateAction =>
             mocker => Component = CreateDefaultComponent(mocker) ?? throw CannotCreateComponentException;
 
@@ -223,6 +237,41 @@ namespace FastMoq
             return constructorParameterTypes == null
                 ? mocker.CreateInstance<TComponent>(ComponentCreationFlags)
                 : mocker.CreateInstanceByType<TComponent>(ComponentCreationFlags, constructorParameterTypes);
+        }
+
+        private static bool RequestsAreEquivalent(InstanceConstructionRequest left, InstanceConstructionRequest right)
+        {
+            ArgumentNullException.ThrowIfNull(left);
+            ArgumentNullException.ThrowIfNull(right);
+
+            return left.RequestedType == right.RequestedType &&
+                left.PublicOnly == right.PublicOnly &&
+                left.OptionalParameterResolution == right.OptionalParameterResolution &&
+                left.ConstructorAmbiguityBehavior == right.ConstructorAmbiguityBehavior &&
+                ConstructorParameterTypesAreEquivalent(left.ConstructorParameterTypes, right.ConstructorParameterTypes);
+        }
+
+        private static bool ConstructorParameterTypesAreEquivalent(Type?[]? left, Type?[]? right)
+        {
+            if (left == null || right == null)
+            {
+                return left == right;
+            }
+
+            if (left.Length != right.Length)
+            {
+                return false;
+            }
+
+            for (var index = 0; index < left.Length; index++)
+            {
+                if (left[index] != right[index])
+                {
+                    return false;
+                }
+            }
+
+            return true;
         }
 
         private static Func<Mocker, TComponent> CreateActionWithTypes(params Type[] args) =>
