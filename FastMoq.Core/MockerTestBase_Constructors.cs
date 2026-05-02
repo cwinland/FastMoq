@@ -1,4 +1,5 @@
-﻿using Microsoft.Extensions.Logging;
+﻿using FastMoq.Models;
+using Microsoft.Extensions.Logging;
 
 namespace FastMoq
 {
@@ -22,6 +23,21 @@ namespace FastMoq
         /// Return an empty array to select the parameterless constructor explicitly.
         /// </summary>
         protected virtual Type?[]? ComponentConstructorParameterTypes => null;
+
+        /// <summary>
+        /// Creates the constructor-planning request for the current component path.
+        /// Override this when a custom <see cref="CreateComponentAction"/> no longer matches the default constructor-selection hooks.
+        /// </summary>
+        protected virtual InstanceConstructionRequest CreateComponentConstructionRequest() =>
+            Mocks.CreateConstructionPlanRequest(typeof(TComponent), ComponentCreationFlags, ComponentConstructorParameterTypes);
+
+        /// <summary>
+        /// Resolves constructor-selection metadata for the current component path without creating a new component instance.
+        /// Generated or hand-written harnesses can use this to query the component-construction contract through the same request-only planning surface used by <see cref="Mocker.CreateConstructionPlan(InstanceConstructionRequest)"/>.
+        /// </summary>
+        /// <returns>A constructor plan for the current component-construction path.</returns>
+        protected InstanceConstructionPlan GetComponentConstructionPlan() =>
+            Mocks.CreateConstructionPlan(CreateComponentConstructionRequest());
 
         private Func<Mocker, TComponent> DefaultCreateAction =>
             mocker => Component = CreateDefaultComponent(mocker) ?? throw CannotCreateComponentException;

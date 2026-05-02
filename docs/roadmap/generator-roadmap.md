@@ -343,7 +343,6 @@ The current proposed first-slice enum members for `InstanceConstructionParameter
 - `KnownType`
 - `KeyedService`
 - `AutoMock`
-- `ConstructedByMocker`
 - `OptionalDefault`
 - `TypeDefault`
 
@@ -351,6 +350,9 @@ Boundary rules for this slice:
 
 - the public request model captures constructor-selection intent only
 - the public resolved plan captures stable constructor-selection output only
+- `Mocker.CreateConstructionPlan(InstanceConstructionRequest request)` stays the preferred public entry point for this slice; a companion generic convenience overload is not required for the first graph and harness MVP
+- the first harness-side consumer can live on `MockerTestBase<TComponent>` by mapping `ComponentCreationFlags` and `ComponentConstructorParameterTypes` through the same request-only planning surface
+- `ConstructedByMocker` is deferred out of the first-slice contract because the current runtime parameter path does not recursively construct dependency parameters as a distinct category; current concrete-parameter outcomes remain `AutoMock` or `TypeDefault` unless a custom or known registration applies
 - the first slice does not commit to a public executable-plan API such as `CreateInstance(InstanceConstructionPlan plan)`
 - the first slice does not add new reflection-heavy contract fields such as raw `ConstructorInfo`, `ParameterInfo`, or executable argument values to the new plan types
 - existing public diagnostics and runtime behavior, including current public reflection-metadata resolution paths, remain part of the compatibility boundary and should not be demoted just to make the new contract cleaner
@@ -366,7 +368,7 @@ Closing issue [#125](https://github.com/cwinland/FastMoq/issues/125) should requ
 - ambiguity behavior, including both throw and prefer-parameterless paths
 - preferred-constructor selection and invalid multiple-preferred-constructor cases
 - keyed or special dependency resolution paths
-- stable parameter-source categorization for `CustomRegistration`, `KnownType`, `KeyedService`, `AutoMock`, `ConstructedByMocker`, `OptionalDefault`, and `TypeDefault`
+- stable parameter-source categorization for `CustomRegistration`, `KnownType`, `KeyedService`, `AutoMock`, `OptionalDefault`, and `TypeDefault`
 
 That parity matrix is part of the definition artifact for this slice. It does not require the generator implementation itself to land inside [#125](https://github.com/cwinland/FastMoq/issues/125), but it does require the contract text to make those expected behaviors explicit enough that later implementation issues can target them without reopening constructor-selection semantics.
 

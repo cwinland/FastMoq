@@ -152,7 +152,8 @@ Current constructor-contract direction for [#125](https://github.com/cwinland/Fa
 
 - [#121](https://github.com/cwinland/FastMoq/issues/121) remains the umbrella tracker, while [#125](https://github.com/cwinland/FastMoq/issues/125) is the active blocking contract before [#122](https://github.com/cwinland/FastMoq/issues/122)
 - the proposed public contract is `InstanceConstructionRequest`, `InstanceConstructionPlan`, `InstanceConstructionParameterPlan`, and `InstanceConstructionParameterSource`, with `Mocker.CreateConstructionPlan(InstanceConstructionRequest request)` as the preferred entry point
-- the proposed first-slice parameter-source enum members are `CustomRegistration`, `KnownType`, `KeyedService`, `AutoMock`, `ConstructedByMocker`, `OptionalDefault`, and `TypeDefault`
+- the first graph and harness MVP should keep that `Mocker` surface request-only; the first harness-side consumer can sit on `MockerTestBase<TComponent>` instead of adding a companion generic overload on `Mocker`
+- the proposed first-slice parameter-source enum members are `CustomRegistration`, `KnownType`, `KeyedService`, `AutoMock`, `OptionalDefault`, and `TypeDefault`; `ConstructedByMocker` is deferred until the runtime model exposes a distinct recursive-construction parameter category
 - the new contract stays narrow while existing public diagnostics, models, creation APIs, and current public reflection-metadata resolution behavior remain part of the compatibility boundary
 
 For the current detailed direction, design constraints, and fuller generator issue mapping, see [Generator roadmap and design](./generator-roadmap.md).
