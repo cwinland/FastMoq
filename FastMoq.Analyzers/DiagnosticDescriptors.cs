@@ -335,5 +335,23 @@ namespace FastMoq.Analyzers
             DiagnosticSeverity.Info,
             isEnabledByDefault: true,
             description: "Some provider-first helper replacements live in split FastMoq packages such as FastMoq.Web or FastMoq.AzureFunctions. When the helper package is missing, guide the user to the package and namespace instead of surfacing a non-actionable rewrite diagnostic.");
+
+        public static readonly DiagnosticDescriptor DirectMockerTestBaseInheritance = new(
+            DiagnosticIds.DirectMockerTestBaseInheritance,
+            "Prefer inheritance over MockerTestBase helper composition",
+            "Nested helper '{2}' composes MockerTestBase<{1}> through an instance wrapper. Prefer inheritance in test class '{0}' directly or through a dedicated shared test base.",
+            Category,
+            DiagnosticSeverity.Warning,
+            isEnabledByDefault: true,
+            description: "When a local nested helper only wraps MockerTestBase<TComponent> for a single outer test class, prefer direct inheritance on the outer class or a manually authored shared intermediate base instead of keeping the helper as an extra instance-composition layer. Phase 1 keeps the automatic fix narrow and only rewrites clearly mechanical local wrapper shapes.");
+
+        public static readonly DiagnosticDescriptor UnnecessaryMockerTestBaseHelperIndirection = new(
+            DiagnosticIds.UnnecessaryMockerTestBaseHelperIndirection,
+            "Avoid unnecessary MockerTestBase helper indirection",
+            "Helper member '{0}' only forwards to inherited MockerTestBase behavior through '{1}'. Prefer the inherited surface directly when the wrapper adds no meaningful behavior.",
+            Category,
+            DiagnosticSeverity.Info,
+            isEnabledByDefault: true,
+            description: "Thin aliases such as helper-backed Component or Mocks accessors, and helper members that only forward to inherited tracked-mock retrieval, can add another indirection layer without improving behavior. Keep the advisory rule conservative and leave readability- or behavior-improving wrappers alone.");
     }
 }

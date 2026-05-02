@@ -3,10 +3,12 @@ using FastMoq.Analyzers.Analyzers;
 using FastMoq.Analyzers.CodeFixes;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp;
+using Microsoft.CodeAnalysis.CSharp.Syntax;
 using Microsoft.CodeAnalysis.Diagnostics;
 using System;
 using System.Linq;
 using System.Reflection;
+using System.Threading;
 using System.Threading.Tasks;
 using Xunit;
 
@@ -32,6 +34,8 @@ namespace FastMoq.Analyzers.Tests
             { new OptionsSetupAnalyzer(), DiagnosticDescriptors.PreferSetupOptionsHelper },
             { new LoggerFactoryRegistrationAnalyzer(), DiagnosticDescriptors.PreferLoggerFactoryHelpers },
             { new LoggerSetupCallbackAnalyzer(), DiagnosticDescriptors.PreferSetupLoggerCallbackHelper },
+            { new DirectMockerTestBaseInheritanceAnalyzer(), DiagnosticDescriptors.DirectMockerTestBaseInheritance },
+            { new UnnecessaryMockerTestBaseHelperIndirectionAnalyzer(), DiagnosticDescriptors.UnnecessaryMockerTestBaseHelperIndirection },
             { new SetupSetAnalyzer(), DiagnosticDescriptors.PreferPropertySetterCaptureHelper },
             { new SetupAllPropertiesAnalyzer(), DiagnosticDescriptors.PreferPropertyStateHelper },
             { new TrackedMockVerificationAnalyzer(), DiagnosticDescriptors.UseProviderFirstVerify },
@@ -94,6 +98,8 @@ namespace FastMoq.Analyzers.Tests
             { DiagnosticDescriptors.PreserveKeyedServiceDistinctness, DiagnosticSeverity.Warning },
             { DiagnosticDescriptors.PreserveTrackedResolutionDuringAddTypeMigration, DiagnosticSeverity.Warning },
             { DiagnosticDescriptors.RequireExplicitMoqOnboarding, DiagnosticSeverity.Warning },
+            { DiagnosticDescriptors.DirectMockerTestBaseInheritance, DiagnosticSeverity.Warning },
+            { DiagnosticDescriptors.UnnecessaryMockerTestBaseHelperIndirection, DiagnosticSeverity.Info },
         };
 
         [Theory]
@@ -108,6 +114,305 @@ namespace FastMoq.Analyzers.Tests
         public void Descriptor_ShouldExposeExpectedDefaultSeverity(DiagnosticDescriptor descriptor, DiagnosticSeverity expectedSeverity)
         {
             Assert.Equal(expectedSeverity, descriptor.DefaultSeverity);
+        }
+
+        [Fact]
+        public async Task DirectMockerTestBaseInheritanceCandidate_ShouldBeFixable_WhenHelperSetupIsEmpty()
+        {
+            const string SOURCE = @"
+using FastMoq;
+
+class SampleService
+{
+}
+
+class SampleTests(Xunit.ITestOutputHelper output)
+{
+    private readonly TestHelper _helper = new(output);
+
+    SampleService Component => _helper.C;
+
+    private sealed class TestHelper(Xunit.ITestOutputHelper output) : MockerTestBase<SampleService>
+    {
+        public SampleService C => Component;
+    }
+}";
+
+            var candidate = await GetDirectMockerTestBaseInheritanceCandidateAsync(SOURCE, "SampleTests");
+
+            Assert.Equal("SampleTests", candidate.OuterType.Name);
+            Assert.Equal("TestHelper", candidate.HelperType.Name);
+            Assert.Equal("SampleService", candidate.TargetType.Name);
+            Assert.True(candidate.IsFixable);
+            Assert.Equal(MockerTestBaseHelperCompositionFixBlockReason.None, candidate.FixBlockReason);
+        }
+
+        [Fact]
+        public async Task DirectMockerTestBaseInheritanceCandidate_ShouldBlockFix_WhenHelperOwnsUnsupportedHooks()
+        {
+            const string SOURCE = @"
+using FastMoq;
+
+class SampleService
+{
+}
+
+class SampleTests
+{
+    private readonly TestHelper _helper = new();
+
+    SampleService Component => _helper.C;
+
+    private sealed class TestHelper : MockerTestBase<SampleService>
+    {
+        public SampleService C => Component;
+
+        protected override Action<SampleService> CreatedComponentAction => component =>
+        {
+        };
+    }
+}";
+
+            var candidate = await GetDirectMockerTestBaseInheritanceCandidateAsync(SOURCE, "SampleTests");
+
+            Assert.False(candidate.IsFixable);
+            Assert.Equal(MockerTestBaseHelperCompositionFixBlockReason.UnsupportedHooks, candidate.FixBlockReason);
+        }
+
+        [Fact]
+        public async Task DirectMockerTestBaseInheritanceCandidate_ShouldBlockFix_WhenHelperConstructorHasSetupStatements()
+        {
+            const string SOURCE = @"
+using FastMoq;
+
+class SampleService
+{
+}
+
+class SampleTests(Xunit.ITestOutputHelper output)
+{
+    private readonly TestHelper _helper = new(output);
+
+    SampleService Component => _helper.C;
+
+    private sealed class TestHelper : MockerTestBase<SampleService>
+    {
+        public TestHelper(Xunit.ITestOutputHelper output)
+        {
+            Mocks.AddLoggerFactory(output.WriteLine);
+        }
+
+        public SampleService C => Component;
+    }
+}";
+
+            var candidate = await GetDirectMockerTestBaseInheritanceCandidateAsync(SOURCE, "SampleTests");
+
+            Assert.False(candidate.IsFixable);
+            Assert.Equal(MockerTestBaseHelperCompositionFixBlockReason.UnsupportedForNow, candidate.FixBlockReason);
+        }
+
+        [Fact]
+        public async Task DirectMockerTestBaseInheritanceAnalyzer_ShouldReport_WhenPrimaryConstructorOuterWrapsLocalHelper()
+        {
+            const string SOURCE = @"
+using FastMoq;
+
+class SampleService
+{
+}
+
+class SampleTests(Xunit.ITestOutputHelper output)
+{
+    private readonly TestHelper _helper = new(output);
+
+    SampleService Component => _helper.C;
+
+    private sealed class TestHelper(Xunit.ITestOutputHelper output) : MockerTestBase<SampleService>
+    {
+        public SampleService C => Component;
+    }
+}";
+
+            var diagnostics = await AnalyzerTestHelpers.GetDiagnosticsAsync(SOURCE, new DirectMockerTestBaseInheritanceAnalyzer());
+            var diagnostic = Assert.Single(diagnostics.Where(item => item.Id == DiagnosticIds.DirectMockerTestBaseInheritance));
+
+            Assert.Equal(DiagnosticIds.DirectMockerTestBaseInheritance, diagnostic.Id);
+            Assert.Equal("SampleTests", diagnostic.Location.GetLineSpan().Path.Length == 0 ? "SampleTests" : "SampleTests");
+        }
+
+        [Fact]
+        public async Task DirectMockerTestBaseInheritanceAnalyzer_ShouldReport_WhenTraditionalConstructorOuterWrapsLocalHelper()
+        {
+            const string SOURCE = @"
+using FastMoq;
+
+class SampleService
+{
+}
+
+class SampleTests
+{
+    private readonly TestHelper _helper;
+
+    public SampleTests(Xunit.ITestOutputHelper output)
+    {
+        _helper = new TestHelper(output);
+    }
+
+    SampleService Component => _helper.C;
+
+    private sealed class TestHelper : MockerTestBase<SampleService>
+    {
+        public TestHelper(Xunit.ITestOutputHelper output)
+        {
+        }
+
+        public SampleService C => Component;
+    }
+}";
+
+            var diagnostics = await AnalyzerTestHelpers.GetDiagnosticsAsync(SOURCE, new DirectMockerTestBaseInheritanceAnalyzer());
+            var diagnostic = Assert.Single(diagnostics.Where(item => item.Id == DiagnosticIds.DirectMockerTestBaseInheritance));
+
+            Assert.Equal(DiagnosticIds.DirectMockerTestBaseInheritance, diagnostic.Id);
+        }
+
+        [Fact]
+        public async Task DirectMockerTestBaseInheritanceAnalyzer_ShouldNotReport_WhenOuterAlreadyUsesSharedInheritedBase()
+        {
+            const string SOURCE = @"
+using FastMoq;
+
+class SampleService
+{
+}
+
+abstract class SharedBase : MockerTestBase<SampleService>
+{
+}
+
+class SampleTests : SharedBase
+{
+    private readonly TestHelper _helper = new();
+
+    SampleService Component => _helper.C;
+
+    private sealed class TestHelper : MockerTestBase<SampleService>
+    {
+        public SampleService C => Component;
+    }
+}";
+
+            var diagnostics = await AnalyzerTestHelpers.GetDiagnosticsAsync(SOURCE, new DirectMockerTestBaseInheritanceAnalyzer());
+
+            Assert.DoesNotContain(diagnostics, item => item.Id == DiagnosticIds.DirectMockerTestBaseInheritance);
+        }
+
+        [Fact]
+        public async Task DirectMockerTestBaseInheritanceAnalyzer_ShouldNotReport_WhenHelperOwnsMeaningfulBehavior()
+        {
+            const string SOURCE = @"
+using FastMoq;
+
+class SampleService
+{
+}
+
+class SampleTests(Xunit.ITestOutputHelper output)
+{
+    private readonly TestHelper _helper = new(output);
+
+    SampleService Component => _helper.C;
+
+    private sealed class TestHelper(Xunit.ITestOutputHelper output) : MockerTestBase<SampleService>
+    {
+        public SampleService C => Component;
+
+        public void Arrange()
+        {
+        }
+    }
+}";
+
+            var diagnostics = await AnalyzerTestHelpers.GetDiagnosticsAsync(SOURCE, new DirectMockerTestBaseInheritanceAnalyzer());
+
+            Assert.DoesNotContain(diagnostics, item => item.Id == DiagnosticIds.DirectMockerTestBaseInheritance);
+        }
+
+        [Fact]
+        public async Task UnnecessaryMockerTestBaseHelperIndirectionAnalyzer_ShouldReport_WhenComponentAliasOnlyForwardsToHelper()
+        {
+            const string SOURCE = @"
+using FastMoq;
+
+class SampleService
+{
+}
+
+class SampleTests(Xunit.ITestOutputHelper output)
+{
+    private readonly TestHelper _helper = new(output);
+
+    SampleService Component => _helper.C;
+
+    private sealed class TestHelper(Xunit.ITestOutputHelper output) : MockerTestBase<SampleService>
+    {
+        public SampleService C => Component;
+    }
+}";
+
+            var diagnostics = await AnalyzerTestHelpers.GetDiagnosticsAsync(SOURCE, new UnnecessaryMockerTestBaseHelperIndirectionAnalyzer());
+            var diagnostic = Assert.Single(diagnostics.Where(item => item.Id == DiagnosticIds.UnnecessaryMockerTestBaseHelperIndirection));
+
+            Assert.Equal(DiagnosticIds.UnnecessaryMockerTestBaseHelperIndirection, diagnostic.Id);
+        }
+
+        [Fact]
+        public async Task UnnecessaryMockerTestBaseHelperIndirectionAnalyzer_ShouldNotReport_WhenPropertyUsesDifferentVocabulary()
+        {
+            const string SOURCE = @"
+using FastMoq;
+
+class SampleService
+{
+}
+
+class SampleTests(Xunit.ITestOutputHelper output)
+{
+    private readonly TestHelper _helper = new(output);
+
+    SampleService Subject => _helper.C;
+
+    private sealed class TestHelper(Xunit.ITestOutputHelper output) : MockerTestBase<SampleService>
+    {
+        public SampleService C => Component;
+    }
+}";
+
+            var diagnostics = await AnalyzerTestHelpers.GetDiagnosticsAsync(SOURCE, new UnnecessaryMockerTestBaseHelperIndirectionAnalyzer());
+
+            Assert.DoesNotContain(diagnostics, item => item.Id == DiagnosticIds.UnnecessaryMockerTestBaseHelperIndirection);
+        }
+
+        private static async Task<MockerTestBaseHelperCompositionCandidate> GetDirectMockerTestBaseInheritanceCandidateAsync(string source, string outerTypeName)
+        {
+            var document = AnalyzerTestHelpers.CreateDocumentForTest(source);
+            var root = await document.GetSyntaxRootAsync(CancellationToken.None).ConfigureAwait(false);
+            var semanticModel = await document.GetSemanticModelAsync(CancellationToken.None).ConfigureAwait(false);
+
+            Assert.NotNull(root);
+            Assert.NotNull(semanticModel);
+
+            var outerTypeDeclaration = root!
+                .DescendantNodes()
+                .OfType<TypeDeclarationSyntax>()
+                .Single(typeDeclaration => typeDeclaration.Identifier.ValueText == outerTypeName);
+
+            Assert.True(
+                FastMoqAnalysisHelpers.TryGetDirectMockerTestBaseInheritanceCandidate(outerTypeDeclaration, semanticModel!, CancellationToken.None, out var candidate));
+
+            return candidate;
         }
 
         [Fact]

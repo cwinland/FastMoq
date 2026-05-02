@@ -115,6 +115,8 @@ This is the full public analyzer catalog for the current v4 line. Use it as the 
 | `FMOQ0034` | Inside provider-first `Verify(...)`, replace mechanical `It.*` matchers with `FastArg` equivalents so the assertion stays provider-neutral |
 | `FMOQ0035` | Flag remaining Moq-specific matchers inside provider-first `Verify(...)` when no direct `FastArg` rewrite exists |
 | `FMOQ0036` | Prefer `SetupLoggerCallback(...)` over tracked `ILogger.Log<TState>` setup when the callback only needs normalized message or exception output |
+| `FMOQ0037` | Prefer direct inheritance or a shared inherited base over thin local helper-instance composition around `MockerTestBase<T>` |
+| `FMOQ0038` | Flag thin helper indirection that only forwards to inherited `MockerTestBase<T>` members without adding meaningful behavior |
 
 For a successful v4 migration, use this boundary:
 
