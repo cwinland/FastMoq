@@ -647,6 +647,9 @@ namespace FastMoq.Analyzers.CodeFixes
             var memberAccessAnnotations = fix.MemberAccessReplacements
                 .Select(item => (Replacement: item, Annotation: new SyntaxAnnotation()))
                 .ToArray();
+            var memberRemovalAnnotations = fix.MembersToRemove
+                .Select(item => (Member: item, Annotation: new SyntaxAnnotation()))
+                .ToArray();
             var statementAnnotations = fix.StatementsToRemove
                 .Select(item => (Statement: item, Annotation: new SyntaxAnnotation()))
                 .ToArray();
@@ -657,6 +660,7 @@ namespace FastMoq.Analyzers.CodeFixes
                 fix.HelperFieldDeclaration,
             };
             nodesToAnnotate.AddRange(memberAccessAnnotations.Select(item => (SyntaxNode) item.Replacement.MemberAccess));
+            nodesToAnnotate.AddRange(memberRemovalAnnotations.Select(item => (SyntaxNode) item.Member));
             nodesToAnnotate.AddRange(statementAnnotations.Select(item => (SyntaxNode) item.Statement));
 
             var updatedRoot = root.ReplaceNodes(
@@ -684,6 +688,12 @@ namespace FastMoq.Analyzers.CodeFixes
                         return rewrittenNode.WithAdditionalAnnotations(memberAccessAnnotation);
                     }
 
+                    var memberRemovalAnnotation = memberRemovalAnnotations.SingleOrDefault(item => item.Member == originalNode).Annotation;
+                    if (memberRemovalAnnotation is not null)
+                    {
+                        return rewrittenNode.WithAdditionalAnnotations(memberRemovalAnnotation);
+                    }
+
                     var statementAnnotation = statementAnnotations.Single(item => item.Statement == originalNode).Annotation;
                     return rewrittenNode.WithAdditionalAnnotations(statementAnnotation);
                 });
@@ -707,6 +717,15 @@ namespace FastMoq.Analyzers.CodeFixes
                 if (currentStatement is not null)
                 {
                     updatedRoot = updatedRoot.RemoveNode(currentStatement, SyntaxRemoveOptions.KeepExteriorTrivia) ?? updatedRoot;
+                }
+            }
+
+            foreach (var (_, annotation) in memberRemovalAnnotations)
+            {
+                var currentMember = updatedRoot.GetAnnotatedNodes(annotation).OfType<MemberDeclarationSyntax>().SingleOrDefault();
+                if (currentMember is not null)
+                {
+                    updatedRoot = updatedRoot.RemoveNode(currentMember, SyntaxRemoveOptions.KeepExteriorTrivia) ?? updatedRoot;
                 }
             }
 
@@ -1504,12 +1523,19 @@ namespace FastMoq.Analyzers.CodeFixes
             }
 
             var memberAccessReplacements = new List<DirectMockerTestBaseInheritanceReplacement>();
+            var membersToRemove = new List<MemberDeclarationSyntax>();
             var statementsToRemove = new List<StatementSyntax>();
 
             foreach (var member in classDeclaration.Members)
             {
                 if (member == candidate.HelperTypeDeclaration || member == helperFieldDeclaration)
                 {
+                    continue;
+                }
+
+                if (TryGetRedundantOuterHelperAliasMemberToRemove(member, helperField, aliasMap, semanticModel, cancellationToken))
+                {
+                    membersToRemove.Add(member);
                     continue;
                 }
 
@@ -1551,8 +1577,35 @@ namespace FastMoq.Analyzers.CodeFixes
                 helperFieldDeclaration,
                 candidate.TargetType.ToDisplayString(SymbolDisplayFormat.MinimallyQualifiedFormat),
                 memberAccessReplacements,
+                membersToRemove,
                 statementsToRemove);
             return true;
+        }
+
+        private static bool TryGetRedundantOuterHelperAliasMemberToRemove(
+            MemberDeclarationSyntax member,
+            IFieldSymbol helperField,
+            IReadOnlyDictionary<string, string> aliasMap,
+            SemanticModel semanticModel,
+            CancellationToken cancellationToken)
+        {
+            if (member is not PropertyDeclarationSyntax propertyDeclaration ||
+                propertyDeclaration.Modifiers.Any(SyntaxKind.StaticKeyword) ||
+                propertyDeclaration.Identifier.ValueText is not "Component" and not "Mocks" ||
+                !FastMoqAnalysisHelpers.TryGetPropertyReturnExpression(propertyDeclaration, out var expression))
+            {
+                return false;
+            }
+
+            expression = FastMoqAnalysisHelpers.Unwrap(expression);
+            if (expression is not MemberAccessExpressionSyntax memberAccess ||
+                !TryGetReferencedHelperExpression(memberAccess.Expression, helperField, semanticModel, cancellationToken, out _) ||
+                !aliasMap.TryGetValue(memberAccess.Name.Identifier.ValueText, out var baseMemberName))
+            {
+                return false;
+            }
+
+            return string.Equals(baseMemberName, propertyDeclaration.Identifier.ValueText, StringComparison.Ordinal);
         }
 
         private static bool TryGetHelperAliasMap(TypeDeclarationSyntax helperTypeDeclaration, out Dictionary<string, string> aliasMap)
@@ -1647,6 +1700,7 @@ namespace FastMoq.Analyzers.CodeFixes
                 FieldDeclarationSyntax helperFieldDeclaration,
                 string targetTypeName,
                 IReadOnlyList<DirectMockerTestBaseInheritanceReplacement> memberAccessReplacements,
+                IReadOnlyList<MemberDeclarationSyntax> membersToRemove,
                 IReadOnlyList<StatementSyntax> statementsToRemove)
             {
                 OuterClassDeclaration = outerClassDeclaration;
@@ -1654,6 +1708,7 @@ namespace FastMoq.Analyzers.CodeFixes
                 HelperFieldDeclaration = helperFieldDeclaration;
                 TargetTypeName = targetTypeName;
                 MemberAccessReplacements = memberAccessReplacements;
+                MembersToRemove = membersToRemove;
                 StatementsToRemove = statementsToRemove;
             }
 
@@ -1666,6 +1721,8 @@ namespace FastMoq.Analyzers.CodeFixes
             public string TargetTypeName { get; }
 
             public IReadOnlyList<DirectMockerTestBaseInheritanceReplacement> MemberAccessReplacements { get; }
+
+            public IReadOnlyList<MemberDeclarationSyntax> MembersToRemove { get; }
 
             public IReadOnlyList<StatementSyntax> StatementsToRemove { get; }
         }
