@@ -1428,7 +1428,7 @@ namespace FastMoq.Analyzers.CodeFixes
 
         private static bool IsNamespaceAlreadyImported(CompilationUnitSyntax compilationUnit, Compilation? compilation, string namespaceName)
         {
-            if (compilationUnit.DescendantNodes().OfType<UsingDirectiveSyntax>().Any(@using => @using.Name?.ToString() == namespaceName))
+            if (compilationUnit.Usings.Any(@using => @using.Name?.ToString() == namespaceName))
             {
                 return true;
             }
@@ -1587,7 +1587,21 @@ namespace FastMoq.Analyzers.CodeFixes
 
         private static bool TryIsHelperConstructionAssignment(ExpressionSyntax expression, INamedTypeSymbol helperType, SemanticModel semanticModel, CancellationToken cancellationToken)
         {
-            if (expression is not ObjectCreationExpressionSyntax && expression is not ImplicitObjectCreationExpressionSyntax)
+            if (expression is ObjectCreationExpressionSyntax objectCreationExpression)
+            {
+                if (objectCreationExpression.Initializer is not null)
+                {
+                    return false;
+                }
+            }
+            else if (expression is ImplicitObjectCreationExpressionSyntax implicitObjectCreationExpression)
+            {
+                if (implicitObjectCreationExpression.Initializer is not null)
+                {
+                    return false;
+                }
+            }
+            else
             {
                 return false;
             }
