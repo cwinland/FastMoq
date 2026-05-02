@@ -1513,29 +1513,28 @@ namespace FastMoq.Analyzers.CodeFixes
                     continue;
                 }
 
-                foreach (var memberAccess in member.DescendantNodesAndSelf().OfType<MemberAccessExpressionSyntax>())
+                foreach (var helperReference in member.DescendantNodesAndSelf().OfType<ExpressionSyntax>())
                 {
-                    if (!SymbolEqualityComparer.Default.Equals(semanticModel.GetSymbolInfo(memberAccess.Expression, cancellationToken).Symbol, helperField))
+                    if (!TryGetReferencedHelperExpression(helperReference, helperField, semanticModel, cancellationToken, out var referencedHelperExpression))
                     {
                         continue;
                     }
 
-                    if (!aliasMap.TryGetValue(memberAccess.Name.Identifier.ValueText, out var baseMemberName))
+                    if (helperReference.Parent is MemberAccessExpressionSyntax memberAccess &&
+                        memberAccess.Expression == helperReference)
                     {
-                        return false;
-                    }
+                        if (!aliasMap.TryGetValue(memberAccess.Name.Identifier.ValueText, out var baseMemberName))
+                        {
+                            return false;
+                        }
 
-                    memberAccessReplacements.Add(new DirectMockerTestBaseInheritanceReplacement(memberAccess, $"base.{baseMemberName}"));
-                }
-
-                foreach (var assignmentExpression in member.DescendantNodesAndSelf().OfType<AssignmentExpressionSyntax>())
-                {
-                    if (!SymbolEqualityComparer.Default.Equals(semanticModel.GetSymbolInfo(assignmentExpression.Left, cancellationToken).Symbol, helperField))
-                    {
+                        memberAccessReplacements.Add(new DirectMockerTestBaseInheritanceReplacement(memberAccess, $"base.{baseMemberName}"));
                         continue;
                     }
 
-                    if (assignmentExpression.Parent is ExpressionStatementSyntax expressionStatement &&
+                    if (helperReference.Parent is AssignmentExpressionSyntax assignmentExpression &&
+                        assignmentExpression.Left == referencedHelperExpression &&
+                        assignmentExpression.Parent is ExpressionStatementSyntax expressionStatement &&
                         TryIsHelperConstructionAssignment(assignmentExpression.Right, candidate.HelperType, semanticModel, cancellationToken))
                     {
                         statementsToRemove.Add(expressionStatement);
@@ -1588,8 +1587,42 @@ namespace FastMoq.Analyzers.CodeFixes
 
         private static bool TryIsHelperConstructionAssignment(ExpressionSyntax expression, INamedTypeSymbol helperType, SemanticModel semanticModel, CancellationToken cancellationToken)
         {
+            if (expression is not ObjectCreationExpressionSyntax && expression is not ImplicitObjectCreationExpressionSyntax)
+            {
+                return false;
+            }
+
             var type = semanticModel.GetTypeInfo(expression, cancellationToken).Type as INamedTypeSymbol;
             return type is not null && SymbolEqualityComparer.Default.Equals(type, helperType);
+        }
+
+        private static bool TryGetReferencedHelperExpression(ExpressionSyntax expression, IFieldSymbol helperField, SemanticModel semanticModel, CancellationToken cancellationToken, out ExpressionSyntax referencedHelperExpression)
+        {
+            if (expression is IdentifierNameSyntax identifierName)
+            {
+                if (identifierName.Parent is MemberAccessExpressionSyntax parentMemberAccess &&
+                    parentMemberAccess.Name == identifierName)
+                {
+                    referencedHelperExpression = default!;
+                    return false;
+                }
+
+                if (SymbolEqualityComparer.Default.Equals(semanticModel.GetSymbolInfo(identifierName, cancellationToken).Symbol, helperField))
+                {
+                    referencedHelperExpression = identifierName;
+                    return true;
+                }
+            }
+
+            if (expression is MemberAccessExpressionSyntax memberAccess &&
+                SymbolEqualityComparer.Default.Equals(semanticModel.GetSymbolInfo(memberAccess, cancellationToken).Symbol, helperField))
+            {
+                referencedHelperExpression = expression;
+                return true;
+            }
+
+            referencedHelperExpression = default!;
+            return false;
         }
 
         private readonly struct DirectMockerTestBaseInheritanceFix
