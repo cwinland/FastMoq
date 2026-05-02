@@ -238,7 +238,7 @@ class SampleTests(Xunit.ITestOutputHelper output)
             var diagnostic = Assert.Single(diagnostics.Where(item => item.Id == DiagnosticIds.DirectMockerTestBaseInheritance));
 
             Assert.Equal(DiagnosticIds.DirectMockerTestBaseInheritance, diagnostic.Id);
-            Assert.Equal("SampleTests", diagnostic.Location.GetLineSpan().Path.Length == 0 ? "SampleTests" : "SampleTests");
+            Assert.Contains("SampleTests", diagnostic.GetMessage());
         }
 
         [Fact]
@@ -496,6 +496,105 @@ class SampleTests(Xunit.ITestOutputHelper output) : MockerTestBase<SampleService
         }
 
         [Fact]
+        public async Task DirectMockerTestBaseInheritanceCodeFix_ShouldRewrite_ThisQualifiedHelperAccess()
+        {
+            const string SOURCE = @"
+using FastMoq;
+
+class SampleService
+{
+}
+
+class SampleTests
+{
+    private readonly TestHelper _helper;
+
+    public SampleTests(Xunit.ITestOutputHelper output)
+    {
+        this._helper = new TestHelper(output);
+    }
+
+    SampleService Component => this._helper.C;
+
+    private sealed class TestHelper : MockerTestBase<SampleService>
+    {
+        public TestHelper(Xunit.ITestOutputHelper output)
+        {
+        }
+
+        public SampleService C => Component;
+    }
+}";
+
+            var fixedSource = await AnalyzerTestHelpers.ApplyCodeFixAsync(
+                SOURCE,
+                new DirectMockerTestBaseInheritanceAnalyzer(),
+                codeFixProvider,
+                DiagnosticIds.DirectMockerTestBaseInheritance,
+                codeFixTitle: "Use direct MockerTestBase inheritance");
+
+            var expected = AnalyzerTestHelpers.NormalizeCode(@"
+using FastMoq;
+
+class SampleService
+{
+}
+
+class SampleTests : MockerTestBase<SampleService>
+{
+    public SampleTests(Xunit.ITestOutputHelper output)
+    {
+    }
+
+    SampleService Component => base.Component;
+}");
+
+            Assert.Equal(expected, fixedSource);
+        }
+
+        [Fact]
+        public async Task DirectMockerTestBaseInheritanceCodeFix_ShouldAddFastMoqUsing_WhenOnlyFullyQualifiedHelperBaseExists()
+        {
+            const string SOURCE = @"
+class SampleService
+{
+}
+
+class SampleTests(Xunit.ITestOutputHelper output)
+{
+    private readonly TestHelper _helper = new(output);
+
+    SampleService Component => _helper.C;
+
+    private sealed class TestHelper(Xunit.ITestOutputHelper output) : FastMoq.MockerTestBase<SampleService>
+    {
+        public SampleService C => Component;
+    }
+}";
+
+            var fixedSource = await AnalyzerTestHelpers.ApplyCodeFixAsync(
+                SOURCE,
+                new DirectMockerTestBaseInheritanceAnalyzer(),
+                codeFixProvider,
+                DiagnosticIds.DirectMockerTestBaseInheritance,
+                codeFixTitle: "Use direct MockerTestBase inheritance");
+
+            var expected = AnalyzerTestHelpers.NormalizeCode(@"
+using FastMoq;
+
+class SampleService
+{
+}
+
+class SampleTests(Xunit.ITestOutputHelper output) : MockerTestBase<SampleService>
+{
+    SampleService Component => base.Component;
+}");
+
+            Assert.Equal(expected, fixedSource);
+        }
+
+        [Fact]
         public async Task DirectMockerTestBaseInheritanceCodeFix_ShouldNotBeOffered_WhenHelperOwnsUnsupportedHooks()
         {
             const string SOURCE = @"
@@ -648,6 +747,34 @@ class SampleTests
 
             Assert.Equal(DiagnosticIds.UnnecessaryMockerTestBaseHelperIndirection, diagnostic.Id);
             Assert.Contains("Store", diagnostic.GetMessage());
+        }
+
+        [Fact]
+        public async Task UnnecessaryMockerTestBaseHelperIndirectionAnalyzer_ShouldReport_WhenComponentAliasUsesParentheses()
+        {
+            const string SOURCE = @"
+using FastMoq;
+
+class SampleService
+{
+}
+
+class SampleTests(Xunit.ITestOutputHelper output)
+{
+    private readonly TestHelper _helper = new(output);
+
+    SampleService Component => (_helper.C);
+
+    private sealed class TestHelper(Xunit.ITestOutputHelper output) : MockerTestBase<SampleService>
+    {
+        public SampleService C => Component;
+    }
+}";
+
+            var diagnostics = await AnalyzerTestHelpers.GetDiagnosticsAsync(SOURCE, new UnnecessaryMockerTestBaseHelperIndirectionAnalyzer());
+            var diagnostic = Assert.Single(diagnostics.Where(item => item.Id == DiagnosticIds.UnnecessaryMockerTestBaseHelperIndirection));
+
+            Assert.Equal(DiagnosticIds.UnnecessaryMockerTestBaseHelperIndirection, diagnostic.Id);
         }
 
         [Fact]

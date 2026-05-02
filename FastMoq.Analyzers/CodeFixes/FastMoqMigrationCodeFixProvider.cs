@@ -603,7 +603,7 @@ namespace FastMoq.Analyzers.CodeFixes
 
             if (requiresProvidersNamespace)
             {
-                updatedRoot = AddUsingDirectiveIfMissing(updatedRoot, FastMoqAnalysisHelpers.FastMoqProvidersNamespace);
+                updatedRoot = AddUsingDirectiveIfMissing(updatedRoot, semanticModel.Compilation, FastMoqAnalysisHelpers.FastMoqProvidersNamespace);
             }
 
             return document.WithSyntaxRoot(updatedRoot);
@@ -625,7 +625,7 @@ namespace FastMoq.Analyzers.CodeFixes
 
             if (requiresProvidersNamespace)
             {
-                updatedRoot = AddUsingDirectiveIfMissing(updatedRoot, FastMoqAnalysisHelpers.FastMoqProvidersNamespace);
+                updatedRoot = AddUsingDirectiveIfMissing(updatedRoot, semanticModel.Compilation, FastMoqAnalysisHelpers.FastMoqProvidersNamespace);
             }
 
             return document.WithSyntaxRoot(updatedRoot);
@@ -739,6 +739,7 @@ namespace FastMoq.Analyzers.CodeFixes
             var replacementOuter = annotatedOuter.WithBaseList(
                 SyntaxFactory.BaseList(baseTypes));
             updatedRoot = updatedRoot.ReplaceNode(annotatedOuter, replacementOuter);
+            updatedRoot = AddUsingDirectiveIfMissing(updatedRoot, semanticModel.Compilation, "FastMoq");
 
             return document.WithSyntaxRoot(updatedRoot);
         }
@@ -756,7 +757,7 @@ namespace FastMoq.Analyzers.CodeFixes
             var replacementExpression = SyntaxFactory.ParseExpression(replacementText)
                 .WithTriviaFrom(invocationExpression);
             var updatedRoot = root.ReplaceNode(invocationExpression, replacementExpression);
-            updatedRoot = AddUsingDirectiveIfMissing(updatedRoot, FastMoqAnalysisHelpers.FastMoqProvidersNamespace);
+            updatedRoot = AddUsingDirectiveIfMissing(updatedRoot, semanticModel.Compilation, FastMoqAnalysisHelpers.FastMoqProvidersNamespace);
             return document.WithSyntaxRoot(updatedRoot);
         }
 
@@ -817,7 +818,7 @@ namespace FastMoq.Analyzers.CodeFixes
             var replacementExpression = SyntaxFactory.ParseExpression(replacementText)
                 .WithTriviaFrom(invocationExpression);
             var updatedRoot = root.ReplaceNode(invocationExpression, replacementExpression);
-            updatedRoot = AddUsingDirectiveIfMissing(updatedRoot, "FastMoq.Web.Extensions");
+            updatedRoot = AddUsingDirectiveIfMissing(updatedRoot, semanticModel.Compilation, "FastMoq.Web.Extensions");
             return document.WithSyntaxRoot(updatedRoot);
         }
 
@@ -869,7 +870,7 @@ namespace FastMoq.Analyzers.CodeFixes
             var replacementStatement = SyntaxFactory.ParseStatement(replacementText)
                 .WithTriviaFrom(annotatedTargetStatement);
             updatedRoot = updatedRoot.ReplaceNode(annotatedTargetStatement, replacementStatement);
-            updatedRoot = AddUsingDirectiveIfMissing(updatedRoot, "FastMoq.Web.Extensions");
+            updatedRoot = AddUsingDirectiveIfMissing(updatedRoot, semanticModel.Compilation, "FastMoq.Web.Extensions");
             return document.WithSyntaxRoot(updatedRoot);
         }
 
@@ -890,7 +891,7 @@ namespace FastMoq.Analyzers.CodeFixes
             var replacementExpression = SyntaxFactory.ParseExpression(replacementText)
                 .WithTriviaFrom(invocationExpression);
             var updatedRoot = root.ReplaceNode(invocationExpression, replacementExpression);
-            updatedRoot = AddUsingDirectiveIfMissing(updatedRoot, "FastMoq.Extensions");
+            updatedRoot = AddUsingDirectiveIfMissing(updatedRoot, semanticModel.Compilation, "FastMoq.Extensions");
             return document.WithSyntaxRoot(updatedRoot);
         }
 
@@ -911,7 +912,7 @@ namespace FastMoq.Analyzers.CodeFixes
             var replacementExpression = SyntaxFactory.ParseExpression(replacementText)
                 .WithTriviaFrom(invocationExpression);
             var updatedRoot = root.ReplaceNode(invocationExpression, replacementExpression);
-            updatedRoot = AddUsingDirectiveIfMissing(updatedRoot, "FastMoq.Extensions");
+            updatedRoot = AddUsingDirectiveIfMissing(updatedRoot, semanticModel.Compilation, "FastMoq.Extensions");
             return document.WithSyntaxRoot(updatedRoot);
         }
 
@@ -1023,7 +1024,7 @@ namespace FastMoq.Analyzers.CodeFixes
                 .WithTriviaFrom(invocationExpression);
             var updatedRoot = root.ReplaceNode(invocationExpression, replacementExpression);
 
-            return document.WithSyntaxRoot(AddUsingDirectiveIfMissing(updatedRoot, "FastMoq.Extensions"));
+            return document.WithSyntaxRoot(AddUsingDirectiveIfMissing(updatedRoot, semanticModel.Compilation, "FastMoq.Extensions"));
         }
 
         private static async Task<Document> ReplaceLoggerFactoryHelperInvocationAsync(Document document, InvocationExpressionSyntax invocationExpression, CancellationToken cancellationToken)
@@ -1045,7 +1046,7 @@ namespace FastMoq.Analyzers.CodeFixes
                 .WithTriviaFrom(invocationExpression);
             var updatedRoot = root.ReplaceNode(invocationExpression, replacementExpression);
 
-            return document.WithSyntaxRoot(AddUsingDirectiveIfMissing(updatedRoot, "FastMoq.Extensions"));
+            return document.WithSyntaxRoot(AddUsingDirectiveIfMissing(updatedRoot, semanticModel.Compilation, "FastMoq.Extensions"));
         }
 
         private static async Task<Document> ReplaceSetupLoggerCallbackInvocationAsync(Document document, InvocationExpressionSyntax invocationExpression, CancellationToken cancellationToken)
@@ -1067,7 +1068,7 @@ namespace FastMoq.Analyzers.CodeFixes
                 .WithTriviaFrom(invocationExpression);
             var updatedRoot = root.ReplaceNode(invocationExpression, replacementExpression);
 
-            return document.WithSyntaxRoot(AddUsingDirectiveIfMissing(updatedRoot, "FastMoq.Extensions"));
+            return document.WithSyntaxRoot(AddUsingDirectiveIfMissing(updatedRoot, semanticModel.Compilation, "FastMoq.Extensions"));
         }
 
         private static async Task<Document> ReplaceProviderNeutralHttpHelperInvocationAsync(Document document, InvocationExpressionSyntax invocationExpression, CancellationToken cancellationToken)
@@ -1144,8 +1145,8 @@ namespace FastMoq.Analyzers.CodeFixes
                 updatedRoot = updatedRoot.ReplaceNode(annotatedClientExpression, replacementExpression);
             }
 
-            updatedRoot = AddUsingDirectiveIfMissing(updatedRoot, "FastMoq.Extensions");
-            updatedRoot = AddUsingDirectivesIfMissing(updatedRoot, edit.RequiredNamespaces);
+            updatedRoot = AddUsingDirectiveIfMissing(updatedRoot, semanticModel.Compilation, "FastMoq.Extensions");
+            updatedRoot = AddUsingDirectivesIfMissing(updatedRoot, semanticModel.Compilation, edit.RequiredNamespaces);
             return document.WithSyntaxRoot(updatedRoot);
         }
 
@@ -1166,7 +1167,7 @@ namespace FastMoq.Analyzers.CodeFixes
             var replacementExpression = SyntaxFactory.ParseExpression(replacementText)
                 .WithTriviaFrom(targetInvocation);
             var updatedRoot = root.ReplaceNode(targetInvocation, replacementExpression);
-            updatedRoot = AddUsingDirectiveIfMissing(updatedRoot, "FastMoq.AzureFunctions.Extensions");
+            updatedRoot = AddUsingDirectiveIfMissing(updatedRoot, semanticModel.Compilation, "FastMoq.AzureFunctions.Extensions");
             return document.WithSyntaxRoot(updatedRoot);
         }
 
@@ -1187,7 +1188,7 @@ namespace FastMoq.Analyzers.CodeFixes
             var replacementExpression = SyntaxFactory.ParseExpression(replacementText)
                 .WithTriviaFrom(targetInvocation);
             var updatedRoot = root.ReplaceNode(targetInvocation, replacementExpression);
-            updatedRoot = AddUsingDirectiveIfMissing(updatedRoot, "FastMoq.AzureFunctions.Extensions");
+            updatedRoot = AddUsingDirectiveIfMissing(updatedRoot, semanticModel.Compilation, "FastMoq.AzureFunctions.Extensions");
             return document.WithSyntaxRoot(updatedRoot);
         }
 
@@ -1238,7 +1239,7 @@ namespace FastMoq.Analyzers.CodeFixes
             var replacementExpression = SyntaxFactory.ParseExpression(replacementText)
                 .WithTriviaFrom(annotatedTargetInvocation);
             updatedRoot = updatedRoot.ReplaceNode(annotatedTargetInvocation, replacementExpression);
-            updatedRoot = AddUsingDirectivesIfMissing(updatedRoot, requiredNamespaces);
+            updatedRoot = AddUsingDirectivesIfMissing(updatedRoot, semanticModel.Compilation, requiredNamespaces);
             return document.WithSyntaxRoot(updatedRoot);
         }
 
@@ -1261,12 +1262,13 @@ namespace FastMoq.Analyzers.CodeFixes
         private static async Task<Document> AddAssemblyDefaultProviderAsync(Document document, string providerName, CancellationToken cancellationToken)
         {
             var root = await document.GetSyntaxRootAsync(cancellationToken).ConfigureAwait(false) as CompilationUnitSyntax;
+            var compilation = await document.Project.GetCompilationAsync(cancellationToken).ConfigureAwait(false);
             if (root is null || HasAssemblyDefaultProviderAttribute(root, providerName))
             {
                 return document;
             }
 
-            var updatedRoot = (CompilationUnitSyntax) AddUsingDirectiveIfMissing(root, FastMoqAnalysisHelpers.FastMoqProvidersNamespace);
+            var updatedRoot = (CompilationUnitSyntax) AddUsingDirectiveIfMissing(root, compilation, FastMoqAnalysisHelpers.FastMoqProvidersNamespace);
             updatedRoot = updatedRoot.AddAttributeLists(CreateAssemblyDefaultProviderAttribute(providerName));
             return document.WithSyntaxRoot(updatedRoot);
         }
@@ -1274,12 +1276,13 @@ namespace FastMoq.Analyzers.CodeFixes
         private static async Task<Document> AddAssemblyRegisteredDefaultProviderAsync(Document document, string providerName, CancellationToken cancellationToken)
         {
             var root = await document.GetSyntaxRootAsync(cancellationToken).ConfigureAwait(false) as CompilationUnitSyntax;
+            var compilation = await document.Project.GetCompilationAsync(cancellationToken).ConfigureAwait(false);
             if (root is null || HasAssemblyRegisteredDefaultProviderAttribute(root, providerName))
             {
                 return document;
             }
 
-            var updatedRoot = (CompilationUnitSyntax) AddUsingDirectivesIfMissing(root, [FastMoqAnalysisHelpers.FastMoqProvidersNamespace, FastMoqAnalysisHelpers.MoqProviderNamespace]);
+            var updatedRoot = (CompilationUnitSyntax) AddUsingDirectivesIfMissing(root, compilation, [FastMoqAnalysisHelpers.FastMoqProvidersNamespace, FastMoqAnalysisHelpers.MoqProviderNamespace]);
             updatedRoot = updatedRoot.AddAttributeLists(CreateAssemblyRegisteredDefaultProviderAttribute(providerName));
             return document.WithSyntaxRoot(updatedRoot);
         }
@@ -1395,22 +1398,66 @@ namespace FastMoq.Analyzers.CodeFixes
 
         private static SyntaxNode AddUsingDirectiveIfMissing(SyntaxNode root, string namespaceName)
         {
-            if (root is CompilationUnitSyntax compilationUnit && !compilationUnit.Usings.Any(@using => @using.Name?.ToString() == namespaceName))
+            return AddUsingDirectiveIfMissing(root, compilation: null, namespaceName);
+        }
+
+        private static SyntaxNode AddUsingDirectiveIfMissing(SyntaxNode root, Compilation? compilation, string namespaceName)
+        {
+            if (root is not CompilationUnitSyntax compilationUnit || IsNamespaceAlreadyImported(compilationUnit, compilation, namespaceName))
             {
-                return compilationUnit.AddUsings(SyntaxFactory.UsingDirective(SyntaxFactory.ParseName(namespaceName)));
+                return root;
+            }
+
+            return compilationUnit.AddUsings(SyntaxFactory.UsingDirective(SyntaxFactory.ParseName(namespaceName)));
+        }
+
+        private static SyntaxNode AddUsingDirectivesIfMissing(SyntaxNode root, IReadOnlyList<string> namespaceNames)
+        {
+            return AddUsingDirectivesIfMissing(root, compilation: null, namespaceNames);
+        }
+
+        private static SyntaxNode AddUsingDirectivesIfMissing(SyntaxNode root, Compilation? compilation, IReadOnlyList<string> namespaceNames)
+        {
+            foreach (var namespaceName in namespaceNames)
+            {
+                root = AddUsingDirectiveIfMissing(root, compilation, namespaceName);
             }
 
             return root;
         }
 
-        private static SyntaxNode AddUsingDirectivesIfMissing(SyntaxNode root, IReadOnlyList<string> namespaceNames)
+        private static bool IsNamespaceAlreadyImported(CompilationUnitSyntax compilationUnit, Compilation? compilation, string namespaceName)
         {
-            foreach (var namespaceName in namespaceNames)
+            if (compilationUnit.DescendantNodes().OfType<UsingDirectiveSyntax>().Any(@using => @using.Name?.ToString() == namespaceName))
             {
-                root = AddUsingDirectiveIfMissing(root, namespaceName);
+                return true;
             }
 
-            return root;
+            if (compilation is null)
+            {
+                return false;
+            }
+
+            foreach (var syntaxTree in compilation.SyntaxTrees)
+            {
+                if (syntaxTree.GetRoot() is not CompilationUnitSyntax candidateCompilationUnit)
+                {
+                    continue;
+                }
+
+                if (candidateCompilationUnit.Usings.Any(@using => @using.GlobalKeyword != default && @using.Name?.ToString() == namespaceName))
+                {
+                    return true;
+                }
+            }
+
+            if (compilation.Options is CSharpCompilationOptions csharpCompilationOptions &&
+                csharpCompilationOptions.Usings.Any(@using => string.Equals(@using, namespaceName, StringComparison.Ordinal)))
+            {
+                return true;
+            }
+
+            return false;
         }
 
         private static InvocationExpressionSyntax? FindInvocationExpression(SyntaxNode root, TextSpan span)
@@ -1466,27 +1513,29 @@ namespace FastMoq.Analyzers.CodeFixes
                     continue;
                 }
 
-                foreach (var identifierName in member.DescendantNodesAndSelf().OfType<IdentifierNameSyntax>())
+                foreach (var memberAccess in member.DescendantNodesAndSelf().OfType<MemberAccessExpressionSyntax>())
                 {
-                    if (!SymbolEqualityComparer.Default.Equals(semanticModel.GetSymbolInfo(identifierName, cancellationToken).Symbol, helperField))
+                    if (!SymbolEqualityComparer.Default.Equals(semanticModel.GetSymbolInfo(memberAccess.Expression, cancellationToken).Symbol, helperField))
                     {
                         continue;
                     }
 
-                    if (identifierName.Parent is MemberAccessExpressionSyntax memberAccess && memberAccess.Expression == identifierName)
+                    if (!aliasMap.TryGetValue(memberAccess.Name.Identifier.ValueText, out var baseMemberName))
                     {
-                        if (!aliasMap.TryGetValue(memberAccess.Name.Identifier.ValueText, out var baseMemberName))
-                        {
-                            return false;
-                        }
+                        return false;
+                    }
 
-                        memberAccessReplacements.Add(new DirectMockerTestBaseInheritanceReplacement(memberAccess, $"base.{baseMemberName}"));
+                    memberAccessReplacements.Add(new DirectMockerTestBaseInheritanceReplacement(memberAccess, $"base.{baseMemberName}"));
+                }
+
+                foreach (var assignmentExpression in member.DescendantNodesAndSelf().OfType<AssignmentExpressionSyntax>())
+                {
+                    if (!SymbolEqualityComparer.Default.Equals(semanticModel.GetSymbolInfo(assignmentExpression.Left, cancellationToken).Symbol, helperField))
+                    {
                         continue;
                     }
 
-                    if (identifierName.Parent is AssignmentExpressionSyntax assignmentExpression &&
-                        assignmentExpression.Left == identifierName &&
-                        assignmentExpression.Parent is ExpressionStatementSyntax expressionStatement &&
+                    if (assignmentExpression.Parent is ExpressionStatementSyntax expressionStatement &&
                         TryIsHelperConstructionAssignment(assignmentExpression.Right, candidate.HelperType, semanticModel, cancellationToken))
                     {
                         statementsToRemove.Add(expressionStatement);
@@ -1513,12 +1562,12 @@ namespace FastMoq.Analyzers.CodeFixes
 
             foreach (var propertyDeclaration in helperTypeDeclaration.Members.OfType<PropertyDeclarationSyntax>())
             {
-                if (!TryGetPropertyReturnExpression(propertyDeclaration, out var expression))
+                if (!FastMoqAnalysisHelpers.TryGetPropertyReturnExpression(propertyDeclaration, out var expression))
                 {
                     return false;
                 }
 
-                expression = UnwrapExpression(expression);
+                expression = FastMoqAnalysisHelpers.Unwrap(expression);
                 string? baseMemberName = expression switch
                 {
                     IdentifierNameSyntax identifierName when identifierName.Identifier.ValueText is "Component" or "Mocks" => identifierName.Identifier.ValueText,
@@ -1535,44 +1584,6 @@ namespace FastMoq.Analyzers.CodeFixes
             }
 
             return aliasMap.Count > 0;
-        }
-
-        private static bool TryGetPropertyReturnExpression(PropertyDeclarationSyntax propertyDeclaration, out ExpressionSyntax expression)
-        {
-            if (propertyDeclaration.ExpressionBody is not null)
-            {
-                expression = propertyDeclaration.ExpressionBody.Expression;
-                return true;
-            }
-
-            if (propertyDeclaration.AccessorList?.Accessors.Count == 1 && propertyDeclaration.AccessorList.Accessors[0].Keyword.IsKind(SyntaxKind.GetKeyword))
-            {
-                var getter = propertyDeclaration.AccessorList.Accessors[0];
-                if (getter.ExpressionBody is not null)
-                {
-                    expression = getter.ExpressionBody.Expression;
-                    return true;
-                }
-
-                if (getter.Body?.Statements.Count == 1 && getter.Body.Statements[0] is ReturnStatementSyntax returnStatement && returnStatement.Expression is not null)
-                {
-                    expression = returnStatement.Expression;
-                    return true;
-                }
-            }
-
-            expression = default!;
-            return false;
-        }
-
-        private static ExpressionSyntax UnwrapExpression(ExpressionSyntax expression)
-        {
-            while (expression is ParenthesizedExpressionSyntax parenthesizedExpression)
-            {
-                expression = parenthesizedExpression.Expression;
-            }
-
-            return expression;
         }
 
         private static bool TryIsHelperConstructionAssignment(ExpressionSyntax expression, INamedTypeSymbol helperType, SemanticModel semanticModel, CancellationToken cancellationToken)

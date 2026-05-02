@@ -40,8 +40,14 @@ namespace FastMoq.Analyzers.Analyzers
 
         private static bool TryGetHelperForwardingMemberName(PropertyDeclarationSyntax propertyDeclaration, SemanticModel semanticModel, CancellationToken cancellationToken, ISymbol helperMember, out string helperMemberName)
         {
-            if (!TryGetPropertyReturnExpression(propertyDeclaration, out var expression) ||
-                expression is not MemberAccessExpressionSyntax memberAccess ||
+            if (!FastMoqAnalysisHelpers.TryGetPropertyReturnExpression(propertyDeclaration, out var expression))
+            {
+                helperMemberName = string.Empty;
+                return false;
+            }
+
+            expression = FastMoqAnalysisHelpers.Unwrap(expression);
+            if (expression is not MemberAccessExpressionSyntax memberAccess ||
                 semanticModel.GetSymbolInfo(memberAccess.Expression, cancellationToken).Symbol is not { } accessSymbol ||
                 !SymbolEqualityComparer.Default.Equals(accessSymbol, helperMember))
             {
@@ -51,34 +57,6 @@ namespace FastMoq.Analyzers.Analyzers
 
             helperMemberName = memberAccess.Name.Identifier.ValueText;
             return true;
-        }
-
-        private static bool TryGetPropertyReturnExpression(PropertyDeclarationSyntax propertyDeclaration, out ExpressionSyntax expression)
-        {
-            if (propertyDeclaration.ExpressionBody is not null)
-            {
-                expression = propertyDeclaration.ExpressionBody.Expression;
-                return true;
-            }
-
-            if (propertyDeclaration.AccessorList?.Accessors.Count == 1 && propertyDeclaration.AccessorList.Accessors[0].Keyword.IsKind(Microsoft.CodeAnalysis.CSharp.SyntaxKind.GetKeyword))
-            {
-                var getter = propertyDeclaration.AccessorList.Accessors[0];
-                if (getter.ExpressionBody is not null)
-                {
-                    expression = getter.ExpressionBody.Expression;
-                    return true;
-                }
-
-                if (getter.Body?.Statements.Count == 1 && getter.Body.Statements[0] is ReturnStatementSyntax returnStatement && returnStatement.Expression is not null)
-                {
-                    expression = returnStatement.Expression;
-                    return true;
-                }
-            }
-
-            expression = default!;
-            return false;
         }
     }
 }

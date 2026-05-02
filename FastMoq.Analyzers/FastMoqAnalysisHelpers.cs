@@ -4812,7 +4812,7 @@ namespace FastMoq.Analyzers
             };
         }
 
-        private static bool TryGetPropertyReturnExpression(PropertyDeclarationSyntax propertyDeclaration, out ExpressionSyntax expression)
+        internal static bool TryGetPropertyReturnExpression(PropertyDeclarationSyntax propertyDeclaration, out ExpressionSyntax expression)
         {
             if (propertyDeclaration.ExpressionBody is not null)
             {
