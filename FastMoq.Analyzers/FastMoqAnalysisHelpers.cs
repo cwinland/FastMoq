@@ -5759,8 +5759,9 @@ namespace FastMoq.Analyzers
                     return false;
                 }
 
+                var candidateVisitedSymbols = new HashSet<ISymbol>(visitedSymbols, SymbolEqualityComparer.Default);
                 if (!TryGetSemanticModelForNode(attributeSyntax, semanticModel, out var attributeSemanticModel) ||
-                    !TryGetStringConstant(attributeSyntax.ArgumentList.Arguments[parameterSymbol.Ordinal].Expression, attributeSemanticModel, cancellationToken, visitedSymbols, out var candidateValue))
+                    !TryGetStringConstant(attributeSyntax.ArgumentList.Arguments[parameterSymbol.Ordinal].Expression, attributeSemanticModel, cancellationToken, candidateVisitedSymbols, out var candidateValue))
                 {
                     return false;
                 }
@@ -5807,6 +5808,11 @@ namespace FastMoq.Analyzers
             {
                 if (identifierName.SpanStart <= declaration.SpanStart ||
                     identifierName.SpanStart >= referenceNode.SpanStart)
+                {
+                    continue;
+                }
+
+                if (!ReferenceEquals(GetContainingExecutableScope(identifierName), containingScope))
                 {
                     continue;
                 }
