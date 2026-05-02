@@ -170,8 +170,11 @@ Current implementation status for [#122](https://github.com/cwinland/FastMoq/iss
 - done: `MockerTestBase<TComponent>` has the first graph-facing harness consumer through `GetComponentConstructionGraph()`
 - done: an internal harness-bootstrap descriptor now projects `ComponentCreationFlags`, ordered constructor-signature hooks, and explicit-request-override detection on top of the current graph metadata
 - done: focused runtime coverage now proves both the root-node mapping and the first harness-bootstrap descriptor paths
+- done: the repo now contains a dedicated `FastMoq.Generators` package and the first incremental generator path for explicit partial `MockerTestBase<TComponent>` targets, emitting constructor-signature metadata and harness bootstrap against the settled runtime contract
+- done: generator-driver coverage now proves both the single-constructor path and the explicit-signature path compile cleanly while ambiguous multi-constructor targets stay on the normal runtime fallback path
 - done: the `#122` tracker now records the graph metadata and first harness-bootstrap descriptor groundwork as complete while leaving real source-generator output, representative consuming-scenario compilation, and benchmark work open
-- next: continue `#122` by implementing the first real source-generator path against the settled planning, graph, and harness-bootstrap runtime contracts, adding only the minimum remaining dependency-order metadata if generator compilation proves it is needed
+- next: continue `#122` by extending the first explicit harness generator path into more representative consuming scenarios, adding only the minimum remaining dependency-order metadata if generator compilation proves it is needed
+- next: record benchmark or measured regression evidence for the setup-path improvement once the first representative generator consumer is fixed
 
 For the current detailed direction, design constraints, and fuller generator issue mapping, see [Generator roadmap and design](./generator-roadmap.md).
 

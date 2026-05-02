@@ -4,17 +4,18 @@ This page captures the current v5 direction for FastMoq code generation. It is t
 
 This page is intentionally design-level only. It is appropriate for roadmap and implementation planning ahead of code, but it does not imply current shipped support.
 
-FastMoq does not currently include traditional Roslyn source generators. The current repo ships analyzers and code fixes, but it does not emit new `.g.cs` files for mocks, dependency graphs, or test scaffolding.
+FastMoq now contains a narrow first Roslyn source-generator slice for explicit `MockerTestBase<TComponent>` harness targets. The repo still does not emit full generated tests, scenario scaffolds, or broader framework-helper builders.
 
 ## Current Baseline
 
 Confirmed current state:
 
 - `FastMoq.Analyzers` ships analyzers and code fixes for migration, provider-first authoring, package guidance, and helper adoption.
-- The repo does not currently contain `ISourceGenerator` or `IIncrementalGenerator` implementations.
-- There is no first-party compile-time generation of mocks, DI graphs, scenario scaffolding, or framework-helper builders.
+- `FastMoq.Generators` now contains the first `IIncrementalGenerator` implementation for explicit partial `MockerTestBase<TComponent>` targets.
+- The current generated output is intentionally narrow: constructor-signature metadata and harness bootstrap for explicitly selected component paths.
+- There is still no first-party compile-time generation of full tests, scenario scaffolding, or framework-helper builders.
 
-That means code generation in v5 is net-new product surface rather than a minor extension of the current analyzer package.
+That means code generation in v5 is now an early implementation-facing surface rather than roadmap-only prose, but the broader generator line is still net-new beyond this first harness slice.
 
 ## Public Issue Crosswalk
 
@@ -314,7 +315,7 @@ That MVP boundary is what issue `#122` is allowed to implement first.
 
 ## Current Constructor Contract Direction For #125
 
-Issue [#121](https://github.com/cwinland/FastMoq/issues/121) remains the umbrella tracker for prerequisite status. Issue [#125](https://github.com/cwinland/FastMoq/issues/125) is the active blocking contract slice before the graph and harness MVP in [#122](https://github.com/cwinland/FastMoq/issues/122).
+Issue [#121](https://github.com/cwinland/FastMoq/issues/121) remains the umbrella tracker for prerequisite status. Issue [#125](https://github.com/cwinland/FastMoq/issues/125) is complete, and its public constructor-planning contract is now the settled runtime boundary that the first real generator output in [#122](https://github.com/cwinland/FastMoq/issues/122) targets.
 
 The current proposed public surface for that slice is:
 
@@ -388,14 +389,14 @@ Done in the current branch:
 
 What still keeps [#122](https://github.com/cwinland/FastMoq/issues/122) open:
 
-- the branch still does not contain a real source-generator implementation or representative generated consuming scenarios
+- the branch now contains a first real source-generator implementation for explicit partial `MockerTestBase<TComponent>` targets, but representative generated consuming scenarios beyond generator-driver coverage still need to land
 - additional dependency-order metadata may still be required once the first generator-emission path proves exactly what bootstrap output needs
 - benchmark evidence for reduced reflection and setup overhead still needs to land after the first concrete generator consumer is chosen
 
 Preferred next `#122` decision:
 
 - keep the public planning API unchanged
-- start the first real source-generator slice against the existing planning, graph, and harness-bootstrap descriptor contracts
+- extend the first real source-generator slice against the existing planning, graph, and harness-bootstrap descriptor contracts
 - only enrich the internal graph model further if the generator path proves that more dependency-order metadata is actually required for compilation or parity
 - update the [#122](https://github.com/cwinland/FastMoq/issues/122) issue body or checklist so the completed internal graph and harness-bootstrap groundwork is marked done and the remaining generator-output or benchmark work is explicitly named
 

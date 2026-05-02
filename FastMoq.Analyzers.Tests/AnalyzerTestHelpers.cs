@@ -283,6 +283,7 @@ namespace FastMoq.Analyzers.Tests
             }
 
             references.Add(typeof(FastMoq.Mocker).Assembly.Location);
+            references.Add(typeof(FastMoq.Providers.FastMoqDefaultProviderAttribute).Assembly.Location);
 
             if (includeAggregatePackage)
             {
