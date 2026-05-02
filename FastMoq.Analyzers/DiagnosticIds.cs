@@ -184,5 +184,15 @@ namespace FastMoq.Analyzers
         /// Prefer provider-neutral logger callback capture over provider-specific ILogger.Log setup when the callback only needs normalized output.
         /// </summary>
         public const string PreferSetupLoggerCallbackHelper = "FMOQ0036";
+
+        /// <summary>
+        /// Prefer inheritance over thin local helper-instance composition around MockerTestBase&lt;T&gt;.
+        /// </summary>
+        public const string DirectMockerTestBaseInheritance = "FMOQ0037";
+
+        /// <summary>
+        /// Avoid unnecessary helper indirection around inherited MockerTestBase&lt;T&gt; members.
+        /// </summary>
+        public const string UnnecessaryMockerTestBaseHelperIndirection = "FMOQ0038";
     }
 }

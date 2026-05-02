@@ -132,6 +132,11 @@ namespace FastMoq.Analyzers.Tests
                 .ToFullString();
         }
 
+        public static Document CreateDocumentForTest(string source, bool includeAzureFunctionsHelpers = false, bool includeMoqProviderPackage = true, bool includeNSubstituteProviderPackage = true, bool includeWebHelpers = true)
+        {
+            return CreateDocument(source, includeAzureFunctionsHelpers, includeMoqProviderPackage, includeNSubstituteProviderPackage, includeWebHelpers);
+        }
+
         private static Document CreateDocument(string source, bool includeAzureFunctionsHelpers = false, bool includeMoqProviderPackage = true, bool includeNSubstituteProviderPackage = true, bool includeWebHelpers = true)
         {
             var project = CreateProject([("Test.cs", source)], includeAzureFunctionsHelpers, includeMoqProviderPackage, includeNSubstituteProviderPackage, includeWebHelpers);

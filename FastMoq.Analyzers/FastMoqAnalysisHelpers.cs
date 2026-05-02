@@ -67,6 +67,50 @@ namespace FastMoq.Analyzers
         ProviderSpecific,
     }
 
+    internal enum MockerTestBaseHelperCompositionFixBlockReason
+    {
+        None,
+        UnsupportedHooks,
+        UnsupportedForNow,
+    }
+
+    internal readonly struct MockerTestBaseHelperCompositionCandidate
+    {
+        public MockerTestBaseHelperCompositionCandidate(
+            TypeDeclarationSyntax outerTypeDeclaration,
+            INamedTypeSymbol outerType,
+            TypeDeclarationSyntax helperTypeDeclaration,
+            INamedTypeSymbol helperType,
+            ISymbol helperMember,
+            INamedTypeSymbol targetType,
+            MockerTestBaseHelperCompositionFixBlockReason fixBlockReason)
+        {
+            OuterTypeDeclaration = outerTypeDeclaration;
+            OuterType = outerType;
+            HelperTypeDeclaration = helperTypeDeclaration;
+            HelperType = helperType;
+            HelperMember = helperMember;
+            TargetType = targetType;
+            FixBlockReason = fixBlockReason;
+        }
+
+        public TypeDeclarationSyntax OuterTypeDeclaration { get; }
+
+        public INamedTypeSymbol OuterType { get; }
+
+        public TypeDeclarationSyntax HelperTypeDeclaration { get; }
+
+        public INamedTypeSymbol HelperType { get; }
+
+        public ISymbol HelperMember { get; }
+
+        public INamedTypeSymbol TargetType { get; }
+
+        public MockerTestBaseHelperCompositionFixBlockReason FixBlockReason { get; }
+
+        public bool IsFixable => FixBlockReason == MockerTestBaseHelperCompositionFixBlockReason.None;
+    }
+
     internal readonly struct ProviderRegistrationCandidate
     {
         public ProviderRegistrationCandidate(string providerName, ITypeSymbol? providerType)
@@ -4416,20 +4460,35 @@ namespace FastMoq.Analyzers
                 return false;
             }
 
-            for (var current = containingType.BaseType; current is not null; current = current.BaseType)
+            return TryGetMockerTestBaseTargetType(containingType, out targetType);
+        }
+
+        public static bool TryGetDirectMockerTestBaseInheritanceCandidate(TypeDeclarationSyntax typeDeclaration, SemanticModel semanticModel, CancellationToken cancellationToken, out MockerTestBaseHelperCompositionCandidate candidate)
+        {
+            semanticModel = GetSemanticModelForNode(typeDeclaration, semanticModel);
+
+            if (semanticModel.GetDeclaredSymbol(typeDeclaration, cancellationToken) is not INamedTypeSymbol outerType ||
+                outerType.TypeKind != TypeKind.Class ||
+                outerType.IsStatic ||
+                (outerType.BaseType is not null && outerType.BaseType.SpecialType != SpecialType.System_Object) ||
+                !TryGetNestedMockerTestBaseHelperMember(typeDeclaration, semanticModel, cancellationToken, outerType, out var helperMember, out var helperTypeDeclaration, out var helperType) ||
+                !TryGetDirectMockerTestBaseTargetType(helperType, out var targetType) ||
+                !HelperHasThinWrapperShape(helperTypeDeclaration, out var hasUnsupportedHooks) ||
+                !TryGetHelperCompositionFixBlockReason(helperTypeDeclaration, hasUnsupportedHooks, out var fixBlockReason))
             {
-                if (current.OriginalDefinition.MetadataName == FASTMOQ_MOCKER_TEST_BASE_METADATA_NAME &&
-                    current.OriginalDefinition.ContainingNamespace.ToDisplayString() == "FastMoq" &&
-                    current.TypeArguments.Length == 1 &&
-                    current.TypeArguments[0] is INamedTypeSymbol namedTargetType)
-                {
-                    targetType = namedTargetType;
-                    return true;
-                }
+                candidate = default;
+                return false;
             }
 
-            targetType = default!;
-            return false;
+            candidate = new MockerTestBaseHelperCompositionCandidate(
+                typeDeclaration,
+                outerType,
+                helperTypeDeclaration,
+                helperType,
+                helperMember,
+                targetType,
+                fixBlockReason);
+            return true;
         }
 
         public static bool IsMoqVerifyMethod(IMethodSymbol method)
@@ -4521,6 +4580,287 @@ namespace FastMoq.Analyzers
         public static bool IsIFileSystemType(ITypeSymbol? type)
         {
             return type?.ToDisplayString() == IFileSystemTypeName;
+        }
+
+        private static bool TryGetMockerTestBaseTargetType(INamedTypeSymbol typeSymbol, out INamedTypeSymbol targetType)
+        {
+            for (var current = typeSymbol.BaseType; current is not null; current = current.BaseType)
+            {
+                if (TryGetMockerTestBaseTargetTypeCore(current, out targetType))
+                {
+                    return true;
+                }
+            }
+
+            targetType = default!;
+            return false;
+        }
+
+        private static bool TryGetDirectMockerTestBaseTargetType(INamedTypeSymbol typeSymbol, out INamedTypeSymbol targetType)
+        {
+            return TryGetMockerTestBaseTargetTypeCore(typeSymbol.BaseType, out targetType);
+        }
+
+        private static bool TryGetMockerTestBaseTargetTypeCore(INamedTypeSymbol? typeSymbol, out INamedTypeSymbol targetType)
+        {
+            if (typeSymbol is not null &&
+                typeSymbol.OriginalDefinition.MetadataName == FASTMOQ_MOCKER_TEST_BASE_METADATA_NAME &&
+                typeSymbol.OriginalDefinition.ContainingNamespace.ToDisplayString() == "FastMoq" &&
+                typeSymbol.TypeArguments.Length == 1 &&
+                typeSymbol.TypeArguments[0] is INamedTypeSymbol namedTargetType)
+            {
+                targetType = namedTargetType;
+                return true;
+            }
+
+            targetType = default!;
+            return false;
+        }
+
+        private static bool TryGetNestedMockerTestBaseHelperMember(
+            TypeDeclarationSyntax outerTypeDeclaration,
+            SemanticModel semanticModel,
+            CancellationToken cancellationToken,
+            INamedTypeSymbol outerType,
+            out ISymbol helperMember,
+            out TypeDeclarationSyntax helperTypeDeclaration,
+            out INamedTypeSymbol helperType)
+        {
+            var nestedTypes = outerTypeDeclaration.Members
+                .OfType<TypeDeclarationSyntax>()
+                .Select(typeSyntax => (TypeSyntax: typeSyntax, TypeSymbol: semanticModel.GetDeclaredSymbol(typeSyntax, cancellationToken) as INamedTypeSymbol))
+                .Where(item => item.TypeSymbol is not null)
+                .Select(item => (item.TypeSyntax, TypeSymbol: item.TypeSymbol!))
+                .ToDictionary(item => item.TypeSymbol, item => item.TypeSyntax, SymbolEqualityComparer.Default);
+
+            if (nestedTypes.Count == 0)
+            {
+                helperMember = default!;
+                helperTypeDeclaration = default!;
+                helperType = default!;
+                return false;
+            }
+
+            var candidates = new List<(ISymbol Member, TypeDeclarationSyntax HelperSyntax, INamedTypeSymbol HelperType)>();
+
+            foreach (var fieldDeclaration in outerTypeDeclaration.Members.OfType<FieldDeclarationSyntax>())
+            {
+                if (fieldDeclaration.Modifiers.Any(SyntaxKind.StaticKeyword) ||
+                    semanticModel.GetTypeInfo(fieldDeclaration.Declaration.Type, cancellationToken).Type is not INamedTypeSymbol fieldType ||
+                    !SymbolEqualityComparer.Default.Equals(fieldType.ContainingType, outerType) ||
+                    !nestedTypes.TryGetValue(fieldType, out var nestedTypeSyntax))
+                {
+                    continue;
+                }
+
+                foreach (var variable in fieldDeclaration.Declaration.Variables)
+                {
+                    if (semanticModel.GetDeclaredSymbol(variable, cancellationToken) is IFieldSymbol fieldSymbol && !fieldSymbol.IsStatic)
+                    {
+                        candidates.Add((fieldSymbol, nestedTypeSyntax, fieldType));
+                    }
+                }
+            }
+
+            foreach (var propertyDeclaration in outerTypeDeclaration.Members.OfType<PropertyDeclarationSyntax>())
+            {
+                if (propertyDeclaration.Modifiers.Any(SyntaxKind.StaticKeyword) ||
+                    semanticModel.GetDeclaredSymbol(propertyDeclaration, cancellationToken) is not IPropertySymbol propertySymbol ||
+                    propertySymbol.IsStatic ||
+                    semanticModel.GetTypeInfo(propertyDeclaration.Type, cancellationToken).Type is not INamedTypeSymbol propertyType ||
+                    !SymbolEqualityComparer.Default.Equals(propertyType.ContainingType, outerType) ||
+                    !nestedTypes.TryGetValue(propertyType, out var nestedTypeSyntax))
+                {
+                    continue;
+                }
+
+                candidates.Add((propertySymbol, nestedTypeSyntax, propertyType));
+            }
+
+            var distinctCandidates = candidates
+                .Where(candidate => HasHelperMemberUsage(outerTypeDeclaration, candidate.Member, semanticModel, cancellationToken))
+                .Distinct(new HelperMemberCandidateComparer())
+                .ToArray();
+
+            if (distinctCandidates.Length != 1)
+            {
+                helperMember = default!;
+                helperTypeDeclaration = default!;
+                helperType = default!;
+                return false;
+            }
+
+            helperMember = distinctCandidates[0].Member;
+            helperTypeDeclaration = distinctCandidates[0].HelperSyntax;
+            helperType = distinctCandidates[0].HelperType;
+            return true;
+        }
+
+        private static bool HasHelperMemberUsage(TypeDeclarationSyntax outerTypeDeclaration, ISymbol helperMember, SemanticModel semanticModel, CancellationToken cancellationToken)
+        {
+            foreach (var member in outerTypeDeclaration.Members)
+            {
+                if (member is TypeDeclarationSyntax)
+                {
+                    continue;
+                }
+
+                foreach (var memberAccess in member.DescendantNodesAndSelf().OfType<MemberAccessExpressionSyntax>())
+                {
+                    if (semanticModel.GetSymbolInfo(memberAccess.Expression, cancellationToken).Symbol is { } accessSymbol &&
+                        SymbolEqualityComparer.Default.Equals(accessSymbol, helperMember))
+                    {
+                        return true;
+                    }
+                }
+            }
+
+            return false;
+        }
+
+        private static bool HelperHasThinWrapperShape(TypeDeclarationSyntax helperTypeDeclaration, out bool hasUnsupportedHooks)
+        {
+            hasUnsupportedHooks = false;
+
+            foreach (var member in helperTypeDeclaration.Members)
+            {
+                switch (member)
+                {
+                    case ConstructorDeclarationSyntax:
+                        continue;
+
+                    case PropertyDeclarationSyntax propertyDeclaration:
+                        {
+                            var propertyName = propertyDeclaration.Identifier.ValueText;
+                            if (propertyName is "ComponentConstructorParameterTypes" or "CreateComponentAction" or "CreatedComponentAction")
+                            {
+                                hasUnsupportedHooks = true;
+                                continue;
+                            }
+
+                            if (!IsThinHelperAliasProperty(propertyDeclaration))
+                            {
+                                return false;
+                            }
+
+                            continue;
+                        }
+
+                    case MethodDeclarationSyntax:
+                    case FieldDeclarationSyntax:
+                    case EventDeclarationSyntax:
+                    case EventFieldDeclarationSyntax:
+                    case IndexerDeclarationSyntax:
+                    case OperatorDeclarationSyntax:
+                    case ConversionOperatorDeclarationSyntax:
+                    case DestructorDeclarationSyntax:
+                    case TypeDeclarationSyntax:
+                        return false;
+
+                    default:
+                        return false;
+                }
+            }
+
+            return true;
+        }
+
+        private static bool TryGetHelperCompositionFixBlockReason(
+            TypeDeclarationSyntax helperTypeDeclaration,
+            bool hasUnsupportedHooks,
+            out MockerTestBaseHelperCompositionFixBlockReason fixBlockReason)
+        {
+            if (hasUnsupportedHooks)
+            {
+                fixBlockReason = MockerTestBaseHelperCompositionFixBlockReason.UnsupportedHooks;
+                return true;
+            }
+
+            foreach (var constructorDeclaration in helperTypeDeclaration.Members.OfType<ConstructorDeclarationSyntax>())
+            {
+                if (constructorDeclaration.Initializer is not null)
+                {
+                    fixBlockReason = MockerTestBaseHelperCompositionFixBlockReason.UnsupportedForNow;
+                    return true;
+                }
+
+                if (constructorDeclaration.ExpressionBody is not null ||
+                    constructorDeclaration.Body?.Statements.Count > 0)
+                {
+                    fixBlockReason = MockerTestBaseHelperCompositionFixBlockReason.UnsupportedForNow;
+                    return true;
+                }
+            }
+
+            fixBlockReason = MockerTestBaseHelperCompositionFixBlockReason.None;
+            return true;
+        }
+
+        private static bool IsThinHelperAliasProperty(PropertyDeclarationSyntax propertyDeclaration)
+        {
+            if (!TryGetPropertyReturnExpression(propertyDeclaration, out var expression))
+            {
+                return false;
+            }
+
+            expression = Unwrap(expression);
+            return expression switch
+            {
+                IdentifierNameSyntax identifierName => identifierName.Identifier.ValueText is "Component" or "Mocks",
+                MemberAccessExpressionSyntax memberAccess when memberAccess.Expression is ThisExpressionSyntax => memberAccess.Name.Identifier.ValueText is "Component" or "Mocks",
+                _ => false,
+            };
+        }
+
+        internal static bool TryGetPropertyReturnExpression(PropertyDeclarationSyntax propertyDeclaration, out ExpressionSyntax expression)
+        {
+            if (propertyDeclaration.ExpressionBody is not null)
+            {
+                expression = propertyDeclaration.ExpressionBody.Expression;
+                return true;
+            }
+
+            if (propertyDeclaration.AccessorList is null)
+            {
+                expression = default!;
+                return false;
+            }
+
+            var accessors = propertyDeclaration.AccessorList.Accessors;
+            if (accessors.Count != 1 || !accessors[0].Keyword.IsKind(SyntaxKind.GetKeyword))
+            {
+                expression = default!;
+                return false;
+            }
+
+            var getter = accessors[0];
+            if (getter.ExpressionBody is not null)
+            {
+                expression = getter.ExpressionBody.Expression;
+                return true;
+            }
+
+            if (getter.Body?.Statements.Count == 1 && getter.Body.Statements[0] is ReturnStatementSyntax returnStatement && returnStatement.Expression is not null)
+            {
+                expression = returnStatement.Expression;
+                return true;
+            }
+
+            expression = default!;
+            return false;
+        }
+
+        private sealed class HelperMemberCandidateComparer : IEqualityComparer<(ISymbol Member, TypeDeclarationSyntax HelperSyntax, INamedTypeSymbol HelperType)>
+        {
+            public bool Equals((ISymbol Member, TypeDeclarationSyntax HelperSyntax, INamedTypeSymbol HelperType) x, (ISymbol Member, TypeDeclarationSyntax HelperSyntax, INamedTypeSymbol HelperType) y)
+            {
+                return SymbolEqualityComparer.Default.Equals(x.Member, y.Member);
+            }
+
+            public int GetHashCode((ISymbol Member, TypeDeclarationSyntax HelperSyntax, INamedTypeSymbol HelperType) obj)
+            {
+                return SymbolEqualityComparer.Default.GetHashCode(obj.Member);
+            }
         }
 
         public static bool IsMockFileSystemType(ITypeSymbol? type)
