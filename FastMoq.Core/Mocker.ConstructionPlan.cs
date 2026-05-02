@@ -62,6 +62,35 @@ namespace FastMoq
                 parameters);
         }
 
+        internal InstanceConstructionGraph CreateConstructionGraph(PublicInstanceConstructionRequest request)
+        {
+            ArgumentNullException.ThrowIfNull(request);
+
+            var plan = CreateConstructionPlan(request);
+            var rootNode = new InstanceConstructionGraphNode(
+                id: 0,
+                nodeType: plan.ResolvedType,
+                kind: InstanceConstructionGraphNodeKind.Root,
+                plan: plan);
+
+            var nodes = new List<InstanceConstructionGraphNode> { rootNode };
+            var edges = new List<InstanceConstructionGraphEdge>();
+
+            foreach (var parameter in plan.Parameters)
+            {
+                var dependencyNode = new InstanceConstructionGraphNode(
+                    id: nodes.Count,
+                    nodeType: parameter.ParameterType,
+                    kind: InstanceConstructionGraphNodeKind.Dependency,
+                    parameter: parameter);
+
+                nodes.Add(dependencyNode);
+                edges.Add(new InstanceConstructionGraphEdge(rootNode.Id, dependencyNode.Id, parameter.Position, parameter.Name));
+            }
+
+            return new InstanceConstructionGraph(request, rootNode, nodes, edges);
+        }
+
         internal PublicInstanceConstructionRequest CreateConstructionPlanRequest(Type requestedType, InstanceCreationFlags flags, Type?[]? constructorParameterTypes)
         {
             ArgumentNullException.ThrowIfNull(requestedType);

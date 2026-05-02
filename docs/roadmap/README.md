@@ -156,6 +156,14 @@ Current constructor-contract direction for [#125](https://github.com/cwinland/Fa
 - the proposed first-slice parameter-source enum members are `CustomRegistration`, `KnownType`, `KeyedService`, `AutoMock`, `OptionalDefault`, and `TypeDefault`; `ConstructedByMocker` is deferred until the runtime model exposes a distinct recursive-construction parameter category
 - the new contract stays narrow while existing public diagnostics, models, creation APIs, and current public reflection-metadata resolution behavior remain part of the compatibility boundary
 
+Current implementation status for [#122](https://github.com/cwinland/FastMoq/issues/122):
+
+- done: an internal construction-graph metadata model now layers over `Mocker.CreateConstructionPlan(...)` without widening the public planning API
+- done: `MockerTestBase<TComponent>` has the first graph-facing harness consumer through `GetComponentConstructionGraph()`
+- done: focused runtime coverage now proves the root-node and ordered dependency-node mapping for the first graph slice
+- next: update the `#122` tracker or checklist to mark internal graph metadata and the first harness consumer complete while leaving harness bootstrap, dependency-order enrichment, and benchmark work open
+- next: continue `#122` by deciding whether the next runtime-facing slice should add richer dependency-order metadata or the first explicit harness-bootstrap descriptor on top of the current internal graph model
+
 For the current detailed direction, design constraints, and fuller generator issue mapping, see [Generator roadmap and design](./generator-roadmap.md).
 
 ### `MockOptional` retirement

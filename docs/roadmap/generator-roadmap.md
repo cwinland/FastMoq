@@ -372,6 +372,28 @@ Closing issue [#125](https://github.com/cwinland/FastMoq/issues/125) should requ
 
 That parity matrix is part of the definition artifact for this slice. It does not require the generator implementation itself to land inside [#125](https://github.com/cwinland/FastMoq/issues/125), but it does require the contract text to make those expected behaviors explicit enough that later implementation issues can target them without reopening constructor-selection semantics.
 
+## Current `#122` runtime status after the first graph slice
+
+The first implementation step after [#125](https://github.com/cwinland/FastMoq/issues/125) is now in place.
+
+Done in the current branch:
+
+- an internal `InstanceConstructionGraph` model now projects the selected root constructor plan plus ordered dependency nodes and edges from `Mocker.CreateConstructionPlan(...)`
+- `MockerTestBase<TComponent>` now exposes the first harness-side consumer through `GetComponentConstructionGraph()`
+- focused tests cover both direct graph creation and the harness-mapped component path without widening the public planning contract beyond `InstanceConstructionRequest` and `InstanceConstructionPlan`
+
+What still keeps [#122](https://github.com/cwinland/FastMoq/issues/122) open:
+
+- the current graph model is still a narrow first slice; it does not yet describe richer dependency-order metadata beyond the selected constructor parameter list
+- the branch does not yet expose an explicit harness-bootstrap descriptor that generated output can consume directly
+- benchmark evidence for reduced reflection and setup overhead still needs to land after the next concrete consumer is chosen
+
+Preferred next `#122` decision:
+
+- keep the public planning API unchanged
+- choose one internal follow-up slice: either enrich the internal graph model with additional dependency-order metadata that future emitted output will need, or define the first explicit harness-bootstrap descriptor that sits on top of the current graph model
+- once that choice is made, update the [#122](https://github.com/cwinland/FastMoq/issues/122) issue body or checklist so the completed internal graph-metadata step is marked done and the remaining bootstrap or benchmark work is explicitly named
+
 ## Suggested v5 Delivery Phases
 
 ### Phase 0: contract and package design

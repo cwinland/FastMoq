@@ -39,6 +39,9 @@ namespace FastMoq
         protected InstanceConstructionPlan GetComponentConstructionPlan() =>
             Mocks.CreateConstructionPlan(CreateComponentConstructionRequest());
 
+        internal InstanceConstructionGraph GetComponentConstructionGraph() =>
+            Mocks.CreateConstructionGraph(CreateComponentConstructionRequest());
+
         private Func<Mocker, TComponent> DefaultCreateAction =>
             mocker => Component = CreateDefaultComponent(mocker) ?? throw CannotCreateComponentException;
 
