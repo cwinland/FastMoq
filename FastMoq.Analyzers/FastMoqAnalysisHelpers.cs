@@ -5485,20 +5485,21 @@ namespace FastMoq.Analyzers
 
         private static bool IsCompilationLevelProviderSelectionInvocation(InvocationExpressionSyntax invocationExpression, SemanticModel semanticModel, CancellationToken cancellationToken)
         {
-            var executableScope = invocationExpression.AncestorsAndSelf().FirstOrDefault(ancestor =>
-                ancestor is BaseMethodDeclarationSyntax or AccessorDeclarationSyntax or LocalFunctionStatementSyntax or AnonymousFunctionExpressionSyntax);
+            var executableScope = GetContainingExecutableScope(invocationExpression);
 
             if (executableScope is null)
             {
                 return invocationExpression.Ancestors().OfType<GlobalStatementSyntax>().Any();
             }
 
-            return executableScope switch
-            {
-                ConstructorDeclarationSyntax constructorDeclaration => constructorDeclaration.Modifiers.Any(SyntaxKind.StaticKeyword),
-                MethodDeclarationSyntax methodDeclaration => HasModuleInitializerAttribute(methodDeclaration, semanticModel, cancellationToken),
-                _ => false,
-            };
+            return executableScope is MethodDeclarationSyntax methodDeclaration &&
+                HasModuleInitializerAttribute(methodDeclaration, semanticModel, cancellationToken);
+        }
+
+        private static SyntaxNode? GetContainingExecutableScope(SyntaxNode node)
+        {
+            return node.AncestorsAndSelf().FirstOrDefault(ancestor =>
+                ancestor is BaseMethodDeclarationSyntax or AccessorDeclarationSyntax or LocalFunctionStatementSyntax or AnonymousFunctionExpressionSyntax);
         }
 
         private static bool HasModuleInitializerAttribute(MethodDeclarationSyntax methodDeclaration, SemanticModel semanticModel, CancellationToken cancellationToken)
@@ -5713,10 +5714,16 @@ namespace FastMoq.Analyzers
                 return false;
             }
 
-            var containingScope = referenceNode.AncestorsAndSelf().FirstOrDefault(ancestor =>
-                ancestor is BaseMethodDeclarationSyntax or AccessorDeclarationSyntax or LocalFunctionStatementSyntax or AnonymousFunctionExpressionSyntax);
+            var declarationScope = GetContainingExecutableScope(declaration);
+            var referenceScope = GetContainingExecutableScope(referenceNode);
 
-            if (containingScope is not null && IsLocalVariableWrittenBeforeReference(localSymbol, declaration, referenceNode, containingScope, semanticModel, cancellationToken))
+            if (!ReferenceEquals(declarationScope, referenceScope))
+            {
+                value = string.Empty;
+                return false;
+            }
+
+            if (referenceScope is not null && IsLocalVariableWrittenBeforeReference(localSymbol, declaration, referenceNode, referenceScope, semanticModel, cancellationToken))
             {
                 value = string.Empty;
                 return false;
