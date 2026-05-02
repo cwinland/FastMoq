@@ -247,15 +247,128 @@ Blocking areas:
 
 Those pieces are less about convenience and more about preventing the generator from emitting unstable, provider-native, or package-guessing code.
 
-## Suggested Package Shape
+## Package Shape And MVP Contract
 
-The likely package model is still under design, but the working direction is:
+Issue [#120](https://github.com/cwinland/FastMoq/issues/120) is the contract slice that fixes the package and MVP boundaries for the generator line.
 
-- a new generator package, likely `FastMoq.Generators`
-- optional shared attribute or contract types in `FastMoq.Abstractions` or a small generator-abstractions companion package if the main abstractions package becomes too broad for generator consumers
-- analyzers and code fixes remaining separate from the source-generator implementation even if they are coordinated in behavior
+The current v5 contract for that slice is:
+
+- `FastMoq.Generators` is the dedicated source-generator package.
+- `FastMoq.Analyzers` remains a separate analyzer and code-fix package.
+- the aggregate `FastMoq` package should include the generator path once the generator line ships, because the aggregate package is the umbrella FastMoq experience
+- `FastMoq.Core` should not include the source-generator implementation, because core stays the lighter provider-neutral runtime and split-package base
+- any shared generator-facing runtime contract should stay as small as possible; do not move broad generator contracts into `FastMoq.Abstractions` by default
+- if a runtime-visible marker or minimal shared contract truly must cross package boundaries, prefer the smallest viable surface in `FastMoq.Abstractions` or a tiny generator companion contract package instead of expanding abstractions broadly up front
 
 That separation keeps the current migration analyzer story intact while allowing generator-specific incremental compilation work to evolve independently.
+
+## Install And Opt-In Model
+
+The install and opt-in story for the first generator slice is:
+
+- installing the aggregate `FastMoq` package should make the generator capability available by default once the generator line ships
+- split-package consumers should add `FastMoq.Generators` explicitly when they want generation on top of `FastMoq.Core` and any helper or provider packages they already chose
+- package installation enables generation capability, but generation targets should still be explicit rather than blanket automatic for every eligible type in a project
+- generator-triggering flow can come from supported markers, declared generation targets, or later analyzer-guided authoring, but the package alone should not imply broad surprise output across an existing suite
+
+Broader project-level or suite-level settings that express preferred generated test direction, scaffold style, or harness shape are later work. They should not be treated as part of the #125 constructor-contract slice or the first #122 graph and harness MVP.
+
+This keeps the aggregate install convenient without making generation feel like unavoidable background behavior.
+
+## Runtime Fallback Contract
+
+The generator line is an accelerator over FastMoq-owned runtime behavior, not a second mandatory execution mode.
+
+For the first generator slice:
+
+- unsupported targets should stay on the supported runtime FastMoq path
+- disabled generation paths should stay on the supported runtime FastMoq path
+- missing generated assets should stay on the supported runtime FastMoq path
+- stale or out-of-date generated assets should not redefine runtime semantics; the supported fallback remains the normal runtime FastMoq path until stricter validation modes are intentionally introduced later
+
+This fallback rule is important because the first public promise is reduced reflection and boilerplate where FastMoq already owns the runtime responsibility, not hard dependence on generated artifacts.
+
+## MVP Boundary For The First Generator Slice
+
+The first supported generator outputs are intentionally narrow.
+
+In scope for the MVP contract:
+
+- generated test graph metadata
+- generated harness bootstrap for selected components under test
+- the minimum supporting metadata needed for the graph and harness story to target FastMoq-owned runtime APIs cleanly
+
+Out of scope for this contract slice:
+
+- generated scenario or suite scaffolding
+- generated full tests from existing services or other supported classes
+- generated framework-helper builders for HTTP, Azure, Azure Functions, logging, or typed-DI-heavy setup patterns
+- provider-optimized generation layers
+- broad compile-time fake or mock generation
+- broad AOT or trimming promises beyond the limited reflection-reduction story the first slice can actually prove
+
+That MVP boundary is what issue `#122` is allowed to implement first.
+
+## Current Constructor Contract Direction For #125
+
+Issue [#121](https://github.com/cwinland/FastMoq/issues/121) remains the umbrella tracker for prerequisite status. Issue [#125](https://github.com/cwinland/FastMoq/issues/125) is the active blocking contract slice before the graph and harness MVP in [#122](https://github.com/cwinland/FastMoq/issues/122).
+
+The current proposed public surface for that slice is:
+
+- `InstanceConstructionRequest`
+- `Type RequestedType`
+- `Type?[]? ConstructorParameterTypes`
+- `bool? PublicOnly`
+- `OptionalParameterResolutionMode OptionalParameterResolution`
+- `ConstructorAmbiguityBehavior ConstructorAmbiguityBehavior`
+- `InstanceConstructionPlan`
+- `Type RequestedType`
+- `Type ResolvedType`
+- `bool UsedNonPublicConstructor`
+- `bool UsedPreferredConstructorAttribute`
+- `bool UsedAmbiguityFallback`
+- `IReadOnlyList<InstanceConstructionParameterPlan> Parameters`
+- `InstanceConstructionParameterPlan`
+- `string Name`
+- `Type ParameterType`
+- `int Position`
+- `bool IsOptional`
+- `OptionalParameterResolutionMode OptionalParameterResolution`
+- `object? ServiceKey`
+- `InstanceConstructionParameterSource Source`
+
+The current proposed first-slice enum members for `InstanceConstructionParameterSource` are:
+
+- `CustomRegistration`
+- `KnownType`
+- `KeyedService`
+- `AutoMock`
+- `ConstructedByMocker`
+- `OptionalDefault`
+- `TypeDefault`
+
+Boundary rules for this slice:
+
+- the public request model captures constructor-selection intent only
+- the public resolved plan captures stable constructor-selection output only
+- the first slice does not commit to a public executable-plan API such as `CreateInstance(InstanceConstructionPlan plan)`
+- the first slice does not add new reflection-heavy contract fields such as raw `ConstructorInfo`, `ParameterInfo`, or executable argument values to the new plan types
+- existing public diagnostics and runtime behavior, including current public reflection-metadata resolution paths, remain part of the compatibility boundary and should not be demoted just to make the new contract cleaner
+
+### #125 parity matrix for closure
+
+Closing issue [#125](https://github.com/cwinland/FastMoq/issues/125) should require an explicit parity check for the constructor-selection cases the new contract is expected to describe:
+
+- exact typed constructor signature selection
+- explicit parameterless selection when an empty constructor-type list is requested
+- public-only selection versus non-public fallback behavior
+- optional-parameter behavior for both default-or-null and resolve-via-mocker modes
+- ambiguity behavior, including both throw and prefer-parameterless paths
+- preferred-constructor selection and invalid multiple-preferred-constructor cases
+- keyed or special dependency resolution paths
+- stable parameter-source categorization for `CustomRegistration`, `KnownType`, `KeyedService`, `AutoMock`, `ConstructedByMocker`, `OptionalDefault`, and `TypeDefault`
+
+That parity matrix is part of the definition artifact for this slice. It does not require the generator implementation itself to land inside [#125](https://github.com/cwinland/FastMoq/issues/125), but it does require the contract text to make those expected behaviors explicit enough that later implementation issues can target them without reopening constructor-selection semantics.
 
 ## Suggested v5 Delivery Phases
 
@@ -268,6 +381,8 @@ Define:
 - runtime fallback behavior
 - attribute or marker strategy
 - baseline benchmark scenarios
+
+Phase 0 ends once issue `#120` has fixed the package set, install and opt-in model, runtime fallback behavior, MVP boundary, and non-goals strongly enough that later implementation issues can cite those decisions directly instead of reopening them.
 
 ### Phase 1: graph and harness MVP
 
@@ -324,6 +439,18 @@ The largest design risks are:
 - generating low-value placeholder tests that look complete but do not map cleanly to the packages and helper surfaces actually installed in the project
 
 Because of that, the safest public promise is generated provider-first graphs and scaffolding first, broader generated-mock claims later only if the model still holds.
+
+## Explicit Non-Goals For The #120 Slice
+
+Issue `#120` should not promise:
+
+- provider-optimized generation semantics
+- broad compile-time fake or mock generation
+- blanket automatic generation for every eligible type as soon as a package is installed
+- a requirement that generated assets must exist for FastMoq runtime behavior to work
+- wider scenario, full-test, or helper-builder support before their dedicated prerequisite issues land
+
+Those items remain follow-on work so the first contract stays aligned with the current runtime surface and does not outrun the prerequisite map.
 
 ## Recommended Issue Breakdown
 
