@@ -723,11 +723,21 @@ namespace FastMoq.Analyzers.CodeFixes
             }
 
             var annotatedOuter = (ClassDeclarationSyntax) updatedRoot.GetAnnotatedNodes(outerAnnotation).Single();
+            var baseTypes = new SeparatedSyntaxList<BaseTypeSyntax>()
+                .Add(
+                    SyntaxFactory.SimpleBaseType(
+                        SyntaxFactory.ParseTypeName($"MockerTestBase<{fix.TargetTypeName}>")));
+
+            if (annotatedOuter.BaseList is not null)
+            {
+                foreach (var existingBaseType in annotatedOuter.BaseList.Types)
+                {
+                    baseTypes = baseTypes.Add(existingBaseType);
+                }
+            }
+
             var replacementOuter = annotatedOuter.WithBaseList(
-                SyntaxFactory.BaseList(
-                    SyntaxFactory.SingletonSeparatedList<BaseTypeSyntax>(
-                        SyntaxFactory.SimpleBaseType(
-                            SyntaxFactory.ParseTypeName($"MockerTestBase<{fix.TargetTypeName}>")))));
+                SyntaxFactory.BaseList(baseTypes));
             updatedRoot = updatedRoot.ReplaceNode(annotatedOuter, replacementOuter);
 
             return document.WithSyntaxRoot(updatedRoot);

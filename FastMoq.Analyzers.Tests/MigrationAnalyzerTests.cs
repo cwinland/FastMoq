@@ -442,6 +442,60 @@ class SampleTests : MockerTestBase<SampleService>
         }
 
         [Fact]
+        public async Task DirectMockerTestBaseInheritanceCodeFix_ShouldPreserveImplementedInterfaces()
+        {
+            const string SOURCE = @"
+using System;
+using FastMoq;
+
+class SampleService
+{
+}
+
+class SampleTests(Xunit.ITestOutputHelper output) : IDisposable
+{
+    private readonly TestHelper _helper = new(output);
+
+    SampleService Component => _helper.C;
+
+    public void Dispose()
+    {
+    }
+
+    private sealed class TestHelper(Xunit.ITestOutputHelper output) : MockerTestBase<SampleService>
+    {
+        public SampleService C => Component;
+    }
+}";
+
+            var fixedSource = await AnalyzerTestHelpers.ApplyCodeFixAsync(
+                SOURCE,
+                new DirectMockerTestBaseInheritanceAnalyzer(),
+                codeFixProvider,
+                DiagnosticIds.DirectMockerTestBaseInheritance,
+                codeFixTitle: "Use direct MockerTestBase inheritance");
+
+            var expected = AnalyzerTestHelpers.NormalizeCode(@"
+using System;
+using FastMoq;
+
+class SampleService
+{
+}
+
+class SampleTests(Xunit.ITestOutputHelper output) : MockerTestBase<SampleService>, IDisposable
+{
+    SampleService Component => base.Component;
+
+    public void Dispose()
+    {
+    }
+}");
+
+            Assert.Equal(expected, fixedSource);
+        }
+
+        [Fact]
         public async Task DirectMockerTestBaseInheritanceCodeFix_ShouldNotBeOffered_WhenHelperOwnsUnsupportedHooks()
         {
             const string SOURCE = @"
@@ -565,6 +619,225 @@ class SampleTests(Xunit.ITestOutputHelper output)
             var diagnostics = await AnalyzerTestHelpers.GetDiagnosticsAsync(SOURCE, new UnnecessaryMockerTestBaseHelperIndirectionAnalyzer());
 
             Assert.DoesNotContain(diagnostics, item => item.Id == DiagnosticIds.UnnecessaryMockerTestBaseHelperIndirection);
+        }
+
+        [Fact]
+        public async Task UnnecessaryMockerTestBaseHelperIndirectionAnalyzer_ShouldReport_WhenMocksAliasOnlyForwardsToHelper()
+        {
+            const string SOURCE = @"
+using FastMoq;
+
+class SampleService
+{
+}
+
+class SampleTests
+{
+    private readonly TestHelper _helper = new();
+
+    Mocker Mocks => _helper.Store;
+
+    private sealed class TestHelper : MockerTestBase<SampleService>
+    {
+        public Mocker Store => Mocks;
+    }
+}";
+
+            var diagnostics = await AnalyzerTestHelpers.GetDiagnosticsAsync(SOURCE, new UnnecessaryMockerTestBaseHelperIndirectionAnalyzer());
+            var diagnostic = Assert.Single(diagnostics.Where(item => item.Id == DiagnosticIds.UnnecessaryMockerTestBaseHelperIndirection));
+
+            Assert.Equal(DiagnosticIds.UnnecessaryMockerTestBaseHelperIndirection, diagnostic.Id);
+            Assert.Contains("Store", diagnostic.GetMessage());
+        }
+
+        [Fact]
+        public async Task TrackedMockShimAnalyzer_ShouldReport_WhenHelperCompositionExposesVerificationOnlyMockAlias()
+        {
+            const string SOURCE = @"
+using FastMoq;
+using FastMoq.Providers.MoqProvider;
+using Moq;
+
+class SampleService
+{
+}
+
+interface IService
+{
+    void Run();
+}
+
+class SampleTests
+{
+    private readonly TestHelper _helper = new();
+
+    void Execute()
+    {
+        _helper.VerifyDependency();
+    }
+
+    private sealed class TestHelper : MockerTestBase<SampleService>
+    {
+        public Mock<IService> DependencyMock => Mocks.GetMock<IService>();
+
+        public void VerifyDependency()
+        {
+            DependencyMock.Verify(x => x.Run());
+        }
+    }
+}";
+
+            var diagnostics = await AnalyzerTestHelpers.GetDiagnosticsAsync(
+                SOURCE,
+                includeAzureFunctionsHelpers: false,
+                includeMoqProviderPackage: true,
+                includeNSubstituteProviderPackage: true,
+                new TrackedMockShimAnalyzer());
+            var diagnostic = Assert.Single(diagnostics.Where(item => item.Id == DiagnosticIds.AvoidTrackedMockShimAlias));
+
+            Assert.Equal(DiagnosticIds.AvoidTrackedMockShimAlias, diagnostic.Id);
+        }
+
+        [Fact]
+        public async Task LoggerFactoryRegistrationAnalyzer_ShouldReport_WhenNestedHelperRegistersOutputLoggerFactory()
+        {
+            const string SOURCE = @"
+using FastMoq;
+using Microsoft.Extensions.Logging;
+
+class SampleService
+{
+}
+
+class SampleTests(Xunit.ITestOutputHelper output)
+{
+    private readonly TestHelper _helper = new(output);
+
+    SampleService Component => _helper.C;
+
+    private sealed class TestHelper : MockerTestBase<SampleService>
+    {
+        public TestHelper(Xunit.ITestOutputHelper output)
+        {
+            Mocks.AddType<ILoggerFactory>(new OutputLoggerFactory(output), true);
+        }
+
+        public SampleService C => Component;
+    }
+}
+
+sealed class OutputLoggerFactory : ILoggerFactory
+{
+    public OutputLoggerFactory(Xunit.ITestOutputHelper output)
+    {
+    }
+
+    public void AddProvider(ILoggerProvider provider)
+    {
+    }
+
+    public ILogger CreateLogger(string categoryName) => throw new System.NotImplementedException();
+
+    public void Dispose()
+    {
+    }
+}";
+
+            var diagnostics = await AnalyzerTestHelpers.GetDiagnosticsAsync(SOURCE, new LoggerFactoryRegistrationAnalyzer());
+            var diagnostic = Assert.Single(diagnostics.Where(item => item.Id == DiagnosticIds.PreferLoggerFactoryHelpers));
+
+            Assert.Equal(DiagnosticIds.PreferLoggerFactoryHelpers, diagnostic.Id);
+        }
+
+        [Fact]
+        public async Task FastMockVerifyHelperAnalyzer_ShouldReport_WhenNestedHelperWrapsDetachedProviderVerify()
+        {
+            const string SOURCE = @"
+using System;
+using System.Linq.Expressions;
+using FastMoq;
+using FastMoq.Providers;
+
+class SampleService
+{
+}
+
+interface IService
+{
+    void Run();
+}
+
+class SampleTests
+{
+    private readonly TestHelper _helper = new();
+
+    private sealed class TestHelper : MockerTestBase<SampleService>
+    {
+        internal void Verify<T>(IFastMock<T> fastMock, Expression<Action<T>> expression, TimesSpec? times = null)
+            where T : class
+            => MockingProviderRegistry.Default.Verify(fastMock, expression, times);
+    }
+}";
+
+            var diagnostics = await AnalyzerTestHelpers.GetDiagnosticsAsync(SOURCE, new FastMockVerifyHelperAnalyzer());
+            var diagnostic = Assert.Single(diagnostics.Where(item => item.Id == DiagnosticIds.AvoidFastMockVerifyHelperWrappers));
+
+            Assert.Equal(DiagnosticIds.AvoidFastMockVerifyHelperWrappers, diagnostic.Id);
+        }
+
+        [Fact]
+        public async Task FastMockVerifyHelperAnalyzer_ShouldReport_WhenNestedHelperWrapsProviderSpecificVerify()
+        {
+            const string SOURCE = @"
+using System;
+using System.Linq.Expressions;
+using FastMoq;
+using FastMoq.Providers;
+using FastMoq.Providers.MoqProvider;
+using Moq;
+
+class SampleService
+{
+}
+
+interface IService
+{
+    int Run();
+}
+
+class SampleTests
+{
+    private readonly TestHelper _helper = new();
+
+    private sealed class TestHelper : MockerTestBase<SampleService>
+    {
+        internal void Verify<T, TResult>(IFastMock<T> fastMock, Expression<Func<T, TResult>> expression, TimesSpec times)
+            where T : class
+            => fastMock.AsMoq().Verify(expression, times.ToMoq());
+
+        private static Times ToMoq(TimesSpec times)
+            => times.Mode switch
+            {
+                TimesSpecMode.AtLeastOnce => Times.AtLeastOnce(),
+                TimesSpecMode.Exactly => Times.Exactly(times.Count ?? 0),
+                TimesSpecMode.AtLeast => Times.AtLeast(times.Count ?? 0),
+                TimesSpecMode.AtMost => Times.AtMost(times.Count ?? 0),
+                TimesSpecMode.Never => Times.Never(),
+                _ => throw new ArgumentOutOfRangeException(nameof(times), times.Mode, null),
+            };
+    }
+}";
+
+            var diagnostics = await AnalyzerTestHelpers.GetDiagnosticsAsync(
+                SOURCE,
+                includeAzureFunctionsHelpers: false,
+                includeMoqProviderPackage: true,
+                includeNSubstituteProviderPackage: true,
+                new FastMockVerifyHelperAnalyzer());
+            var diagnostic = Assert.Single(diagnostics.Where(item => item.Id == DiagnosticIds.AvoidProviderSpecificFastMockVerifyHelperWrappers));
+
+            Assert.Equal(DiagnosticIds.AvoidProviderSpecificFastMockVerifyHelperWrappers, diagnostic.Id);
+            Assert.DoesNotContain(diagnostics, item => item.Id == DiagnosticIds.AvoidFastMockVerifyHelperWrappers);
         }
 
         private static async Task<MockerTestBaseHelperCompositionCandidate> GetDirectMockerTestBaseInheritanceCandidateAsync(string source, string outerTypeName)
