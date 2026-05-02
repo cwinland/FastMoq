@@ -25,7 +25,7 @@ namespace FastMoq.Tests
 
         [Theory]
         [InlineData(false, "nsubstitute", true)]
-        public void AsNSubstitute_ShouldReturnUnderlyingSubstitute_WhenProviderNameTheoryIsNSubstitute(bool var1, string providerName, bool var2)
+        public void AsNSubstitute_ShouldReturnUnderlyingSubstitute_WhenProviderNameTheoryIsNSubstitute(bool leadingSentinel, string providerName, bool trailingSentinel)
         {
             using var providerScope = MockingProviderRegistry.Push(providerName);
             var mocker = new Mocker();
@@ -37,8 +37,8 @@ namespace FastMoq.Tests
             substitute.Should().BeSameAs(dependency.Instance);
             dependency.Instance.GetValue().Returns("configured");
             substitute.GetValue().Should().Be("configured");
-            var1.Should().Be(false);
-            var2.Should().Be(true);
+            leadingSentinel.Should().Be(false);
+            trailingSentinel.Should().Be(true);
         }
 
         [Fact]

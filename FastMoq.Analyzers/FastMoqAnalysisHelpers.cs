@@ -5485,13 +5485,13 @@ namespace FastMoq.Analyzers
 
         private static bool IsCompilationLevelProviderSelectionInvocation(InvocationExpressionSyntax invocationExpression, SemanticModel semanticModel, CancellationToken cancellationToken)
         {
-            if (invocationExpression.Ancestors().OfType<GlobalStatementSyntax>().Any())
-            {
-                return true;
-            }
-
             var executableScope = invocationExpression.AncestorsAndSelf().FirstOrDefault(ancestor =>
                 ancestor is BaseMethodDeclarationSyntax or AccessorDeclarationSyntax or LocalFunctionStatementSyntax or AnonymousFunctionExpressionSyntax);
+
+            if (executableScope is null)
+            {
+                return invocationExpression.Ancestors().OfType<GlobalStatementSyntax>().Any();
+            }
 
             return executableScope switch
             {
@@ -5716,7 +5716,7 @@ namespace FastMoq.Analyzers
             var containingScope = referenceNode.AncestorsAndSelf().FirstOrDefault(ancestor =>
                 ancestor is BaseMethodDeclarationSyntax or AccessorDeclarationSyntax or LocalFunctionStatementSyntax or AnonymousFunctionExpressionSyntax);
 
-            if (containingScope is not null && IsLocalVariableWrittenAfterDeclaration(localSymbol, declaration, containingScope, semanticModel, cancellationToken))
+            if (containingScope is not null && IsLocalVariableWrittenBeforeReference(localSymbol, declaration, referenceNode, containingScope, semanticModel, cancellationToken))
             {
                 value = string.Empty;
                 return false;
@@ -5739,12 +5739,17 @@ namespace FastMoq.Analyzers
 
             foreach (var attribute in methodSymbol.GetAttributes())
             {
+                if (!IsXunitDataAttribute(attribute.AttributeClass))
+                {
+                    continue;
+                }
+
                 if (attribute.AttributeClass?.ToDisplayString() != "Xunit.InlineDataAttribute" ||
                     attribute.ApplicationSyntaxReference?.GetSyntax(cancellationToken) is not AttributeSyntax attributeSyntax ||
                     attributeSyntax.ArgumentList is null ||
                     parameterSymbol.Ordinal >= attributeSyntax.ArgumentList.Arguments.Count)
                 {
-                    continue;
+                    return false;
                 }
 
                 if (!TryGetSemanticModelForNode(attributeSyntax, semanticModel, out var attributeSemanticModel) ||
@@ -5775,11 +5780,26 @@ namespace FastMoq.Analyzers
             return true;
         }
 
-        private static bool IsLocalVariableWrittenAfterDeclaration(ILocalSymbol localSymbol, VariableDeclaratorSyntax declaration, SyntaxNode containingScope, SemanticModel semanticModel, CancellationToken cancellationToken)
+        private static bool IsXunitDataAttribute(INamedTypeSymbol? attributeType)
+        {
+            for (var current = attributeType; current is not null; current = current.BaseType)
+            {
+                if (current.Name == "DataAttribute" &&
+                    current.ContainingNamespace.ToDisplayString().StartsWith("Xunit", StringComparison.Ordinal))
+                {
+                    return true;
+                }
+            }
+
+            return false;
+        }
+
+        private static bool IsLocalVariableWrittenBeforeReference(ILocalSymbol localSymbol, VariableDeclaratorSyntax declaration, SyntaxNode referenceNode, SyntaxNode containingScope, SemanticModel semanticModel, CancellationToken cancellationToken)
         {
             foreach (var identifierName in containingScope.DescendantNodes().OfType<IdentifierNameSyntax>())
             {
-                if (identifierName.SpanStart <= declaration.SpanStart)
+                if (identifierName.SpanStart <= declaration.SpanStart ||
+                    identifierName.SpanStart >= referenceNode.SpanStart)
                 {
                     continue;
                 }
