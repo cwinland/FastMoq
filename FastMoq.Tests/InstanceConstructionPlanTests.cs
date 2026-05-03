@@ -1,5 +1,6 @@
 using FastMoq.Models;
 using Microsoft.Extensions.DependencyInjection;
+using System;
 using System.IO.Abstractions;
 using PublicInstanceConstructionRequest = FastMoq.Models.InstanceConstructionRequest;
 
@@ -45,6 +46,17 @@ namespace FastMoq.Tests
         }
 
         [Fact]
+        public void CreateConstructionPlan_ShouldRejectKnownTypeRequests_WhenRuntimeUsesDirectKnownTypeResolution()
+        {
+            var mocker = new Mocker();
+
+            var action = () => mocker.CreateConstructionPlan(new PublicInstanceConstructionRequest(typeof(Uri)));
+
+            action.Should().Throw<InvalidOperationException>()
+                .WithMessage("*known-type path*");
+        }
+
+        [Fact]
         public void CreateConstructionPlan_ShouldDescribeKeyedParameter_WhenFromKeyedServicesAttributeIsPresent()
         {
             var mocker = new Mocker();
@@ -78,6 +90,32 @@ namespace FastMoq.Tests
             plan.Parameters.Should().HaveCount(2);
             plan.Parameters[0].Source.Should().Be(InstanceConstructionParameterSource.AutoMock);
             plan.Parameters[1].Source.Should().Be(InstanceConstructionParameterSource.TypeDefault);
+        }
+
+        [Fact]
+        public void CreateConstructionPlan_ShouldDescribeMappedTypeRegistrationParameter_AsCustomRegistration()
+        {
+            var mocker = new Mocker();
+            mocker.AddType<IDependency, RegisteredDependency>();
+
+            var plan = mocker.CreateConstructionPlan(new PublicInstanceConstructionRequest(typeof(TargetWithDependency)));
+
+            plan.Parameters.Should().HaveCount(1);
+            plan.Parameters[0].ParameterType.Should().Be(typeof(IDependency));
+            plan.Parameters[0].Source.Should().Be(InstanceConstructionParameterSource.CustomRegistration);
+        }
+
+        [Fact]
+        public void CreateConstructionPlan_ShouldDescribeStoredConstructorArguments_AsCustomRegistration()
+        {
+            var mocker = new Mocker();
+            mocker.AddType<ConcreteDependencyWithValue>(replace: false, args: 42);
+
+            var plan = mocker.CreateConstructionPlan(new PublicInstanceConstructionRequest(typeof(TargetWithConfiguredConcreteDependency)));
+
+            plan.Parameters.Should().HaveCount(1);
+            plan.Parameters[0].ParameterType.Should().Be(typeof(ConcreteDependencyWithValue));
+            plan.Parameters[0].Source.Should().Be(InstanceConstructionParameterSource.CustomRegistration);
         }
 
         [Fact]
@@ -193,6 +231,13 @@ namespace FastMoq.Tests
             }
         }
 
+        private sealed class TargetWithConfiguredConcreteDependency
+        {
+            public TargetWithConfiguredConcreteDependency(ConcreteDependencyWithValue dependency)
+            {
+            }
+        }
+
         private sealed class TargetWithSealedConcreteDependency
         {
             public TargetWithSealedConcreteDependency(SealedConcreteDependency dependency)
@@ -202,6 +247,13 @@ namespace FastMoq.Tests
 
         public class ConcreteDependency
         {
+        }
+
+        public class ConcreteDependencyWithValue
+        {
+            public ConcreteDependencyWithValue(int value)
+            {
+            }
         }
 
         private sealed class SealedConcreteDependency

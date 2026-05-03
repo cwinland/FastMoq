@@ -26,9 +26,9 @@ namespace FastMoq
                 throw new InvalidOperationException($"Type '{requestedType}' resolves through a custom factory registration and does not expose constructor-plan metadata.");
             }
 
-            if (KnownTypeRegistry.HasManagedInstanceResolution(this, requestedType))
+            if (KnownTypeRegistry.HasKnownParameterResolution(this, requestedType))
             {
-                throw new InvalidOperationException($"Type '{requestedType}' resolves through a managed known-type path and does not expose constructor-plan metadata.");
+                throw new InvalidOperationException($"Type '{requestedType}' resolves through a known-type path and does not expose constructor-plan metadata.");
             }
 
             if (model.Arguments.Count > 0 && request.ConstructorParameterTypes == null)
@@ -183,7 +183,7 @@ namespace FastMoq
             }
 
             var parameterType = parameter.ParameterType;
-            if (HasTypeRegistration(parameterType) && GetTypeModel(parameterType).CreateFunc != null)
+            if (HasCustomRegistrationAffectingResolution(parameterType))
             {
                 return InstanceConstructionParameterSource.CustomRegistration;
             }
@@ -201,6 +201,19 @@ namespace FastMoq
             }
 
             return InstanceConstructionParameterSource.TypeDefault;
+        }
+
+        private bool HasCustomRegistrationAffectingResolution(Type parameterType)
+        {
+            if (!HasTypeRegistration(parameterType))
+            {
+                return false;
+            }
+
+            var model = GetTypeModel(parameterType);
+            return model.CreateFunc != null ||
+                model.Arguments.Count > 0 ||
+                model.InstanceType != parameterType;
         }
 
         private readonly record struct ConstructionPlanSelection(
