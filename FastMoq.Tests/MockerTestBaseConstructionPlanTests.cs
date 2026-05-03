@@ -9,7 +9,7 @@ namespace FastMoq.Tests
         [Fact]
         public void GetComponentConstructionPlan_ShouldUseComponentConstructorParameterTypesHook()
         {
-            var harness = new ConstructorTypesHarness();
+            using var harness = new ConstructorTypesHarness();
 
             var plan = harness.DescribeComponentConstruction();
 
@@ -23,7 +23,7 @@ namespace FastMoq.Tests
         [Fact]
         public void GetComponentConstructionPlan_ShouldUseComponentCreationFlags()
         {
-            var harness = new NonPublicConstructorHarness();
+            using var harness = new NonPublicConstructorHarness();
 
             var plan = harness.DescribeComponentConstruction();
 
@@ -35,7 +35,7 @@ namespace FastMoq.Tests
         [Fact]
         public void GetComponentConstructionPlan_ShouldAllowExplicitRequestOverride_WhenCreateComponentActionDiverges()
         {
-            var harness = new CustomRequestHarness();
+            using var harness = new CustomRequestHarness();
 
             var plan = harness.DescribeComponentConstruction();
 
@@ -45,7 +45,7 @@ namespace FastMoq.Tests
         [Fact]
         public void GetComponentHarnessBootstrapDescriptor_ShouldDescribeDefaultHookBootstrap()
         {
-            var harness = new ConstructorTypesHarness();
+            using var harness = new ConstructorTypesHarness();
 
             var descriptor = harness.DescribeComponentBootstrap();
 
@@ -60,7 +60,7 @@ namespace FastMoq.Tests
         [Fact]
         public void GetComponentHarnessBootstrapDescriptor_ShouldPreserveComponentCreationFlags()
         {
-            var harness = new NonPublicConstructorHarness();
+            using var harness = new NonPublicConstructorHarness();
 
             var descriptor = harness.DescribeComponentBootstrap();
 
@@ -74,7 +74,7 @@ namespace FastMoq.Tests
         [Fact]
         public void GetComponentHarnessBootstrapDescriptor_ShouldRequireExplicitRequestOverride_WhenHooksDoNotMatchRequest()
         {
-            var harness = new CustomRequestHarness();
+            using var harness = new CustomRequestHarness();
 
             var descriptor = harness.DescribeComponentBootstrap();
 

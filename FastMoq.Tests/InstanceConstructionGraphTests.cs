@@ -39,7 +39,7 @@ namespace FastMoq.Tests
         [Fact]
         public void GetComponentConstructionGraph_ShouldMapHarnessHooksThroughGraphMetadata()
         {
-            var harness = new ConstructorTypesGraphHarness();
+            using var harness = new ConstructorTypesGraphHarness();
 
             var graph = harness.GetComponentConstructionGraph();
 
