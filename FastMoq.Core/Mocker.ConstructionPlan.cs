@@ -42,12 +42,11 @@ namespace FastMoq
                 throw new InvalidOperationException($"Type '{requestedType}' does not resolve to a concrete constructor path.");
             }
 
-            var constructionRequest = CreateInstanceConstructionRequest(
+            var constructionRequest = CreateConstructorSelectionRequest(
                 request.PublicOnly,
                 request.ConstructorParameterTypes,
                 request.OptionalParameterResolution,
                 request.ConstructorAmbiguityBehavior);
-
             var selection = SelectConstructionPlanConstructor(targetType, constructionRequest);
             var parameters = selection.Constructor
                 .GetParameters()
@@ -95,7 +94,7 @@ namespace FastMoq
         {
             ArgumentNullException.ThrowIfNull(requestedType);
 
-            var request = CreateInstanceConstructionRequest(flags, constructorParameterTypes);
+            var request = CreateConstructorSelectionRequest(flags, constructorParameterTypes);
             return new PublicInstanceConstructionRequest(requestedType)
             {
                 ConstructorParameterTypes = constructorParameterTypes,
@@ -105,7 +104,7 @@ namespace FastMoq
             };
         }
 
-        private ConstructionPlanSelection SelectConstructionPlanConstructor(Type targetType, InstanceConstructionRequest request)
+        private ConstructionPlanSelection SelectConstructionPlanConstructor(Type targetType, ConstructorSelectionRequest request)
         {
             if (request.ConstructorParameterTypes != null)
             {
@@ -127,7 +126,7 @@ namespace FastMoq
             return new ConstructionPlanSelection(constructor, usedPreferredConstructorAttribute, usedAmbiguityFallback);
         }
 
-        private bool WasAmbiguityFallbackUsed(Type targetType, ConstructorInfo selectedConstructor, InstanceConstructionRequest request)
+        private bool WasAmbiguityFallbackUsed(Type targetType, ConstructorInfo selectedConstructor, ConstructorSelectionRequest request)
         {
             if (request.ConstructorAmbiguityBehavior != ConstructorAmbiguityBehavior.PreferParameterlessConstructor ||
                 selectedConstructor.GetParameters().Length != 0)

@@ -14,16 +14,25 @@ namespace FastMoq.Analyzers.Analyzers
         {
             context.ConfigureGeneratedCodeAnalysis(GeneratedCodeAnalysisFlags.None);
             context.EnableConcurrentExecution();
-            context.RegisterSyntaxNodeAction(AnalyzeInvocation, Microsoft.CodeAnalysis.CSharp.SyntaxKind.InvocationExpression);
-            context.RegisterSyntaxNodeAction(AnalyzeObjectCreation, Microsoft.CodeAnalysis.CSharp.SyntaxKind.ObjectCreationExpression);
-            context.RegisterSyntaxNodeAction(AnalyzeObjectCreation, Microsoft.CodeAnalysis.CSharp.SyntaxKind.ImplicitObjectCreationExpression);
+            context.RegisterCompilationStartAction(RegisterCompilationAnalysis);
         }
 
-        private static void AnalyzeInvocation(SyntaxNodeAnalysisContext context)
+        private static void RegisterCompilationAnalysis(CompilationStartAnalysisContext context)
+        {
+            var packageMatrix = FastMoqAnalysisHelpers.GetGeneratedTestPackageMatrix(context.Compilation);
+            var assemblyName = context.Compilation.AssemblyName;
+            var hasWebHelperAssembly = assemblyName == FastMoqAnalysisHelpers.FastMoqWebAssemblyName;
+            var hasAzureFunctionsHelperAssembly = assemblyName == FastMoqAnalysisHelpers.FastMoqAzureFunctionsAssemblyName;
+
+            context.RegisterSyntaxNodeAction(nodeContext => AnalyzeInvocation(nodeContext, packageMatrix, hasWebHelperAssembly, hasAzureFunctionsHelperAssembly), Microsoft.CodeAnalysis.CSharp.SyntaxKind.InvocationExpression);
+            context.RegisterSyntaxNodeAction(nodeContext => AnalyzeObjectCreation(nodeContext, packageMatrix, hasWebHelperAssembly), Microsoft.CodeAnalysis.CSharp.SyntaxKind.ObjectCreationExpression);
+            context.RegisterSyntaxNodeAction(nodeContext => AnalyzeObjectCreation(nodeContext, packageMatrix, hasWebHelperAssembly), Microsoft.CodeAnalysis.CSharp.SyntaxKind.ImplicitObjectCreationExpression);
+        }
+
+        private static void AnalyzeInvocation(SyntaxNodeAnalysisContext context, FastMoqGeneratedTestPackageMatrix packageMatrix, bool hasWebHelperAssembly, bool hasAzureFunctionsHelperAssembly)
         {
             var invocationExpression = (InvocationExpressionSyntax) context.Node;
-            var packageMatrix = FastMoqAnalysisHelpers.GetGeneratedTestPackageMatrix(context.SemanticModel.Compilation);
-            if (context.ContainingSymbol?.ContainingAssembly?.Name != "FastMoq.Web" &&
+            if (!hasWebHelperAssembly &&
                 !packageMatrix.HasWebHelpers &&
                 FastMoqAnalysisHelpers.TryGetMethodSymbol(invocationExpression, context.SemanticModel, context.CancellationToken, out var webMethod) &&
                 webMethod is not null &&
@@ -33,12 +42,12 @@ namespace FastMoq.Analyzers.Analyzers
                     DiagnosticDescriptors.ReferenceFastMoqHelperPackage,
                     FastMoqAnalysisHelpers.GetTargetNameLocation(invocationExpression.Expression),
                     webHelperName,
-                    "FastMoq.Web",
+                    FastMoqAnalysisHelpers.FastMoqWebAssemblyName,
                     "FastMoq.Web.Extensions"));
                 return;
             }
 
-            if (context.ContainingSymbol?.ContainingAssembly?.Name != "FastMoq.AzureFunctions" &&
+            if (!hasAzureFunctionsHelperAssembly &&
                 !packageMatrix.HasAzureFunctionsHelpers &&
                 FastMoqAnalysisHelpers.TryGetFunctionContextInvocationIdHelperSuggestion(invocationExpression, context.SemanticModel, context.CancellationToken, out _))
             {
@@ -46,12 +55,12 @@ namespace FastMoq.Analyzers.Analyzers
                     DiagnosticDescriptors.ReferenceFastMoqHelperPackage,
                     FastMoqAnalysisHelpers.GetTargetNameLocation(invocationExpression.Expression),
                     "AddFunctionContextInvocationId(...)",
-                    "FastMoq.AzureFunctions",
+                    FastMoqAnalysisHelpers.FastMoqAzureFunctionsAssemblyName,
                     "FastMoq.AzureFunctions.Extensions"));
                 return;
             }
 
-            if (context.ContainingSymbol?.ContainingAssembly?.Name == "FastMoq.AzureFunctions" ||
+            if (hasAzureFunctionsHelperAssembly ||
                 packageMatrix.HasAzureFunctionsHelpers ||
                 !FastMoqAnalysisHelpers.TryGetFunctionContextInstanceServicesHelperSuggestion(invocationExpression, context.SemanticModel, context.CancellationToken, out _))
             {
@@ -62,15 +71,14 @@ namespace FastMoq.Analyzers.Analyzers
                 DiagnosticDescriptors.ReferenceFastMoqHelperPackage,
                 FastMoqAnalysisHelpers.GetTargetNameLocation(invocationExpression.Expression),
                 "AddFunctionContextInstanceServices(...)",
-                "FastMoq.AzureFunctions",
+                FastMoqAnalysisHelpers.FastMoqAzureFunctionsAssemblyName,
                 "FastMoq.AzureFunctions.Extensions"));
         }
 
-        private static void AnalyzeObjectCreation(SyntaxNodeAnalysisContext context)
+        private static void AnalyzeObjectCreation(SyntaxNodeAnalysisContext context, FastMoqGeneratedTestPackageMatrix packageMatrix, bool hasWebHelperAssembly)
         {
             var expression = (ExpressionSyntax) context.Node;
-            var packageMatrix = FastMoqAnalysisHelpers.GetGeneratedTestPackageMatrix(context.SemanticModel.Compilation);
-            if (context.ContainingSymbol?.ContainingAssembly?.Name == "FastMoq.Web" ||
+            if (hasWebHelperAssembly ||
                 packageMatrix.HasWebHelpers ||
                 !FastMoqAnalysisHelpers.TryGetRawWebHelperSuggestion(expression, context.SemanticModel, context.CancellationToken, out var helperName, out _))
             {
@@ -81,7 +89,7 @@ namespace FastMoq.Analyzers.Analyzers
                 DiagnosticDescriptors.ReferenceFastMoqHelperPackage,
                 expression.GetLocation(),
                 helperName,
-                "FastMoq.Web",
+                FastMoqAnalysisHelpers.FastMoqWebAssemblyName,
                 "FastMoq.Web.Extensions"));
         }
     }
