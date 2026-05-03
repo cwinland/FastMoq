@@ -34,6 +34,7 @@ The current public backlog for this design is:
 - [#137](https://github.com/cwinland/FastMoq/issues/137) generator-backed framework-helper builders for repeated test patterns
 - [#123](https://github.com/cwinland/FastMoq/issues/123) full provider-first test generation from existing services and supported classes
 - [#124](https://github.com/cwinland/FastMoq/issues/124) analyzer-guided test generation and missing-package suggestions
+- [#162](https://github.com/cwinland/FastMoq/issues/162) generated-test settings and test-platform targeting for later generation flows
 - [#138](https://github.com/cwinland/FastMoq/issues/138) later provider-optimized generation evaluation
 - [#139](https://github.com/cwinland/FastMoq/issues/139) later narrow compile-time fake or mock generation evaluation
 
@@ -44,6 +45,7 @@ Crosswalk summary:
 - `#146` and `#147` carry the near-term analyzer follow-up for those landed helper surfaces.
 - `#120`, `#125`, `#126`, `#127`, and `#134` are the pre-v5 contract and blocking prerequisite slices.
 - `#122`, `#136`, `#137`, `#123`, and `#124` are the phased implementation and authoring-flow outcomes once the prerequisites are stable enough.
+- `#162` is the later settings and test-platform contract for generated scenario scaffolds, full generated tests, and analyzer entry points.
 - `#138` and `#139` are intentionally late evaluation tracks after the main provider-first generator story is already working.
 
 ## Product Positioning
@@ -275,7 +277,7 @@ The install and opt-in story for the first generator slice is:
 - package installation enables generation capability, but generation targets should still be explicit rather than blanket automatic for every eligible type in a project
 - generator-triggering flow can come from supported markers, declared generation targets, or later analyzer-guided authoring, but the package alone should not imply broad surprise output across an existing suite
 
-Broader project-level or suite-level settings that express preferred generated test direction, scaffold style, or harness shape are later work. They should not be treated as part of the #125 constructor-contract slice or the first #122 graph and harness MVP.
+Broader project-level or suite-level settings that express preferred generated test direction, scaffold style, assertion style, or framework and runner targeting are later work in [#162](https://github.com/cwinland/FastMoq/issues/162). They should not be treated as part of the #125 constructor-contract slice or the first #122 graph and harness MVP.
 
 This keeps the aggregate install convenient without making generation feel like unavoidable background behavior.
 
@@ -386,19 +388,22 @@ Done in the current branch:
 - `MockerTestBase<TComponent>` now exposes the first harness-side consumer through `GetComponentConstructionGraph()`
 - an internal harness-bootstrap descriptor now sits on top of the current graph model and captures the default `MockerTestBase<TComponent>` bootstrap knobs plus whether generated output would need an explicit `CreateComponentConstructionRequest()` override
 - focused tests cover direct graph creation, the harness-mapped component path, and the first harness-bootstrap descriptor cases without widening the public planning contract beyond `InstanceConstructionRequest` and `InstanceConstructionPlan`
+- representative generated consuming scenarios now compile against the real generator output rather than only generator-driver fixtures
+- parity tests now prove the generated harness path matches the supported runtime harness path for the same component shapes
+- measured evidence is now recorded in [generated harness setup benchmark results](../benchmarks/results/generated-harness-setup-net8.md), where the generated bootstrap-descriptor path holds a slight edge over the runtime fallback path with effectively identical allocations on the richer single-constructor benchmark
 
-What still keeps [#122](https://github.com/cwinland/FastMoq/issues/122) open:
+What now moves past [#122](https://github.com/cwinland/FastMoq/issues/122):
 
-- the branch now contains a first real source-generator implementation for explicit partial `MockerTestBase<TComponent>` targets, but representative generated consuming scenarios beyond generator-driver coverage still need to land
-- additional dependency-order metadata may still be required once the first generator-emission path proves exactly what bootstrap output needs
-- benchmark evidence for reduced reflection and setup overhead still needs to land after the first concrete generator consumer is chosen
+- broader generated-test settings and framework or runner targeting now live in [#162](https://github.com/cwinland/FastMoq/issues/162) rather than the graph and harness MVP
+- generated scenario or suite scaffolding still belongs in [#136](https://github.com/cwinland/FastMoq/issues/136)
+- full generated tests and analyzer entry points still belong in [#123](https://github.com/cwinland/FastMoq/issues/123) and [#124](https://github.com/cwinland/FastMoq/issues/124)
 
-Preferred next `#122` decision:
+Preferred post-`#122` decision:
 
 - keep the public planning API unchanged
-- extend the first real source-generator slice against the existing planning, graph, and harness-bootstrap descriptor contracts
-- only enrich the internal graph model further if the generator path proves that more dependency-order metadata is actually required for compilation or parity
-- update the [#122](https://github.com/cwinland/FastMoq/issues/122) issue body or checklist so the completed internal graph and harness-bootstrap groundwork is marked done and the remaining generator-output or benchmark work is explicitly named
+- use [#162](https://github.com/cwinland/FastMoq/issues/162) to settle generated-test settings and framework or runner targeting before widening into scaffolds or full tests
+- only enrich the internal graph model further if a later generation layer proves that more dependency-order metadata is actually required for compilation or parity
+- move the next implementation-facing generator work into [#136](https://github.com/cwinland/FastMoq/issues/136), [#123](https://github.com/cwinland/FastMoq/issues/123), and [#124](https://github.com/cwinland/FastMoq/issues/124) once that settings model is explicit
 
 ## Suggested v5 Delivery Phases
 

@@ -16,6 +16,14 @@ namespace FastMoq.Analyzers.Tests
 {
     internal static class AnalyzerTestHelpers
     {
+        private static readonly HashSet<string> ExcludedTrustedPlatformAssemblyNames = new(StringComparer.OrdinalIgnoreCase)
+        {
+            "FastMoq.Analyzers.Tests",
+            "FastMoq.Tests",
+            "FastMoq.Tests.Blazor",
+            "FastMoq.Tests.Web",
+        };
+
         public static async Task<ImmutableArray<Diagnostic>> GetDiagnosticsAsync(string source, params DiagnosticAnalyzer[] analyzers)
         {
             return await GetDiagnosticsAsync(source, includeAzureFunctionsHelpers: false, includeMoqProviderPackage: true, includeNSubstituteProviderPackage: true, includeWebHelpers: true, analyzers).ConfigureAwait(false);
@@ -236,44 +244,50 @@ namespace FastMoq.Analyzers.Tests
             {
                 foreach (var assemblyPath in trustedPlatformAssemblies.Split(Path.PathSeparator))
                 {
+                    var assemblyName = Path.GetFileNameWithoutExtension(assemblyPath);
+                    if (ExcludedTrustedPlatformAssemblyNames.Contains(assemblyName))
+                    {
+                        continue;
+                    }
+
                     if (!includeAggregatePackage &&
-                        string.Equals(Path.GetFileNameWithoutExtension(assemblyPath), "FastMoq", StringComparison.OrdinalIgnoreCase))
+                        string.Equals(assemblyName, "FastMoq", StringComparison.OrdinalIgnoreCase))
                     {
                         continue;
                     }
 
                     if (!includeDatabaseHelpers &&
-                        string.Equals(Path.GetFileNameWithoutExtension(assemblyPath), "FastMoq.Database", StringComparison.OrdinalIgnoreCase))
+                        string.Equals(assemblyName, "FastMoq.Database", StringComparison.OrdinalIgnoreCase))
                     {
                         continue;
                     }
 
                     if (!includeAzureHelpers &&
-                        string.Equals(Path.GetFileNameWithoutExtension(assemblyPath), "FastMoq.Azure", StringComparison.OrdinalIgnoreCase))
+                        string.Equals(assemblyName, "FastMoq.Azure", StringComparison.OrdinalIgnoreCase))
                     {
                         continue;
                     }
 
                     if (!includeWebHelpers &&
-                        string.Equals(Path.GetFileNameWithoutExtension(assemblyPath), "FastMoq.Web", StringComparison.OrdinalIgnoreCase))
+                        string.Equals(assemblyName, "FastMoq.Web", StringComparison.OrdinalIgnoreCase))
                     {
                         continue;
                     }
 
                     if (!includeAzureFunctionsHelpers &&
-                        string.Equals(Path.GetFileNameWithoutExtension(assemblyPath), "FastMoq.AzureFunctions", StringComparison.OrdinalIgnoreCase))
+                        string.Equals(assemblyName, "FastMoq.AzureFunctions", StringComparison.OrdinalIgnoreCase))
                     {
                         continue;
                     }
 
                     if (!includeMoqProviderPackage &&
-                        string.Equals(Path.GetFileNameWithoutExtension(assemblyPath), "FastMoq.Provider.Moq", StringComparison.OrdinalIgnoreCase))
+                        string.Equals(assemblyName, "FastMoq.Provider.Moq", StringComparison.OrdinalIgnoreCase))
                     {
                         continue;
                     }
 
                     if (!includeNSubstituteProviderPackage &&
-                        string.Equals(Path.GetFileNameWithoutExtension(assemblyPath), "FastMoq.Provider.NSubstitute", StringComparison.OrdinalIgnoreCase))
+                        string.Equals(assemblyName, "FastMoq.Provider.NSubstitute", StringComparison.OrdinalIgnoreCase))
                     {
                         continue;
                     }
