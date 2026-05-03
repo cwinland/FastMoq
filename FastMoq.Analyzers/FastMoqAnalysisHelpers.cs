@@ -346,12 +346,12 @@ namespace FastMoq.Analyzers
 
         public static bool HasWebHelperPackage(SemanticModel semanticModel)
         {
-            return GetGeneratedTestPackageMatrix(semanticModel.Compilation).HasWebHelpers;
+            return semanticModel.Compilation.GetTypeByMetadataName(FastMoqWebExtensionsMetadataName) is not null;
         }
 
         public static bool HasAzureFunctionsHelperPackage(Compilation compilation)
         {
-            return GetGeneratedTestPackageMatrix(compilation).HasAzureFunctionsHelpers;
+            return compilation.GetTypeByMetadataName(FastMoqAzureFunctionsExtensionsMetadataName) is not null;
         }
 
         public static bool IsFastMoqMockModelType(ITypeSymbol type)

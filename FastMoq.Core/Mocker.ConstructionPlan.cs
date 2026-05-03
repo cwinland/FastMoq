@@ -37,7 +37,9 @@ namespace FastMoq
             }
 
             var targetType = model.InstanceType ?? requestedType;
-            if (targetType.IsInterface)
+            if (targetType.IsInterface ||
+                targetType.IsAbstract ||
+                targetType.ContainsGenericParameters)
             {
                 throw new InvalidOperationException($"Type '{requestedType}' does not resolve to a concrete constructor path.");
             }

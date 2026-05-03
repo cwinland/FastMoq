@@ -57,6 +57,28 @@ namespace FastMoq.Tests
         }
 
         [Fact]
+        public void CreateConstructionPlan_ShouldRejectAbstractTypeRequests_WhenResolvedTypeIsNotConstructible()
+        {
+            var mocker = new Mocker();
+
+            var action = () => mocker.CreateConstructionPlan(new PublicInstanceConstructionRequest(typeof(AbstractDependency)));
+
+            action.Should().Throw<InvalidOperationException>()
+                .WithMessage("*does not resolve to a concrete constructor path*");
+        }
+
+        [Fact]
+        public void CreateConstructionPlan_ShouldRejectOpenGenericRequests_WhenResolvedTypeIsNotConstructible()
+        {
+            var mocker = new Mocker();
+
+            var action = () => mocker.CreateConstructionPlan(new PublicInstanceConstructionRequest(typeof(GenericDependency<>)));
+
+            action.Should().Throw<InvalidOperationException>()
+                .WithMessage("*does not resolve to a concrete constructor path*");
+        }
+
+        [Fact]
         public void CreateConstructionPlan_ShouldDescribeKeyedParameter_WhenFromKeyedServicesAttributeIsPresent()
         {
             var mocker = new Mocker();
@@ -249,9 +271,23 @@ namespace FastMoq.Tests
         {
         }
 
+        public abstract class AbstractDependency
+        {
+            protected AbstractDependency()
+            {
+            }
+        }
+
         public class ConcreteDependencyWithValue
         {
             public ConcreteDependencyWithValue(int value)
+            {
+            }
+        }
+
+        public class GenericDependency<TValue>
+        {
+            public GenericDependency(TValue value)
             {
             }
         }
