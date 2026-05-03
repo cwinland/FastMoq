@@ -24,6 +24,40 @@ namespace FastMoq.Tests
         }
 
         [Theory]
+        [InlineData(false, "nsubstitute", true)]
+        public void AsNSubstitute_ShouldReturnUnderlyingSubstitute_WhenProviderNameTheoryIsNSubstitute(bool leadingSentinel, string providerName, bool trailingSentinel)
+        {
+            using var providerScope = MockingProviderRegistry.Push(providerName);
+            var mocker = new Mocker();
+
+            var dependency = mocker.GetOrCreateMock<IProviderValueDependency>();
+
+            var substitute = dependency.AsNSubstitute();
+
+            substitute.Should().BeSameAs(dependency.Instance);
+            dependency.Instance.GetValue().Returns("configured");
+            substitute.GetValue().Should().Be("configured");
+            leadingSentinel.Should().Be(false);
+            trailingSentinel.Should().Be(true);
+        }
+
+        [Fact]
+        public void AsNSubstitute_ShouldReturnUnderlyingSubstitute_WhenProviderNameVariableIsNSubstitute()
+        {
+            var providerName = "nsubstitute";
+            using var providerScope = MockingProviderRegistry.Push(providerName);
+            var mocker = new Mocker();
+
+            var dependency = mocker.GetOrCreateMock<IProviderValueDependency>();
+
+            var substitute = dependency.AsNSubstitute();
+
+            substitute.Should().BeSameAs(dependency.Instance);
+            dependency.Instance.GetValue().Returns("configured");
+            substitute.GetValue().Should().Be("configured");
+        }
+
+        [Theory]
         [InlineData("moq")]
         [InlineData("reflection")]
         public void AsNSubstitute_ShouldThrow_WhenProviderIsNotNSubstitute(string providerName)
@@ -33,7 +67,9 @@ namespace FastMoq.Tests
 
             var dependency = mocker.GetOrCreateMock<IProviderValueDependency>();
 
+#pragma warning disable FMOQ0009 // Intentional negative coverage uses runtime-selected providers that exclude nsubstitute.
             Action action = () => dependency.AsNSubstitute();
+#pragma warning restore FMOQ0009 // Intentional negative coverage uses runtime-selected providers that exclude nsubstitute.
 
             var exception = action.Should().Throw<NotSupportedException>().Which;
             exception.Message.Should().Contain("requires the 'nsubstitute' provider");

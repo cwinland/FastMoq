@@ -4576,6 +4576,198 @@ class Sample
         }
 
         [Fact]
+        public async Task ProviderBootstrapAnalyzer_ShouldNotReport_WhenProviderIsSelectedUsingSingleAssignmentLocalVariable()
+        {
+            const string SOURCE = @"
+using FastMoq;
+using FastMoq.Providers;
+using FastMoq.Providers.NSubstituteProvider;
+
+class Sample
+{
+    interface IService
+    {
+        void Run();
+    }
+
+    void Execute()
+    {
+        var providerName = ""nsubstitute"";
+        using var providerScope = MockingProviderRegistry.Push(providerName);
+        var mocks = new Mocker();
+        var dependency = mocks.GetOrCreateMock<IService>();
+        dependency.Received();
+    }
+}";
+
+            var diagnostics = await AnalyzerTestHelpers.GetDiagnosticsAsync(
+                SOURCE,
+                includeAzureFunctionsHelpers: false,
+                includeMoqProviderPackage: true,
+                includeNSubstituteProviderPackage: true,
+                new ProviderBootstrapAnalyzer());
+            Assert.DoesNotContain(diagnostics, item => item.Id == DiagnosticIds.SelectProviderBeforeProviderSpecificApi);
+        }
+
+        [Fact]
+        public async Task ProviderBootstrapAnalyzer_ShouldNotReport_WhenTheoryInlineDataAlwaysSelectsSameProvider()
+        {
+            const string SOURCE = @"
+using FastMoq;
+using FastMoq.Providers;
+using FastMoq.Providers.NSubstituteProvider;
+using Xunit;
+
+class Sample
+{
+    interface IService
+    {
+        void Run();
+    }
+
+    [Theory]
+    [InlineData(""nsubstitute"")]
+    public void Execute(string providerName)
+    {
+        using var providerScope = MockingProviderRegistry.Push(providerName);
+        var mocks = new Mocker();
+        var dependency = mocks.GetOrCreateMock<IService>();
+        dependency.Received();
+    }
+}";
+
+            var diagnostics = await AnalyzerTestHelpers.GetDiagnosticsAsync(
+                SOURCE,
+                includeAzureFunctionsHelpers: false,
+                includeMoqProviderPackage: true,
+                includeNSubstituteProviderPackage: true,
+                new ProviderBootstrapAnalyzer());
+            Assert.DoesNotContain(diagnostics, item => item.Id == DiagnosticIds.SelectProviderBeforeProviderSpecificApi);
+        }
+
+        [Fact]
+        public async Task ProviderBootstrapAnalyzer_ShouldNotReport_WhenTheoryInlineDataRowsReuseSameConstantProviderField()
+        {
+            const string SOURCE = @"
+using FastMoq;
+using FastMoq.Providers;
+using FastMoq.Providers.NSubstituteProvider;
+using Xunit;
+
+class Sample
+{
+    private const string ProviderName = ""nsubstitute"";
+
+    interface IService
+    {
+        void Run();
+    }
+
+    [Theory]
+    [InlineData(ProviderName)]
+    [InlineData(ProviderName)]
+    public void Execute(string providerName)
+    {
+        using var providerScope = MockingProviderRegistry.Push(providerName);
+        var mocks = new Mocker();
+        var dependency = mocks.GetOrCreateMock<IService>();
+        dependency.Received();
+    }
+}";
+
+            var diagnostics = await AnalyzerTestHelpers.GetDiagnosticsAsync(
+                SOURCE,
+                includeAzureFunctionsHelpers: false,
+                includeMoqProviderPackage: true,
+                includeNSubstituteProviderPackage: true,
+                new ProviderBootstrapAnalyzer());
+            Assert.DoesNotContain(diagnostics, item => item.Id == DiagnosticIds.SelectProviderBeforeProviderSpecificApi);
+        }
+
+        [Fact]
+        public async Task ProviderBootstrapAnalyzer_ShouldReport_WhenTheoryUsesMixedDataSources()
+        {
+            const string SOURCE = @"
+using FastMoq;
+using FastMoq.Providers;
+using FastMoq.Providers.NSubstituteProvider;
+using System.Collections.Generic;
+using Xunit;
+
+class Sample
+{
+    interface IService
+    {
+        void Run();
+    }
+
+    public static IEnumerable<object[]> OtherProviderNames => new[]
+    {
+        new object[] { ""reflection"" },
+    };
+
+    [Theory]
+    [InlineData(""nsubstitute"")]
+    [MemberData(nameof(OtherProviderNames))]
+    public void Execute(string providerName)
+    {
+        using var providerScope = MockingProviderRegistry.Push(providerName);
+        var mocks = new Mocker();
+        var dependency = mocks.GetOrCreateMock<IService>();
+        dependency.Received();
+    }
+}";
+
+            var diagnostics = await AnalyzerTestHelpers.GetDiagnosticsAsync(
+                SOURCE,
+                includeAzureFunctionsHelpers: false,
+                includeMoqProviderPackage: true,
+                includeNSubstituteProviderPackage: true,
+                new ProviderBootstrapAnalyzer());
+            var diagnostic = Assert.Single(diagnostics.Where(item => item.Id == DiagnosticIds.SelectProviderBeforeProviderSpecificApi));
+            Assert.Equal(DiagnosticIds.SelectProviderBeforeProviderSpecificApi, diagnostic.Id);
+        }
+
+        [Fact]
+        public async Task ProviderBootstrapAnalyzer_ShouldReport_WhenTheoryInlineDataSelectsDifferentProviders()
+        {
+            const string SOURCE = @"
+using FastMoq;
+using FastMoq.Providers;
+using FastMoq.Providers.NSubstituteProvider;
+using System;
+using Xunit;
+
+class Sample
+{
+    interface IService
+    {
+        void Run();
+    }
+
+    [Theory]
+    [InlineData(""moq"")]
+    [InlineData(""reflection"")]
+    public void Execute(string providerName)
+    {
+        using var providerScope = MockingProviderRegistry.Push(providerName);
+        var mocks = new Mocker();
+        var dependency = mocks.GetOrCreateMock<IService>();
+        Action assertion = () => dependency.AsNSubstitute();
+    }
+}";
+
+            var diagnostics = await AnalyzerTestHelpers.GetDiagnosticsAsync(
+                SOURCE,
+                includeAzureFunctionsHelpers: false,
+                includeMoqProviderPackage: true,
+                includeNSubstituteProviderPackage: true,
+                new ProviderBootstrapAnalyzer());
+            var diagnostic = Assert.Single(diagnostics.Where(item => item.Id == DiagnosticIds.SelectProviderBeforeProviderSpecificApi));
+            Assert.Equal(DiagnosticIds.SelectProviderBeforeProviderSpecificApi, diagnostic.Id);
+        }
+
+        [Fact]
         public async Task ProviderBootstrapAnalyzer_ShouldReport_WhenProviderIsSelectedOnlyInsideNestedLambda()
         {
             const string SOURCE = @"
@@ -4610,7 +4802,157 @@ class Sample
         }
 
         [Fact]
-        public async Task ProviderBootstrapAnalyzer_ShouldNotReport_WhenProviderIsSelectedByDefault()
+        public async Task ProviderBootstrapAnalyzer_ShouldNotReport_WhenLocalVariableIsReassignedAfterProviderSelection()
+        {
+            const string SOURCE = @"
+using FastMoq;
+using FastMoq.Providers;
+using FastMoq.Providers.NSubstituteProvider;
+
+class Sample
+{
+    interface IService
+    {
+        void Run();
+    }
+
+    void Execute()
+    {
+        var providerName = ""nsubstitute"";
+        using var providerScope = MockingProviderRegistry.Push(providerName);
+        providerName = ""reflection"";
+        var mocks = new Mocker();
+        var dependency = mocks.GetOrCreateMock<IService>();
+        dependency.Received();
+    }
+}";
+
+            var diagnostics = await AnalyzerTestHelpers.GetDiagnosticsAsync(
+                SOURCE,
+                includeAzureFunctionsHelpers: false,
+                includeMoqProviderPackage: true,
+                includeNSubstituteProviderPackage: true,
+                new ProviderBootstrapAnalyzer());
+            Assert.DoesNotContain(diagnostics, item => item.Id == DiagnosticIds.SelectProviderBeforeProviderSpecificApi);
+        }
+
+        [Fact]
+        public async Task ProviderBootstrapAnalyzer_ShouldNotReport_WhenNestedLambdaWritesLocalBeforeProviderSelectionButDoesNotRun()
+        {
+            const string SOURCE = @"
+using System;
+using FastMoq;
+using FastMoq.Providers;
+using FastMoq.Providers.NSubstituteProvider;
+
+class Sample
+{
+    interface IService
+    {
+        void Run();
+    }
+
+    void Execute()
+    {
+        var providerName = ""nsubstitute"";
+        Action mutate = () => providerName = ""reflection"";
+        using var providerScope = MockingProviderRegistry.Push(providerName);
+        var mocks = new Mocker();
+        var dependency = mocks.GetOrCreateMock<IService>();
+        dependency.Received();
+    }
+}";
+
+            var diagnostics = await AnalyzerTestHelpers.GetDiagnosticsAsync(
+                SOURCE,
+                includeAzureFunctionsHelpers: false,
+                includeMoqProviderPackage: true,
+                includeNSubstituteProviderPackage: true,
+                new ProviderBootstrapAnalyzer());
+            Assert.DoesNotContain(diagnostics, item => item.Id == DiagnosticIds.SelectProviderBeforeProviderSpecificApi);
+        }
+
+        [Fact]
+        public async Task ProviderBootstrapAnalyzer_ShouldReport_WhenCapturedLocalProviderVariableIsReassignedBeforeNestedLambdaExecutes()
+        {
+            const string SOURCE = @"
+using System;
+using FastMoq;
+using FastMoq.Providers;
+using FastMoq.Providers.NSubstituteProvider;
+
+class Sample
+{
+    interface IService
+    {
+        void Run();
+    }
+
+    void Execute()
+    {
+        var providerName = ""nsubstitute"";
+        Action run = () =>
+        {
+            using var providerScope = MockingProviderRegistry.Push(providerName);
+            var mocks = new Mocker();
+            var dependency = mocks.GetOrCreateMock<IService>();
+            dependency.Received();
+        };
+
+        providerName = ""reflection"";
+    }
+}";
+
+            var diagnostics = await AnalyzerTestHelpers.GetDiagnosticsAsync(
+                SOURCE,
+                includeAzureFunctionsHelpers: false,
+                includeMoqProviderPackage: true,
+                includeNSubstituteProviderPackage: true,
+                new ProviderBootstrapAnalyzer());
+            var diagnostic = Assert.Single(diagnostics.Where(item => item.Id == DiagnosticIds.SelectProviderBeforeProviderSpecificApi));
+            Assert.Equal(DiagnosticIds.SelectProviderBeforeProviderSpecificApi, diagnostic.Id);
+        }
+
+        [Fact]
+        public async Task ProviderBootstrapAnalyzer_ShouldIgnoreTopLevelNestedLambdaProviderSelections_WhenDeterminingDefaults()
+        {
+            const string SOURCE = @"
+using System;
+using FastMoq;
+using FastMoq.Providers;
+using FastMoq.Providers.MoqProvider;
+
+Action bootstrap = () =>
+{
+    using var providerScope = MockingProviderRegistry.Push(""moq"");
+};
+
+class Sample
+{
+    interface IService
+    {
+        void Run();
+    }
+
+    void Execute()
+    {
+        var mocks = new Mocker();
+        var dependency = mocks.GetMock<IService>();
+    }
+}";
+
+            var diagnostics = await AnalyzerTestHelpers.GetDiagnosticsAsync(
+                SOURCE,
+                includeAzureFunctionsHelpers: false,
+                includeMoqProviderPackage: true,
+                includeNSubstituteProviderPackage: true,
+                new ProviderBootstrapAnalyzer());
+            var diagnostic = Assert.Single(diagnostics.Where(item => item.Id == DiagnosticIds.SelectProviderBeforeProviderSpecificApi));
+            Assert.Equal(DiagnosticIds.SelectProviderBeforeProviderSpecificApi, diagnostic.Id);
+        }
+
+        [Fact]
+        public async Task ProviderBootstrapAnalyzer_ShouldReport_WhenProviderIsSelectedOnlyInStaticConstructor()
         {
             const string SOURCE = @"
 using FastMoq;
@@ -4619,6 +4961,48 @@ using FastMoq.Providers.MoqProvider;
 
 static class Bootstrap
 {
+    static Bootstrap()
+    {
+        MockingProviderRegistry.Register(""moq"", MoqMockingProvider.Instance, setAsDefault: true);
+    }
+}
+
+class Sample
+{
+    interface IService
+    {
+        void Run();
+    }
+
+    void Execute()
+    {
+        var mocks = new Mocker();
+        var dependency = mocks.GetMock<IService>();
+    }
+}";
+
+            var diagnostics = await AnalyzerTestHelpers.GetDiagnosticsAsync(
+                SOURCE,
+                includeAzureFunctionsHelpers: false,
+                includeMoqProviderPackage: true,
+                includeNSubstituteProviderPackage: true,
+                new ProviderBootstrapAnalyzer());
+            var diagnostic = Assert.Single(diagnostics.Where(item => item.Id == DiagnosticIds.SelectProviderBeforeProviderSpecificApi));
+            Assert.Equal(DiagnosticIds.SelectProviderBeforeProviderSpecificApi, diagnostic.Id);
+        }
+
+        [Fact]
+        public async Task ProviderBootstrapAnalyzer_ShouldNotReport_WhenProviderIsSelectedByDefault()
+        {
+            const string SOURCE = @"
+using FastMoq;
+using FastMoq.Providers;
+using FastMoq.Providers.MoqProvider;
+using System.Runtime.CompilerServices;
+
+static class Bootstrap
+{
+    [ModuleInitializer]
     static void Initialize()
     {
         MockingProviderRegistry.Register(""moq"", MoqMockingProvider.Instance, setAsDefault: true);
@@ -4655,9 +5039,11 @@ class Sample
 using FastMoq;
 using FastMoq.Providers;
 using FastMoq.Providers.MoqProvider;
+using System.Runtime.CompilerServices;
 
 static class Bootstrap
 {
+    [ModuleInitializer]
     static void Initialize()
     {
         MockingProviderRegistry.Register(""moq"", MoqMockingProvider.Instance);
@@ -4684,6 +5070,137 @@ class Sample
                 includeAzureFunctionsHelpers: false,
                 includeMoqProviderPackage: true,
                 includeNSubstituteProviderPackage: false,
+                new ProviderBootstrapAnalyzer());
+            Assert.DoesNotContain(diagnostics, item => item.Id == DiagnosticIds.SelectProviderBeforeProviderSpecificApi);
+        }
+
+        [Fact]
+        public async Task ProviderBootstrapAnalyzer_ShouldIgnoreNonBootstrapSourceDefaultSelections_WhenAssemblyRegistersMoqAsDefaultProvider()
+        {
+            const string SOURCE = @"
+using FastMoq;
+using FastMoq.Providers;
+using FastMoq.Providers.MoqProvider;
+
+[assembly: FastMoqRegisterProvider(""moq"", typeof(MoqMockingProvider), SetAsDefault = true)]
+
+class Sample
+{
+    interface IService
+    {
+        void Run();
+    }
+
+    void ResetProvider()
+    {
+        MockingProviderRegistry.SetDefault(""reflection"");
+    }
+
+    void Execute()
+    {
+        var mocks = new Mocker();
+        var dependency = mocks.GetMock<IService>();
+    }
+}";
+
+            var diagnostics = await AnalyzerTestHelpers.GetDiagnosticsAsync(
+                SOURCE,
+                includeAzureFunctionsHelpers: false,
+                includeMoqProviderPackage: true,
+                includeNSubstituteProviderPackage: false,
+                new ProviderBootstrapAnalyzer());
+            Assert.DoesNotContain(diagnostics, item => item.Id == DiagnosticIds.SelectProviderBeforeProviderSpecificApi);
+        }
+
+        [Fact]
+        public async Task ProviderBootstrapAnalyzer_ShouldNotReport_WhenReflectionDefaultClassSelectsDifferentProvidersPerMethod()
+        {
+            const string SOURCE = @"
+using FastMoq;
+using FastMoq.Providers;
+using FastMoq.Providers.MoqProvider;
+using FastMoq.Providers.NSubstituteProvider;
+
+[assembly: FastMoqRegisterProvider(""moq"", typeof(MoqMockingProvider))]
+[assembly: FastMoqRegisterProvider(""nsubstitute"", typeof(NSubstituteMockingProvider))]
+
+class Sample
+{
+    interface IService
+    {
+        void Run();
+    }
+
+    void ReflectionTest(Mocker mocks)
+    {
+        var dependency = mocks.GetObject<IService>();
+    }
+
+    void MoqTest()
+    {
+        using var providerScope = MockingProviderRegistry.Push(""moq"");
+        var mocks = new Mocker();
+        var dependency = mocks.GetOrCreateMock<IService>();
+        dependency.AsMoq();
+    }
+
+    void NSubstituteTest()
+    {
+        using var providerScope = MockingProviderRegistry.Push(""nsubstitute"");
+        var mocks = new Mocker();
+        var dependency = mocks.GetOrCreateMock<IService>();
+        dependency.Received();
+    }
+}";
+
+            var diagnostics = await AnalyzerTestHelpers.GetDiagnosticsAsync(
+                SOURCE,
+                includeAzureFunctionsHelpers: false,
+                includeMoqProviderPackage: true,
+                includeNSubstituteProviderPackage: true,
+                new ProviderBootstrapAnalyzer());
+            Assert.DoesNotContain(diagnostics, item => item.Id == DiagnosticIds.SelectProviderBeforeProviderSpecificApi);
+        }
+
+        [Fact]
+        public async Task ProviderBootstrapAnalyzer_ShouldNotReport_WhenAssemblyDefaultsMoqAndNSubstituteIsSelectedPerMethod()
+        {
+            const string SOURCE = @"
+using FastMoq;
+using FastMoq.Providers;
+using FastMoq.Providers.MoqProvider;
+using FastMoq.Providers.NSubstituteProvider;
+
+[assembly: FastMoqRegisterProvider(""moq"", typeof(MoqMockingProvider), SetAsDefault = true)]
+[assembly: FastMoqRegisterProvider(""nsubstitute"", typeof(NSubstituteMockingProvider))]
+
+class Sample
+{
+    interface IService
+    {
+        void Run();
+    }
+
+    void MoqTest(Mocker mocks)
+    {
+        var dependency = mocks.GetMock<IService>();
+        dependency.AsMoq();
+    }
+
+    void NSubstituteTest()
+    {
+        using var providerScope = MockingProviderRegistry.Push(""nsubstitute"");
+        var mocks = new Mocker();
+        var dependency = mocks.GetOrCreateMock<IService>();
+        dependency.Received();
+    }
+}";
+
+            var diagnostics = await AnalyzerTestHelpers.GetDiagnosticsAsync(
+                SOURCE,
+                includeAzureFunctionsHelpers: false,
+                includeMoqProviderPackage: true,
+                includeNSubstituteProviderPackage: true,
                 new ProviderBootstrapAnalyzer());
             Assert.DoesNotContain(diagnostics, item => item.Id == DiagnosticIds.SelectProviderBeforeProviderSpecificApi);
         }
@@ -5059,9 +5576,11 @@ class Sample
 using FastMoq;
 using FastMoq.Providers;
 using FastMoq.Providers.MoqProvider;
+using System.Runtime.CompilerServices;
 
 static class Bootstrap
 {
+    [ModuleInitializer]
     static void Initialize()
     {
         MockingProviderRegistry.Register(""moq"", MoqMockingProvider.Instance);
@@ -5086,6 +5605,352 @@ class Sample
                 includeAzureFunctionsHelpers: false,
                 includeMoqProviderPackage: true,
                 includeNSubstituteProviderPackage: false,
+                new LegacyMoqOnboardingAnalyzer());
+            Assert.DoesNotContain(diagnostics, item => item.Id == DiagnosticIds.RequireExplicitMoqOnboarding);
+        }
+
+        [Fact]
+        public async Task LegacyMoqOnboardingAnalyzer_ShouldIgnoreNonBootstrapSourceDefaultSelections_WhenAssemblyDefaultIsVisible()
+        {
+            const string SOURCE = @"
+using FastMoq;
+using FastMoq.Providers;
+using FastMoq.Providers.MoqProvider;
+
+[assembly: FastMoqRegisterProvider(""moq"", typeof(MoqMockingProvider), SetAsDefault = true)]
+
+class Sample
+{
+    interface IService
+    {
+        void Run();
+    }
+
+    void ResetProvider()
+    {
+        MockingProviderRegistry.SetDefault(""reflection"");
+    }
+
+    void Execute(Mocker mocks)
+    {
+        var dependency = mocks.GetMock<IService>();
+    }
+}";
+
+            var diagnostics = await AnalyzerTestHelpers.GetDiagnosticsAsync(
+                SOURCE,
+                includeAzureFunctionsHelpers: false,
+                includeMoqProviderPackage: true,
+                includeNSubstituteProviderPackage: false,
+                new LegacyMoqOnboardingAnalyzer());
+            Assert.DoesNotContain(diagnostics, item => item.Id == DiagnosticIds.RequireExplicitMoqOnboarding);
+        }
+
+        [Fact]
+        public async Task LegacyMoqOnboardingAnalyzer_ShouldNotReport_WhenProviderIsSelectedUsingSingleAssignmentLocalVariable()
+        {
+            const string SOURCE = @"
+using FastMoq;
+using FastMoq.Providers;
+using FastMoq.Providers.MoqProvider;
+
+class Sample
+{
+    interface IService
+    {
+        void Run();
+    }
+
+    void Execute(Mocker mocks)
+    {
+        var providerName = ""moq"";
+        using var providerScope = MockingProviderRegistry.Push(providerName);
+        var dependency = mocks.GetMock<IService>();
+        dependency.AsMoq();
+    }
+}";
+
+            var diagnostics = await AnalyzerTestHelpers.GetDiagnosticsAsync(
+                SOURCE,
+                includeAzureFunctionsHelpers: false,
+                includeMoqProviderPackage: true,
+                includeNSubstituteProviderPackage: false,
+                new LegacyMoqOnboardingAnalyzer());
+            Assert.DoesNotContain(diagnostics, item => item.Id == DiagnosticIds.RequireExplicitMoqOnboarding);
+        }
+
+        [Fact]
+        public async Task LegacyMoqOnboardingAnalyzer_ShouldReport_WhenCapturedLocalProviderVariableIsReassignedBeforeNestedLambdaExecutes()
+        {
+            const string SOURCE = @"
+using System;
+using FastMoq;
+using FastMoq.Providers;
+using FastMoq.Providers.MoqProvider;
+
+class Sample
+{
+    interface IService
+    {
+        void Run();
+    }
+
+    void Execute()
+    {
+        var providerName = ""moq"";
+        Action run = () =>
+        {
+            using var providerScope = MockingProviderRegistry.Push(providerName);
+            var mocks = new Mocker();
+            var dependency = mocks.GetMock<IService>();
+            dependency.AsMoq();
+        };
+
+        providerName = ""reflection"";
+    }
+}";
+
+            var diagnostics = await AnalyzerTestHelpers.GetDiagnosticsAsync(
+                SOURCE,
+                includeAzureFunctionsHelpers: false,
+                includeMoqProviderPackage: true,
+                includeNSubstituteProviderPackage: true,
+                new LegacyMoqOnboardingAnalyzer());
+            var diagnostic = Assert.Single(diagnostics.Where(item => item.Id == DiagnosticIds.RequireExplicitMoqOnboarding));
+            Assert.Equal(DiagnosticIds.RequireExplicitMoqOnboarding, diagnostic.Id);
+        }
+
+        [Fact]
+        public async Task LegacyMoqOnboardingAnalyzer_ShouldNotReport_WhenTheoryInlineDataAlwaysSelectsMoq()
+        {
+            const string SOURCE = @"
+using FastMoq;
+using FastMoq.Providers;
+using FastMoq.Providers.MoqProvider;
+using Xunit;
+
+class Sample
+{
+    interface IService
+    {
+        void Run();
+    }
+
+    [Theory]
+    [InlineData(""moq"")]
+    public void Execute(Mocker mocks, string providerName)
+    {
+        using var providerScope = MockingProviderRegistry.Push(providerName);
+        var dependency = mocks.GetMock<IService>();
+        dependency.AsMoq();
+    }
+}";
+
+            var diagnostics = await AnalyzerTestHelpers.GetDiagnosticsAsync(
+                SOURCE,
+                includeAzureFunctionsHelpers: false,
+                includeMoqProviderPackage: true,
+                includeNSubstituteProviderPackage: false,
+                new LegacyMoqOnboardingAnalyzer());
+            Assert.DoesNotContain(diagnostics, item => item.Id == DiagnosticIds.RequireExplicitMoqOnboarding);
+        }
+
+        [Fact]
+        public async Task LegacyMoqOnboardingAnalyzer_ShouldNotReport_WhenTheoryInlineDataRowsReuseSameConstantProviderField()
+        {
+            const string SOURCE = @"
+using FastMoq;
+using FastMoq.Providers;
+using FastMoq.Providers.MoqProvider;
+using Xunit;
+
+class Sample
+{
+    private const string ProviderName = ""moq"";
+
+    interface IService
+    {
+        void Run();
+    }
+
+    [Theory]
+    [InlineData(ProviderName)]
+    [InlineData(ProviderName)]
+    public void Execute(Mocker mocks, string providerName)
+    {
+        using var providerScope = MockingProviderRegistry.Push(providerName);
+        var dependency = mocks.GetMock<IService>();
+        dependency.AsMoq();
+    }
+}";
+
+            var diagnostics = await AnalyzerTestHelpers.GetDiagnosticsAsync(
+                SOURCE,
+                includeAzureFunctionsHelpers: false,
+                includeMoqProviderPackage: true,
+                includeNSubstituteProviderPackage: false,
+                new LegacyMoqOnboardingAnalyzer());
+            Assert.DoesNotContain(diagnostics, item => item.Id == DiagnosticIds.RequireExplicitMoqOnboarding);
+        }
+
+        [Fact]
+        public async Task LegacyMoqOnboardingAnalyzer_ShouldNotReport_WhenNestedLambdaWritesLocalBeforeProviderSelectionButDoesNotRun()
+        {
+            const string SOURCE = @"
+using System;
+using FastMoq;
+using FastMoq.Providers;
+using FastMoq.Providers.MoqProvider;
+
+class Sample
+{
+    interface IService
+    {
+        void Run();
+    }
+
+    void Execute(Mocker mocks)
+    {
+        var providerName = ""moq"";
+        Action mutate = () => providerName = ""reflection"";
+        using var providerScope = MockingProviderRegistry.Push(providerName);
+        var dependency = mocks.GetMock<IService>();
+        dependency.AsMoq();
+    }
+}";
+
+            var diagnostics = await AnalyzerTestHelpers.GetDiagnosticsAsync(
+                SOURCE,
+                includeAzureFunctionsHelpers: false,
+                includeMoqProviderPackage: true,
+                includeNSubstituteProviderPackage: true,
+                new LegacyMoqOnboardingAnalyzer());
+            Assert.DoesNotContain(diagnostics, item => item.Id == DiagnosticIds.RequireExplicitMoqOnboarding);
+        }
+
+        [Fact]
+        public async Task LegacyMoqOnboardingAnalyzer_ShouldReport_WhenProviderIsSelectedOnlyInStaticConstructor()
+        {
+            const string SOURCE = @"
+using FastMoq;
+using FastMoq.Providers;
+using FastMoq.Providers.MoqProvider;
+
+static class Bootstrap
+{
+    static Bootstrap()
+    {
+        MockingProviderRegistry.Register(""moq"", MoqMockingProvider.Instance, setAsDefault: true);
+    }
+}
+
+class Sample
+{
+    interface IService
+    {
+        void Run();
+    }
+
+    void Execute(Mocker mocks)
+    {
+        var dependency = mocks.GetMock<IService>();
+        dependency.AsMoq();
+    }
+}";
+
+            var diagnostics = await AnalyzerTestHelpers.GetDiagnosticsAsync(
+                SOURCE,
+                includeAzureFunctionsHelpers: false,
+                includeMoqProviderPackage: true,
+                includeNSubstituteProviderPackage: true,
+                new LegacyMoqOnboardingAnalyzer());
+            var diagnostic = Assert.Single(diagnostics.Where(item => item.Id == DiagnosticIds.RequireExplicitMoqOnboarding));
+            Assert.Equal(DiagnosticIds.RequireExplicitMoqOnboarding, diagnostic.Id);
+        }
+
+        [Fact]
+        public async Task LegacyMoqOnboardingAnalyzer_ShouldReport_WhenTheoryUsesMixedDataSources()
+        {
+            const string SOURCE = @"
+using FastMoq;
+using FastMoq.Providers;
+using FastMoq.Providers.MoqProvider;
+using System.Collections.Generic;
+using Xunit;
+
+class Sample
+{
+    interface IService
+    {
+        void Run();
+    }
+
+    public static IEnumerable<object[]> OtherProviderNames => new[]
+    {
+        new object[] { ""reflection"" },
+    };
+
+    [Theory]
+    [InlineData(""moq"")]
+    [MemberData(nameof(OtherProviderNames))]
+    public void Execute(string providerName)
+    {
+        using var providerScope = MockingProviderRegistry.Push(providerName);
+        var mocks = new Mocker();
+        var dependency = mocks.GetMock<IService>();
+        dependency.AsMoq();
+    }
+}";
+
+            var diagnostics = await AnalyzerTestHelpers.GetDiagnosticsAsync(
+                SOURCE,
+                includeAzureFunctionsHelpers: false,
+                includeMoqProviderPackage: true,
+                includeNSubstituteProviderPackage: true,
+                new LegacyMoqOnboardingAnalyzer());
+            var diagnostic = Assert.Single(diagnostics.Where(item => item.Id == DiagnosticIds.RequireExplicitMoqOnboarding));
+            Assert.Equal(DiagnosticIds.RequireExplicitMoqOnboarding, diagnostic.Id);
+        }
+
+        [Fact]
+        public async Task LegacyMoqOnboardingAnalyzer_ShouldNotReport_WhenAssemblyDefaultsMoqAndOtherProvidersAreAlsoRegistered()
+        {
+            const string SOURCE = @"
+using FastMoq;
+using FastMoq.Providers;
+using FastMoq.Providers.MoqProvider;
+using FastMoq.Providers.NSubstituteProvider;
+
+[assembly: FastMoqRegisterProvider(""moq"", typeof(MoqMockingProvider), SetAsDefault = true)]
+[assembly: FastMoqRegisterProvider(""nsubstitute"", typeof(NSubstituteMockingProvider))]
+
+class Sample
+{
+    interface IService
+    {
+        void Run();
+    }
+
+    void MoqTest(Mocker mocks)
+    {
+        var dependency = mocks.GetMock<IService>();
+        dependency.AsMoq();
+    }
+
+    void NSubstituteTest()
+    {
+        using var providerScope = MockingProviderRegistry.Push(""nsubstitute"");
+        var mocks = new Mocker();
+        var dependency = mocks.GetOrCreateMock<IService>();
+        dependency.Received();
+    }
+}";
+
+            var diagnostics = await AnalyzerTestHelpers.GetDiagnosticsAsync(
+                SOURCE,
+                includeAzureFunctionsHelpers: false,
+                includeMoqProviderPackage: true,
+                includeNSubstituteProviderPackage: true,
                 new LegacyMoqOnboardingAnalyzer());
             Assert.DoesNotContain(diagnostics, item => item.Id == DiagnosticIds.RequireExplicitMoqOnboarding);
         }

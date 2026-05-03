@@ -159,6 +159,7 @@ namespace FastMoq.Analyzers
         internal const string RegisterProviderSetAsDefaultParameterName = "setAsDefault";
         private const string FASTMOQ_DEFAULT_PROVIDER_ATTRIBUTE = "FastMoq.Providers.FastMoqDefaultProviderAttribute";
         private const string FASTMOQ_REGISTER_PROVIDER_ATTRIBUTE = "FastMoq.Providers.FastMoqRegisterProviderAttribute";
+        private const string MODULE_INITIALIZER_ATTRIBUTE = "System.Runtime.CompilerServices.ModuleInitializerAttribute";
         private const string FASTMOQ_MOCKER_TEST_BASE_METADATA_NAME = "MockerTestBase`1";
         private const string CONTROLLER_CONTEXT_TYPE = "Microsoft.AspNetCore.Mvc.ControllerContext";
         private const string DEFAULT_HTTP_CONTEXT_TYPE = "Microsoft.AspNetCore.Http.DefaultHttpContext";
@@ -5611,6 +5612,7 @@ namespace FastMoq.Analyzers
                 foreach (var invocationExpression in root.DescendantNodes().OfType<InvocationExpressionSyntax>())
                 {
                     if (!TryGetProviderRegistrationInvocation(invocationExpression, semanticModel, cancellationToken, out var providerName, out var providerType, out _, out var isScopedSelection, out var isRegistration) ||
+                        !IsCompilationLevelProviderSelectionInvocation(invocationExpression, semanticModel, cancellationToken) ||
                         isScopedSelection ||
                         !isRegistration)
                     {
@@ -5632,7 +5634,8 @@ namespace FastMoq.Analyzers
 
                 foreach (var invocationExpression in root.DescendantNodes().OfType<InvocationExpressionSyntax>())
                 {
-                    if (!TryGetProviderRegistrationInvocation(invocationExpression, semanticModel, cancellationToken, out var providerName, out _, out var selectsByDefault, out var isScopedSelection, out _))
+                    if (!TryGetProviderRegistrationInvocation(invocationExpression, semanticModel, cancellationToken, out var providerName, out _, out var selectsByDefault, out var isScopedSelection, out _) ||
+                        !IsCompilationLevelProviderSelectionInvocation(invocationExpression, semanticModel, cancellationToken))
                     {
                         continue;
                     }
@@ -5648,6 +5651,45 @@ namespace FastMoq.Analyzers
                     }
                 }
             }
+        }
+
+        private static bool IsCompilationLevelProviderSelectionInvocation(InvocationExpressionSyntax invocationExpression, SemanticModel semanticModel, CancellationToken cancellationToken)
+        {
+            var executableScope = GetContainingExecutableScope(invocationExpression);
+
+            if (executableScope is null)
+            {
+                return invocationExpression.Ancestors().OfType<GlobalStatementSyntax>().Any();
+            }
+
+            return executableScope is MethodDeclarationSyntax methodDeclaration &&
+                HasModuleInitializerAttribute(methodDeclaration, semanticModel, cancellationToken);
+        }
+
+        private static SyntaxNode? GetContainingExecutableScope(SyntaxNode node)
+        {
+            return node.AncestorsAndSelf().FirstOrDefault(ancestor =>
+                ancestor is BaseMethodDeclarationSyntax or AccessorDeclarationSyntax or LocalFunctionStatementSyntax or AnonymousFunctionExpressionSyntax);
+        }
+
+        private static bool HasModuleInitializerAttribute(MethodDeclarationSyntax methodDeclaration, SemanticModel semanticModel, CancellationToken cancellationToken)
+        {
+            if (!TryGetSemanticModelForNode(methodDeclaration, semanticModel, out semanticModel))
+            {
+                return false;
+            }
+
+            foreach (var attributeSyntax in methodDeclaration.AttributeLists.SelectMany(attributeList => attributeList.Attributes))
+            {
+                var symbolInfo = semanticModel.GetSymbolInfo(attributeSyntax, cancellationToken);
+                var attributeSymbol = symbolInfo.Symbol as IMethodSymbol ?? symbolInfo.CandidateSymbols.OfType<IMethodSymbol>().FirstOrDefault();
+                if (attributeSymbol?.ContainingType?.ToDisplayString() == MODULE_INITIALIZER_ATTRIBUTE)
+                {
+                    return true;
+                }
+            }
+
+            return false;
         }
 
         private static bool TryGetProviderRegistrationInvocation(InvocationExpressionSyntax invocationExpression, SemanticModel semanticModel, CancellationToken cancellationToken, out string providerName, out ITypeSymbol? providerType, out bool selectsByDefault, out bool isScopedSelection, out bool isRegistration)
@@ -5778,6 +5820,13 @@ namespace FastMoq.Analyzers
 
         private static bool TryGetStringConstant(ExpressionSyntax expression, SemanticModel semanticModel, CancellationToken cancellationToken, out string value)
         {
+            return TryGetStringConstant(expression, semanticModel, cancellationToken, new HashSet<ISymbol>(SymbolEqualityComparer.Default), out value);
+        }
+
+        private static bool TryGetStringConstant(ExpressionSyntax expression, SemanticModel semanticModel, CancellationToken cancellationToken, ISet<ISymbol> visitedSymbols, out string value)
+        {
+            expression = Unwrap(expression);
+
             var constantValue = semanticModel.GetConstantValue(expression, cancellationToken);
             if (constantValue.HasValue && constantValue.Value is string text && !string.IsNullOrWhiteSpace(text))
             {
@@ -5785,7 +5834,202 @@ namespace FastMoq.Analyzers
                 return true;
             }
 
+            var symbolInfo = semanticModel.GetSymbolInfo(expression, cancellationToken);
+            var symbol = symbolInfo.Symbol ?? symbolInfo.CandidateSymbols.FirstOrDefault();
+            if (symbol is null || !visitedSymbols.Add(symbol))
+            {
+                value = string.Empty;
+                return false;
+            }
+
+            if (symbol is IFieldSymbol fieldSymbol &&
+                fieldSymbol.HasConstantValue &&
+                fieldSymbol.ConstantValue is string fieldText &&
+                !string.IsNullOrWhiteSpace(fieldText))
+            {
+                value = fieldText;
+                return true;
+            }
+
+            if (symbol is IParameterSymbol parameterSymbol &&
+                TryResolveInlineDataParameterStringConstant(parameterSymbol, semanticModel, cancellationToken, visitedSymbols, out value))
+            {
+                return true;
+            }
+
+            if (symbol is ILocalSymbol localSymbol &&
+                TryResolveSingleAssignmentLocalStringConstant(localSymbol, expression, semanticModel, cancellationToken, visitedSymbols, out value))
+            {
+                return true;
+            }
+
             value = string.Empty;
+            return false;
+        }
+
+        private static bool TryResolveSingleAssignmentLocalStringConstant(ILocalSymbol localSymbol, SyntaxNode referenceNode, SemanticModel semanticModel, CancellationToken cancellationToken, ISet<ISymbol> visitedSymbols, out string value)
+        {
+            if (localSymbol.HasConstantValue &&
+                localSymbol.ConstantValue is string localText &&
+                !string.IsNullOrWhiteSpace(localText))
+            {
+                value = localText;
+                return true;
+            }
+
+            var declaration = localSymbol.DeclaringSyntaxReferences.FirstOrDefault()?.GetSyntax(cancellationToken) as VariableDeclaratorSyntax;
+            if (declaration?.Initializer?.Value is not ExpressionSyntax initializer)
+            {
+                value = string.Empty;
+                return false;
+            }
+
+            var declarationScope = GetContainingExecutableScope(declaration);
+            var referenceScope = GetContainingExecutableScope(referenceNode);
+
+            if (!ReferenceEquals(declarationScope, referenceScope))
+            {
+                value = string.Empty;
+                return false;
+            }
+
+            if (referenceScope is not null && IsLocalVariableWrittenBeforeReference(localSymbol, declaration, referenceNode, referenceScope, semanticModel, cancellationToken))
+            {
+                value = string.Empty;
+                return false;
+            }
+
+            return TryGetStringConstant(initializer, semanticModel, cancellationToken, visitedSymbols, out value);
+        }
+
+        private static bool TryResolveInlineDataParameterStringConstant(IParameterSymbol parameterSymbol, SemanticModel semanticModel, CancellationToken cancellationToken, ISet<ISymbol> visitedSymbols, out string value)
+        {
+            value = string.Empty;
+
+            if (parameterSymbol.ContainingSymbol is not IMethodSymbol methodSymbol)
+            {
+                return false;
+            }
+
+            string? resolvedValue = null;
+            var foundInlineData = false;
+
+            foreach (var attribute in methodSymbol.GetAttributes())
+            {
+                if (!IsXunitDataAttribute(attribute.AttributeClass))
+                {
+                    continue;
+                }
+
+                if (attribute.AttributeClass?.ToDisplayString() != "Xunit.InlineDataAttribute" ||
+                    attribute.ApplicationSyntaxReference?.GetSyntax(cancellationToken) is not AttributeSyntax attributeSyntax ||
+                    attributeSyntax.ArgumentList is null ||
+                    parameterSymbol.Ordinal >= attributeSyntax.ArgumentList.Arguments.Count)
+                {
+                    return false;
+                }
+
+                var candidateVisitedSymbols = new HashSet<ISymbol>(visitedSymbols, SymbolEqualityComparer.Default);
+                if (!TryGetSemanticModelForNode(attributeSyntax, semanticModel, out var attributeSemanticModel) ||
+                    !TryGetStringConstant(attributeSyntax.ArgumentList.Arguments[parameterSymbol.Ordinal].Expression, attributeSemanticModel, cancellationToken, candidateVisitedSymbols, out var candidateValue))
+                {
+                    return false;
+                }
+
+                foundInlineData = true;
+                if (resolvedValue is null)
+                {
+                    resolvedValue = candidateValue;
+                    continue;
+                }
+
+                if (!string.Equals(resolvedValue, candidateValue, StringComparison.OrdinalIgnoreCase))
+                {
+                    return false;
+                }
+            }
+
+            if (!foundInlineData || string.IsNullOrWhiteSpace(resolvedValue))
+            {
+                return false;
+            }
+
+            value = resolvedValue!;
+            return true;
+        }
+
+        private static bool IsXunitDataAttribute(INamedTypeSymbol? attributeType)
+        {
+            for (var current = attributeType; current is not null; current = current.BaseType)
+            {
+                if (current.Name == "DataAttribute" &&
+                    current.ContainingNamespace.ToDisplayString().StartsWith("Xunit", StringComparison.Ordinal))
+                {
+                    return true;
+                }
+            }
+
+            return false;
+        }
+
+        private static bool IsLocalVariableWrittenBeforeReference(ILocalSymbol localSymbol, VariableDeclaratorSyntax declaration, SyntaxNode referenceNode, SyntaxNode containingScope, SemanticModel semanticModel, CancellationToken cancellationToken)
+        {
+            foreach (var identifierName in containingScope.DescendantNodes().OfType<IdentifierNameSyntax>())
+            {
+                if (identifierName.SpanStart <= declaration.SpanStart ||
+                    identifierName.SpanStart >= referenceNode.SpanStart)
+                {
+                    continue;
+                }
+
+                if (!ReferenceEquals(GetContainingExecutableScope(identifierName), containingScope))
+                {
+                    continue;
+                }
+
+                var symbolInfo = semanticModel.GetSymbolInfo(identifierName, cancellationToken);
+                if (!SymbolEqualityComparer.Default.Equals(symbolInfo.Symbol, localSymbol))
+                {
+                    continue;
+                }
+
+                if (IsWriteReference(identifierName))
+                {
+                    return true;
+                }
+            }
+
+            return false;
+        }
+
+        private static bool IsWriteReference(IdentifierNameSyntax identifierName)
+        {
+            if (identifierName.Parent is AssignmentExpressionSyntax assignmentExpression && assignmentExpression.Left == identifierName)
+            {
+                return true;
+            }
+
+            if (identifierName.Parent is ArgumentSyntax argumentSyntax &&
+                (argumentSyntax.RefOrOutKeyword.IsKind(SyntaxKind.RefKeyword) ||
+                 argumentSyntax.RefOrOutKeyword.IsKind(SyntaxKind.OutKeyword)))
+            {
+                return true;
+            }
+
+            if (identifierName.Parent is PrefixUnaryExpressionSyntax prefixUnaryExpression &&
+                (prefixUnaryExpression.IsKind(SyntaxKind.PreIncrementExpression) ||
+                 prefixUnaryExpression.IsKind(SyntaxKind.PreDecrementExpression)))
+            {
+                return true;
+            }
+
+            if (identifierName.Parent is PostfixUnaryExpressionSyntax postfixUnaryExpression &&
+                (postfixUnaryExpression.IsKind(SyntaxKind.PostIncrementExpression) ||
+                 postfixUnaryExpression.IsKind(SyntaxKind.PostDecrementExpression)))
+            {
+                return true;
+            }
+
             return false;
         }
 
