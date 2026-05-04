@@ -4,6 +4,8 @@ This page captures the current v5 direction for FastMoq code generation. It is t
 
 This page is intentionally design-level only. It is appropriate for roadmap and implementation planning ahead of code, but it does not imply current shipped support.
 
+For the shared generated-test settings contract behind [#162](https://github.com/cwinland/FastMoq/issues/162), see [Generated test settings design](./generated-test-settings.md).
+
 FastMoq now contains a narrow first Roslyn source-generator slice for explicit `MockerTestBase<TComponent>` harness targets. The repo still does not emit full generated tests, scenario scaffolds, or broader framework-helper builders.
 
 ## Current Baseline
@@ -30,11 +32,11 @@ The current public backlog for this design is:
 - [#127](https://github.com/cwinland/FastMoq/issues/127) package-detection and target-test-shape rules for generated tests
 - [#134](https://github.com/cwinland/FastMoq/issues/134) blocking helper-surface normalization for logging, HTTP, Azure, Azure Functions, and typed DI
 - [#122](https://github.com/cwinland/FastMoq/issues/122) compile-time graph and harness MVP
+- [#162](https://github.com/cwinland/FastMoq/issues/162) generated-test settings and test-platform targeting as the current gate before wider authoring flows
 - [#136](https://github.com/cwinland/FastMoq/issues/136) generated scenario and suite scaffolding after the graph and harness MVP
 - [#137](https://github.com/cwinland/FastMoq/issues/137) generator-backed framework-helper builders for repeated test patterns
 - [#123](https://github.com/cwinland/FastMoq/issues/123) full provider-first test generation from existing services and supported classes
 - [#124](https://github.com/cwinland/FastMoq/issues/124) analyzer-guided test generation and missing-package suggestions
-- [#162](https://github.com/cwinland/FastMoq/issues/162) generated-test settings and test-platform targeting for later generation flows
 - [#138](https://github.com/cwinland/FastMoq/issues/138) later provider-optimized generation evaluation
 - [#139](https://github.com/cwinland/FastMoq/issues/139) later narrow compile-time fake or mock generation evaluation
 
@@ -44,8 +46,10 @@ Crosswalk summary:
 - `#132`, `#133`, and `#135` are the narrower v4-style quick wins that are now implemented on the current milestone branch.
 - `#146` and `#147` carry the near-term analyzer follow-up for those landed helper surfaces.
 - `#120`, `#125`, `#126`, `#127`, and `#134` are the pre-v5 contract and blocking prerequisite slices.
-- `#122`, `#136`, `#137`, `#123`, and `#124` are the phased implementation and authoring-flow outcomes once the prerequisites are stable enough.
-- `#162` is the later settings and test-platform contract for generated scenario scaffolds, full generated tests, and analyzer entry points.
+- `#122` is the completed first implementation-facing MVP for compile-time graph metadata and harness bootstrap.
+- `#162` is the current shared settings and test-platform contract gate before wider generated scenario scaffolds, full generated tests, and analyzer entry points.
+- `#126` is the stable scenario-scaffolding contract layer, and `#136` is the implementation slice that follows it.
+- `#137`, `#123`, and `#124` remain the later phased implementation and authoring-flow outcomes once the current `#162` contract is settled.
 - `#138` and `#139` are intentionally late evaluation tracks after the main provider-first generator story is already working.
 
 ## Product Positioning

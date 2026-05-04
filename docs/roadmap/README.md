@@ -124,20 +124,22 @@ The main value is not "generated mocks" in isolation. The stronger FastMoq-speci
 
 Current public issue crosswalk:
 
-- foundation and package-shape work: [#120](https://github.com/cwinland/FastMoq/issues/120), [#121](https://github.com/cwinland/FastMoq/issues/121), [#125](https://github.com/cwinland/FastMoq/issues/125), [#126](https://github.com/cwinland/FastMoq/issues/126), [#127](https://github.com/cwinland/FastMoq/issues/127), and [#134](https://github.com/cwinland/FastMoq/issues/134)
+- foundation and package-shape work: [#120](https://github.com/cwinland/FastMoq/issues/120), [#121](https://github.com/cwinland/FastMoq/issues/121), [#125](https://github.com/cwinland/FastMoq/issues/125), [#126](https://github.com/cwinland/FastMoq/issues/126) for the stable `ScenarioBuilder` scaffolding contract, [#127](https://github.com/cwinland/FastMoq/issues/127), and [#134](https://github.com/cwinland/FastMoq/issues/134)
 - near-term helper preparation that can improve v4 authoring before generators ship: [#132](https://github.com/cwinland/FastMoq/issues/132), [#133](https://github.com/cwinland/FastMoq/issues/133), and [#135](https://github.com/cwinland/FastMoq/issues/135)
-- first implementation-facing outcomes, in planned order: [#122](https://github.com/cwinland/FastMoq/issues/122), [#136](https://github.com/cwinland/FastMoq/issues/136), [#123](https://github.com/cwinland/FastMoq/issues/123), [#137](https://github.com/cwinland/FastMoq/issues/137), and [#124](https://github.com/cwinland/FastMoq/issues/124)
-- later generated-test settings and test-platform targeting for those authoring flows: [#162](https://github.com/cwinland/FastMoq/issues/162)
+- completed first implementation-facing MVP: [#122](https://github.com/cwinland/FastMoq/issues/122)
+- current shared generated-test settings and test-platform contract gate for later authoring flows: [#162](https://github.com/cwinland/FastMoq/issues/162)
+- later implementation-facing outcomes after the shared `#162` contract settles: [#136](https://github.com/cwinland/FastMoq/issues/136) for scenario and suite scaffolding, [#123](https://github.com/cwinland/FastMoq/issues/123), [#137](https://github.com/cwinland/FastMoq/issues/137), and [#124](https://github.com/cwinland/FastMoq/issues/124)
 - later evaluation tracks after the provider-first generator story is stable: [#138](https://github.com/cwinland/FastMoq/issues/138) and [#139](https://github.com/cwinland/FastMoq/issues/139)
 
 Planned direction stays phased:
 
 1. Compile-time test graph and harness generation.
-2. Scenario and suite scaffolding.
-3. Full generated tests from existing supported classes.
-4. Framework-helper builders for repeated helper-heavy test patterns.
-5. Analyzer-guided generation flow and package suggestions.
-6. Provider-optimized or narrower generated-fake evaluation only after the shared contract is stable.
+2. Shared generated-test settings and test-platform contract.
+3. Scenario and suite scaffolding.
+4. Full generated tests from existing supported classes.
+5. Framework-helper builders for repeated helper-heavy test patterns.
+6. Analyzer-guided generation flow and package suggestions.
+7. Provider-optimized or narrower generated-fake evaluation only after the shared contract is stable.
 
 Current package and MVP contract direction for [#120](https://github.com/cwinland/FastMoq/issues/120):
 
@@ -179,6 +181,7 @@ Current implementation status for [#122](https://github.com/cwinland/FastMoq/iss
 - next: settle the shared generated-test settings and test-platform model in [#162](https://github.com/cwinland/FastMoq/issues/162) before widening into framework-specific scaffolds, full generated tests, or analyzer entry points
 
 For the current detailed direction, design constraints, and fuller generator issue mapping, see [Generator roadmap and design](./generator-roadmap.md).
+For the shared generated-test settings contract behind [#162](https://github.com/cwinland/FastMoq/issues/162), see [Generated test settings design](./generated-test-settings.md).
 
 ### `MockOptional` retirement
 
