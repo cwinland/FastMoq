@@ -497,6 +497,94 @@ public partial class GeneratedExpectedExceptionScenarioHarness : MockerTestBase<
             Invoke<bool>(generatedHarness, "DescribeVerifiedAfterExpectedException").Should().BeTrue();
         }
 
+        [Fact]
+        public async Task GeneratedHarnessSourceGenerator_ShouldEmitSuiteLevelSharedSetupHooks_ForGeneratedHarnessTarget()
+        {
+            const string source = @"
+using FastMoq;
+using FastMoq.Generators;
+
+namespace Demo.Tests;
+
+public interface ISharedSetupDependency
+{
+    string Name { get; }
+}
+
+public sealed class SharedSetupDependency : ISharedSetupDependency
+{
+    public string Name => ""shared"";
+}
+
+public sealed class SharedSetupTarget
+{
+    public SharedSetupTarget(ISharedSetupDependency dependency)
+    {
+        DependencyName = dependency.Name;
+    }
+
+    public string DependencyName { get; }
+
+    public bool WasCreatedHookApplied { get; private set; }
+
+    public bool WasScenarioExecuted { get; private set; }
+
+    public void MarkCreatedHookApplied()
+    {
+        WasCreatedHookApplied = true;
+    }
+
+    public void MarkScenarioExecuted()
+    {
+        WasScenarioExecuted = true;
+    }
+}
+
+[FastMoqGeneratedTestTarget(typeof(SharedSetupTarget))]
+public partial class GeneratedSharedSetupHarness : MockerTestBase<SharedSetupTarget>
+{
+    public string DescribeDependencyName() => Component.DependencyName;
+
+    public bool DescribeWasCreatedHookApplied() => Component.WasCreatedHookApplied;
+
+    public bool DescribeWasScenarioExecuted() => Component.WasScenarioExecuted;
+
+    public bool? DescribeStrictPolicy() => Mocks.Policy.DefaultStrictMockCreation;
+
+    partial void ConfigureGeneratedMockerPolicy(MockerPolicyOptions options)
+    {
+        options.DefaultStrictMockCreation = true;
+    }
+
+    partial void ConfigureGeneratedMocks(Mocker mocker)
+    {
+        mocker.AddType<ISharedSetupDependency>(new SharedSetupDependency());
+    }
+
+    partial void AfterGeneratedComponentCreated(SharedSetupTarget component)
+    {
+        component.MarkCreatedHookApplied();
+    }
+
+    partial void ActGeneratedScenario(ScenarioBuilder<SharedSetupTarget> scenario)
+    {
+        scenario.When(component => component.MarkScenarioExecuted());
+    }
+}
+";
+
+            var loadedAssembly = await LoadGeneratedAssemblyAsync(source);
+            var generatedHarness = CreateInstance(loadedAssembly, "Demo.Tests.GeneratedSharedSetupHarness");
+
+            Invoke<string>(generatedHarness, "DescribeDependencyName").Should().Be("shared");
+            Invoke<bool>(generatedHarness, "DescribeWasCreatedHookApplied").Should().BeTrue();
+            Invoke<bool?>(generatedHarness, "DescribeStrictPolicy").Should().BeTrue();
+
+            Invoke<object?>(generatedHarness, "ExecuteGeneratedScenarioScaffold");
+
+            Invoke<bool>(generatedHarness, "DescribeWasScenarioExecuted").Should().BeTrue();
+        }
+
         private static async Task<GeneratorTestResult> RunGeneratorAsync(string source)
         {
             var document = AnalyzerTestHelpers.CreateDocumentForTest(

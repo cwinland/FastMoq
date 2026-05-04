@@ -13,6 +13,9 @@ namespace FastMoq.Generators
     {
         internal const string GeneratedTestTargetAttributeMetadataName = "FastMoq.Generators.FastMoqGeneratedTestTargetAttribute";
         private const string ComponentConstructorParameterTypesPropertyName = "ComponentConstructorParameterTypes";
+        private const string SetupMocksActionPropertyName = "SetupMocksAction";
+        private const string CreatedComponentActionPropertyName = "CreatedComponentAction";
+        private const string ConfigureMockerPolicyPropertyName = "ConfigureMockerPolicy";
         private const string MockerTestBaseTypeName = "MockerTestBase`1";
         private const string MockerTestBaseNamespace = "FastMoq";
 
@@ -38,9 +41,11 @@ namespace FastMoq.Generators
             }
 
             var targetType = (INamedTypeSymbol)context.TargetSymbol;
+            var propertyNames = new global::System.Collections.Generic.HashSet<string>(
+                targetType.GetMembers().OfType<IPropertySymbol>().Select(static property => property.Name));
             if (targetType.Arity != 0 ||
                 targetType.ContainingType is not null ||
-                targetType.GetMembers().OfType<IPropertySymbol>().Any(static property => property.Name == ComponentConstructorParameterTypesPropertyName))
+                propertyNames.Contains(ComponentConstructorParameterTypesPropertyName))
             {
                 return null;
             }
@@ -71,6 +76,9 @@ namespace FastMoq.Generators
                     : targetType.ContainingNamespace.ToDisplayString(),
                 targetType.Name,
                 componentType.ToDisplayString(SymbolDisplayFormat.FullyQualifiedFormat),
+                !propertyNames.Contains(SetupMocksActionPropertyName),
+                !propertyNames.Contains(CreatedComponentActionPropertyName),
+                !propertyNames.Contains(ConfigureMockerPolicyPropertyName),
                 selectedConstructor!.Parameters
                     .Select(parameter => parameter.Type.ToDisplayString(SymbolDisplayFormat.FullyQualifiedFormat))
                     .ToImmutableArray(),
@@ -184,6 +192,45 @@ namespace FastMoq.Generators
             AppendIndentedLine(sourceBuilder, 2, "protected override global::System.Type?[]? ComponentConstructorParameterTypes =>");
             AppendIndentedLine(sourceBuilder, 3, "FastMoqGeneratedHarnessMetadata.ConstructorParameterTypes;");
             sourceBuilder.AppendLine();
+            if (target.EmitConfigureMockerPolicyOverride)
+            {
+                AppendIndentedLine(sourceBuilder, 2, "protected override global::System.Action<global::FastMoq.MockerPolicyOptions>? ConfigureMockerPolicy =>");
+                AppendIndentedLine(sourceBuilder, 3, "options =>");
+                AppendIndentedLine(sourceBuilder, 3, "{");
+                AppendIndentedLine(sourceBuilder, 4, "base.ConfigureMockerPolicy?.Invoke(options);");
+                AppendIndentedLine(sourceBuilder, 4, "ConfigureGeneratedMockerPolicy(options);");
+                AppendIndentedLine(sourceBuilder, 3, "};");
+                sourceBuilder.AppendLine();
+                AppendIndentedLine(sourceBuilder, 2, "partial void ConfigureGeneratedMockerPolicy(global::FastMoq.MockerPolicyOptions options);");
+                sourceBuilder.AppendLine();
+            }
+
+            if (target.EmitSetupMocksActionOverride)
+            {
+                AppendIndentedLine(sourceBuilder, 2, "protected override global::System.Action<global::FastMoq.Mocker>? SetupMocksAction =>");
+                AppendIndentedLine(sourceBuilder, 3, "mocker =>");
+                AppendIndentedLine(sourceBuilder, 3, "{");
+                AppendIndentedLine(sourceBuilder, 4, "base.SetupMocksAction?.Invoke(mocker);");
+                AppendIndentedLine(sourceBuilder, 4, "ConfigureGeneratedMocks(mocker);");
+                AppendIndentedLine(sourceBuilder, 3, "};");
+                sourceBuilder.AppendLine();
+                AppendIndentedLine(sourceBuilder, 2, "partial void ConfigureGeneratedMocks(global::FastMoq.Mocker mocker);");
+                sourceBuilder.AppendLine();
+            }
+
+            if (target.EmitCreatedComponentActionOverride)
+            {
+                AppendIndentedLine(sourceBuilder, 2, $"protected override global::System.Action<{target.ComponentTypeName}>? CreatedComponentAction =>");
+                AppendIndentedLine(sourceBuilder, 3, "component =>");
+                AppendIndentedLine(sourceBuilder, 3, "{");
+                AppendIndentedLine(sourceBuilder, 4, "base.CreatedComponentAction?.Invoke(component);");
+                AppendIndentedLine(sourceBuilder, 4, "AfterGeneratedComponentCreated(component);");
+                AppendIndentedLine(sourceBuilder, 3, "};");
+                sourceBuilder.AppendLine();
+                AppendIndentedLine(sourceBuilder, 2, $"partial void AfterGeneratedComponentCreated({target.ComponentTypeName} component);");
+                sourceBuilder.AppendLine();
+            }
+
             AppendIndentedLine(sourceBuilder, 2, "public void ExecuteGeneratedScenarioScaffold() => CreateGeneratedScenarioScaffold().Execute();");
             AppendIndentedLine(sourceBuilder, 2, "public global::System.Threading.Tasks.Task ExecuteGeneratedScenarioScaffoldAsync() => CreateGeneratedScenarioScaffold().ExecuteAsync();");
             AppendIndentedLine(sourceBuilder, 2, "public void ExecuteGeneratedExpectedExceptionScenarioScaffold<TException>() where TException : global::System.Exception => CreateGeneratedExpectedExceptionScenarioScaffold<TException>().Execute();");
@@ -270,12 +317,18 @@ namespace FastMoq.Generators
                 string? namespaceName,
                 string targetTypeName,
                 string componentTypeName,
+                bool emitSetupMocksActionOverride,
+                bool emitCreatedComponentActionOverride,
+                bool emitConfigureMockerPolicyOverride,
                 ImmutableArray<string> constructorParameterTypeNames,
                 ImmutableArray<string> dependencyNames)
             {
                 NamespaceName = namespaceName;
                 TargetTypeName = targetTypeName;
                 ComponentTypeName = componentTypeName;
+                EmitSetupMocksActionOverride = emitSetupMocksActionOverride;
+                EmitCreatedComponentActionOverride = emitCreatedComponentActionOverride;
+                EmitConfigureMockerPolicyOverride = emitConfigureMockerPolicyOverride;
                 ConstructorParameterTypeNames = constructorParameterTypeNames;
                 DependencyNames = dependencyNames;
             }
@@ -285,6 +338,12 @@ namespace FastMoq.Generators
             public string TargetTypeName { get; }
 
             public string ComponentTypeName { get; }
+
+            public bool EmitSetupMocksActionOverride { get; }
+
+            public bool EmitCreatedComponentActionOverride { get; }
+
+            public bool EmitConfigureMockerPolicyOverride { get; }
 
             public ImmutableArray<string> ConstructorParameterTypeNames { get; }
 
