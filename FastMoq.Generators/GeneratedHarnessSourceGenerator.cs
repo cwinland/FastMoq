@@ -96,10 +96,14 @@ namespace FastMoq.Generators
 
         private static ImmutableArray<ITypeSymbol> GetExplicitConstructorParameterTypes(AttributeData attribute)
         {
-            if (attribute.ConstructorArguments.Length < 2 ||
-                attribute.ConstructorArguments[1].Kind != TypedConstantKind.Array)
+            if (attribute.ConstructorArguments.Length < 2)
             {
-                return ImmutableArray<ITypeSymbol>.Empty;
+                return default;
+            }
+
+            if (attribute.ConstructorArguments[1].Kind != TypedConstantKind.Array)
+            {
+                return default;
             }
 
             var builder = ImmutableArray.CreateBuilder<ITypeSymbol>();
@@ -123,7 +127,7 @@ namespace FastMoq.Generators
                 .Where(static constructor => !constructor.IsStatic)
                 .ToImmutableArray();
 
-            if (!explicitConstructorParameterTypes.IsDefaultOrEmpty)
+            if (!explicitConstructorParameterTypes.IsDefault)
             {
                 selectedConstructor = instanceConstructors.FirstOrDefault(constructor =>
                     ParametersMatch(constructor, explicitConstructorParameterTypes));
@@ -183,7 +187,7 @@ namespace FastMoq.Generators
             AppendIndentedLine(sourceBuilder, 2, "internal static class FastMoqGeneratedHarnessMetadata");
             AppendIndentedLine(sourceBuilder, 2, "{");
             AppendIndentedLine(sourceBuilder, 3, $"internal static global::System.Type ComponentType {{ get; }} = typeof({target.ComponentTypeName});");
-            AppendIndentedLine(sourceBuilder, 3, "internal static global::System.Type[] ConstructorParameterTypes { get; } = new global::System.Type[]");
+            AppendIndentedLine(sourceBuilder, 3, "internal static global::System.Type?[] ConstructorParameterTypes { get; } = new global::System.Type?[]");
             AppendIndentedLine(sourceBuilder, 3, "{");
             foreach (var parameterTypeName in target.ConstructorParameterTypeNames)
             {
@@ -199,7 +203,7 @@ namespace FastMoq.Generators
             }
             AppendIndentedLine(sourceBuilder, 3, "};");
             sourceBuilder.AppendLine();
-            AppendIndentedLine(sourceBuilder, 3, "internal static global::System.Type[] DependencyTypes => ConstructorParameterTypes;");
+            AppendIndentedLine(sourceBuilder, 3, "internal static global::System.Type?[] DependencyTypes => ConstructorParameterTypes;");
             AppendIndentedLine(sourceBuilder, 2, "}");
             AppendIndentedLine(sourceBuilder, 1, "}");
 

@@ -14,10 +14,20 @@ namespace FastMoq.Generators
         /// Initializes a new instance of the <see cref="FastMoqGeneratedTestTargetAttribute" /> class.
         /// </summary>
         /// <param name="componentType">The component under test that the generated harness path should target.</param>
-        /// <param name="constructorParameterTypes">An optional explicit constructor signature to use for the generated harness bootstrap.</param>
-        public FastMoqGeneratedTestTargetAttribute(Type componentType, params Type[] constructorParameterTypes)
+        public FastMoqGeneratedTestTargetAttribute(Type componentType)
         {
             ComponentType = componentType ?? throw new ArgumentNullException(nameof(componentType));
+            ConstructorParameterTypes = Array.Empty<Type>();
+        }
+
+        /// <summary>
+        /// Initializes a new instance of the <see cref="FastMoqGeneratedTestTargetAttribute" /> class with an explicit constructor signature.
+        /// </summary>
+        /// <param name="componentType">The component under test that the generated harness path should target.</param>
+        /// <param name="constructorParameterTypes">The explicit constructor signature to use for the generated harness bootstrap. Pass an explicit empty array to target the parameterless constructor.</param>
+        public FastMoqGeneratedTestTargetAttribute(Type componentType, params Type[] constructorParameterTypes)
+            : this(componentType)
+        {
             ConstructorParameterTypes = constructorParameterTypes ?? throw new ArgumentNullException(nameof(constructorParameterTypes));
         }
 

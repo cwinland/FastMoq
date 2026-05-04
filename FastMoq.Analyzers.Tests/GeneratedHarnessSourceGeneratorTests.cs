@@ -144,7 +144,50 @@ public partial class OrderSubmitterTests : MockerTestBase<OrderSubmitter>
 
             var generatedSource = result.GeneratedSources.Should().ContainSingle().Subject.SourceText.ToString();
             generatedSource.Should().Contain("typeof(global::Demo.Tests.IOrderGateway)");
-            generatedSource.Should().NotContain("new global::System.Type[]\r\n            {\r\n            };");
+            generatedSource.Should().NotContain("new global::System.Type?[]\r\n            {\r\n            };");
+        }
+
+        [Fact]
+        public async Task GeneratedHarnessSourceGenerator_ShouldUseExplicitParameterlessConstructor_ForMultiConstructorTarget()
+        {
+            const string source = @"
+using FastMoq;
+using FastMoq.Generators;
+using System;
+
+namespace Demo.Tests;
+
+public interface IOrderGateway { }
+
+public sealed class OrderSubmitter
+{
+    public OrderSubmitter()
+    {
+        ConstructorKind = ""parameterless"";
+    }
+
+    public OrderSubmitter(IOrderGateway gateway)
+    {
+        ConstructorKind = ""dependency"";
+    }
+
+    public string ConstructorKind { get; }
+}
+
+[FastMoqGeneratedTestTarget(typeof(OrderSubmitter), new global::System.Type[] { })]
+public partial class OrderSubmitterTests : MockerTestBase<OrderSubmitter>
+{
+    public string DescribeConstructorKind() => Component.ConstructorKind;
+
+    public Type?[]? DescribeConstructorTypes() => ComponentConstructorParameterTypes;
+}
+";
+
+            var loadedAssembly = await LoadGeneratedAssemblyAsync(source);
+            var generatedHarness = CreateInstance(loadedAssembly, "Demo.Tests.OrderSubmitterTests");
+
+            Invoke<string>(generatedHarness, "DescribeConstructorKind").Should().Be("parameterless");
+            Invoke<Type?[]>(generatedHarness, "DescribeConstructorTypes").Should().BeEmpty();
         }
 
         [Fact]
