@@ -122,67 +122,20 @@ FastMoq now contains a narrow first-party source-generator slice for explicit ha
 
 The main value is not "generated mocks" in isolation. The stronger FastMoq-specific opportunity is compile-time provider-first test generation: generated test graphs, harness scaffolding, and framework-helper builders that reduce reflection, reduce boilerplate, and stay aligned with FastMoq-owned APIs.
 
-For the next scenario-contract design slice behind [#126](https://github.com/cwinland/FastMoq/issues/126), see [Generated scenario scaffolding contract](./generated-scenario-scaffolding-contract.md).
-
-Current public issue crosswalk:
-
-- foundation and package-shape work: [#120](https://github.com/cwinland/FastMoq/issues/120), [#121](https://github.com/cwinland/FastMoq/issues/121), [#125](https://github.com/cwinland/FastMoq/issues/125), [#126](https://github.com/cwinland/FastMoq/issues/126) for the stable `ScenarioBuilder` scaffolding contract, [#127](https://github.com/cwinland/FastMoq/issues/127), and [#134](https://github.com/cwinland/FastMoq/issues/134)
-- near-term helper preparation that can improve v4 authoring before generators ship: [#132](https://github.com/cwinland/FastMoq/issues/132), [#133](https://github.com/cwinland/FastMoq/issues/133), and [#135](https://github.com/cwinland/FastMoq/issues/135)
-- completed first implementation-facing MVP: [#122](https://github.com/cwinland/FastMoq/issues/122)
-- current shared generated-test settings and test-platform contract gate for later authoring flows: [#162](https://github.com/cwinland/FastMoq/issues/162)
-- immediate next-step sequence after the shared `#162` contract: [#126](https://github.com/cwinland/FastMoq/issues/126) for the stable `ScenarioBuilder` scaffolding contract, then [#134](https://github.com/cwinland/FastMoq/issues/134) for helper-surface narrowing and re-triage, then [#136](https://github.com/cwinland/FastMoq/issues/136) for scenario and suite scaffolding implementation
-- later implementation-facing outcomes once the contract and scaffold layers are stable: [#123](https://github.com/cwinland/FastMoq/issues/123), [#124](https://github.com/cwinland/FastMoq/issues/124), and later or conditional helper-builder work in [#137](https://github.com/cwinland/FastMoq/issues/137)
-- later evaluation tracks after the provider-first generator story is stable: [#138](https://github.com/cwinland/FastMoq/issues/138) and [#139](https://github.com/cwinland/FastMoq/issues/139)
+For the detailed issue crosswalk and implementation planning, see [Generator roadmap and design](./generator-roadmap.md).
+For the current contract-focused design docs, see [Generated test settings design](./generated-test-settings.md), [Generated scenario scaffolding contract](./generated-scenario-scaffolding-contract.md), and [Generated helper family matrix](./generated-helper-family-matrix.md).
 
 Planned direction stays phased:
 
 1. Compile-time test graph and harness generation.
-2. Shared generated-test settings and test-platform contract.
-3. Stable `ScenarioBuilder` scaffolding contract.
-4. Helper-surface narrowing and re-triage for generator-facing helper families.
-5. Scenario and suite scaffolding implementation.
-6. Full generated tests and analyzer-guided generation once the contract and scaffold layers are stable.
-7. Framework-helper builders for repeated helper-heavy test patterns.
-8. Provider-optimized or narrower generated-fake evaluation only after the shared contract is stable.
+2. Shared generated-test settings and test-platform contracts.
+3. Stable scenario-scaffolding contracts and helper-boundary narrowing.
+4. Scenario and suite scaffolding implementation.
+5. Full generated tests and analyzer-guided generation once the contract and scaffold layers are stable.
+6. Framework-helper builders for repeated helper-heavy test patterns when they justify a separate layer.
+7. Provider-optimized or narrower generated-fake evaluation only after the shared contract is stable.
 
-Current package and MVP contract direction for [#120](https://github.com/cwinland/FastMoq/issues/120):
-
-- `FastMoq.Generators` is the dedicated source-generator package
-- `FastMoq.Analyzers` remains separate from the source-generator implementation
-- the aggregate `FastMoq` package should include the generator path once it ships, while `FastMoq.Core` stays the lighter provider-neutral runtime and does not include the source-generator implementation
-- generator capability is install-enabled but target-explicit, not blanket automatic for every eligible type in a project
-- unsupported, disabled, missing, or stale generated paths fall back to the supported FastMoq runtime path
-- the first implementation-facing MVP is generated graph metadata and harness bootstrap only; scenario scaffolding, full generated tests, helper builders, provider-optimized generation, and compile-time fake generation remain later work
-- broader project-level or suite-level generated-test preference settings and test-platform targets are intentionally later than the first MVP and now track through [#162](https://github.com/cwinland/FastMoq/issues/162)
-
-Current constructor-contract direction for [#125](https://github.com/cwinland/FastMoq/issues/125):
-
-- [#121](https://github.com/cwinland/FastMoq/issues/121) remains the umbrella tracker; [#125](https://github.com/cwinland/FastMoq/issues/125) is complete, and the public constructor-planning contract is now the settled runtime boundary that the first real [#122](https://github.com/cwinland/FastMoq/issues/122) generator output should target
-- the proposed public contract is `InstanceConstructionRequest`, `InstanceConstructionPlan`, `InstanceConstructionParameterPlan`, and `InstanceConstructionParameterSource`, with `Mocker.CreateConstructionPlan(InstanceConstructionRequest request)` as the preferred entry point
-- the first graph and harness MVP should keep that `Mocker` surface request-only; the first harness-side consumer can sit on `MockerTestBase<TComponent>` instead of adding a companion generic overload on `Mocker`
-- the proposed first-slice parameter-source enum members are `CustomRegistration`, `KnownType`, `KeyedService`, `AutoMock`, `OptionalDefault`, and `TypeDefault`; `ConstructedByMocker` is deferred until the runtime model exposes a distinct recursive-construction parameter category
-- the new contract stays narrow while existing public diagnostics, models, creation APIs, and current public reflection-metadata resolution behavior remain part of the compatibility boundary
-
-Current implementation status for [#127](https://github.com/cwinland/FastMoq/issues/127):
-
-- done: `FastMoq.Analyzers` now exposes a shared package-layout and target-test-shape matrix for aggregate, core-only, and split helper-package layouts
-- done: supported generated test shapes are explicit for core, web, Blazor, database, Azure, and Azure Functions targets based on the referenced FastMoq package set
-- done: `MissingHelperPackageAnalyzer` now consumes the same package matrix instead of ad hoc helper-package checks
-- done: analyzer tests now cover the core-only, split-helper, and aggregate package layouts that later generator and analyzer flows need to respect
-- next: continue [#122](https://github.com/cwinland/FastMoq/issues/122) with the first real source-generator output against the settled planning, graph, harness-bootstrap, and package-shape runtime contracts
-
-Current implementation status for [#122](https://github.com/cwinland/FastMoq/issues/122):
-
-- done: an internal construction-graph metadata model now layers over `Mocker.CreateConstructionPlan(...)` without widening the public planning API
-- done: `MockerTestBase<TComponent>` has the first graph-facing harness consumer through `GetComponentConstructionGraph()`
-- done: an internal harness-bootstrap descriptor now projects `ComponentCreationFlags`, ordered constructor-signature hooks, and explicit-request-override detection on top of the current graph metadata
-- done: focused runtime coverage now proves both the root-node mapping and the first harness-bootstrap descriptor paths
-- done: the repo now contains a dedicated `FastMoq.Generators` package and the first incremental generator path for explicit partial `MockerTestBase<TComponent>` targets, emitting constructor-signature metadata and harness bootstrap against the settled runtime contract
-- done: generator-driver coverage now proves both the single-constructor path and the explicit-signature path compile cleanly while ambiguous multi-constructor targets stay on the normal runtime fallback path
-- done: representative generated consuming scenarios now compile against real generated harness output, and parity tests now prove the generated path matches the supported runtime harness path for the same component shapes
-- done: measured setup-path evidence is now recorded in [generated harness setup benchmark results](../benchmarks/results/generated-harness-setup-net8.md), where the generated bootstrap-descriptor path holds a slight edge over the runtime fallback path with effectively identical allocations on the richer single-constructor benchmark
-- done: the current branch now completes the planned `#122` MVP slice; later generated-test settings and framework or runner targeting move to [#162](https://github.com/cwinland/FastMoq/issues/162) while later scaffolding and full-test generation stay in [#136](https://github.com/cwinland/FastMoq/issues/136), [#123](https://github.com/cwinland/FastMoq/issues/123), and [#124](https://github.com/cwinland/FastMoq/issues/124)
-- next: settle the shared generated-test settings and test-platform model in [#162](https://github.com/cwinland/FastMoq/issues/162), then define the stable scenario-scaffolding contract in [#126](https://github.com/cwinland/FastMoq/issues/126), narrow helper-family follow-up in [#134](https://github.com/cwinland/FastMoq/issues/134), and only then widen into [#136](https://github.com/cwinland/FastMoq/issues/136), [#123](https://github.com/cwinland/FastMoq/issues/123), and [#124](https://github.com/cwinland/FastMoq/issues/124)
+The current implementation-facing MVP remains intentionally narrow: generated graph metadata and harness bootstrap are in place, while broader generated-test settings, scenario contracts, helper-boundary narrowing, scenario scaffolding, and full generated tests continue through the linked design docs and the detailed generator roadmap.
 
 For the current detailed direction, design constraints, and fuller generator issue mapping, see [Generator roadmap and design](./generator-roadmap.md).
 For the shared generated-test settings contract behind [#162](https://github.com/cwinland/FastMoq/issues/162), see [Generated test settings design](./generated-test-settings.md).

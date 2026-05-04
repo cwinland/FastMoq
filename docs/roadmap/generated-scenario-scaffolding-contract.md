@@ -22,7 +22,7 @@ This slice does not:
 - implement source generation for scenario or suite scaffolds
 - redesign `ScenarioBuilder<T>` into a separate scenario runtime model
 - reopen constructor-selection, graph metadata, or harness bootstrap contracts already settled in `#125` and `#122`
-- settle helper-family normalization for logging, HTTP, Azure, Azure Functions, or typed DI beyond the boundaries needed to keep the scenario contract narrow
+- settle the helper-family narrowing matrix for logging, HTTP, Azure, Azure Functions, or typed DI beyond the boundaries needed to keep the scenario contract narrow
 - replace the settings, hook-emission-style, or regeneration-policy ownership already documented in `#162`
 
 ## Current Runtime Anchors
@@ -121,7 +121,7 @@ In practice that means:
 
 The following work stays outside `#126` even when it is closely related:
 
-- helper-family normalization across logging, HTTP, Azure, Azure Functions, and typed DI stays in [#134](https://github.com/cwinland/FastMoq/issues/134)
+- helper-family narrowing and re-triage across logging, HTTP, Azure, Azure Functions, and typed DI stays in [#134](https://github.com/cwinland/FastMoq/issues/134) and is documented in [Generated helper family matrix](./generated-helper-family-matrix.md)
 - concrete generated scenario and suite scaffolding implementation stays in [#136](https://github.com/cwinland/FastMoq/issues/136)
 - full generated tests from existing services and supported classes stays in [#123](https://github.com/cwinland/FastMoq/issues/123)
 - analyzer-guided generation routing and missing-package suggestions stays in [#124](https://github.com/cwinland/FastMoq/issues/124)
@@ -134,7 +134,7 @@ If later discovery shows that one truly missing runtime seam blocks the contract
 The immediate sequence after `#162` should stay explicit:
 
 - `#126` is the next design slice and defines the stable scenario-scaffolding contract
-- `#134` is the next narrowing and re-triage pass for helper-family normalization that the scenario implementation may later depend on
+- `#134` is the next narrowing and re-triage pass that classifies which helper families the scenario implementation may later depend on
 - `#136` is the next implementation-facing PR once the scenario contract and helper boundaries are explicit
 - `#123` and `#124` follow only after the contract and scaffold layers are stable enough to consume instead of re-deriving local defaults
 - `#137` remains later and conditional rather than part of the immediate next-step chain

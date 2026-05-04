@@ -6,6 +6,7 @@ This page is intentionally design-level only. It is appropriate for roadmap and 
 
 For the shared generated-test settings contract behind [#162](https://github.com/cwinland/FastMoq/issues/162), see [Generated test settings design](./generated-test-settings.md).
 For the scenario-scaffolding contract behind [#126](https://github.com/cwinland/FastMoq/issues/126), see [Generated scenario scaffolding contract](./generated-scenario-scaffolding-contract.md).
+For the helper-family narrowing contract behind [#134](https://github.com/cwinland/FastMoq/issues/134), see [Generated helper family matrix](./generated-helper-family-matrix.md).
 
 FastMoq now contains a narrow first Roslyn source-generator slice for explicit `MockerTestBase<TComponent>` harness targets. The repo still does not emit full generated tests, scenario scaffolds, or broader framework-helper builders.
 
@@ -31,7 +32,7 @@ The current public backlog for this design is:
 - [#125](https://github.com/cwinland/FastMoq/issues/125) graph metadata hooks and constructor-selection primitives
 - [#126](https://github.com/cwinland/FastMoq/issues/126) `ScenarioBuilder` scaffolding hooks for generated output
 - [#127](https://github.com/cwinland/FastMoq/issues/127) package-detection and target-test-shape rules for generated tests
-- [#134](https://github.com/cwinland/FastMoq/issues/134) blocking helper-surface normalization for logging, HTTP, Azure, Azure Functions, and typed DI
+- [#134](https://github.com/cwinland/FastMoq/issues/134) helper-family narrowing and re-triage matrix for logging, HTTP, Azure, Azure Functions, and typed DI
 - [#122](https://github.com/cwinland/FastMoq/issues/122) compile-time graph and harness MVP
 - [#162](https://github.com/cwinland/FastMoq/issues/162) generated-test settings and test-platform targeting as the current gate before wider authoring flows
 - [#136](https://github.com/cwinland/FastMoq/issues/136) generated scenario and suite scaffolding after the graph and harness MVP
@@ -46,11 +47,11 @@ Crosswalk summary:
 - `#121` is the runtime-prerequisite umbrella.
 - `#132`, `#133`, and `#135` are the narrower v4-style quick wins that are now implemented on the current milestone branch.
 - `#146` and `#147` carry the near-term analyzer follow-up for those landed helper surfaces.
-- `#120`, `#125`, `#126`, `#127`, and `#134` are the pre-v5 contract and blocking prerequisite slices.
+- `#120`, `#125`, `#126`, `#127`, and `#134` are the pre-v5 contract and helper-boundary prerequisite slices.
 - `#122` is the completed first implementation-facing MVP for compile-time graph metadata and harness bootstrap.
 - `#162` is the current shared settings and test-platform contract gate before wider generated scenario scaffolds, full generated tests, and analyzer entry points.
 - `#126` is the immediate next design slice after `#162` and defines the stable scenario-scaffolding contract layer.
-- `#134` is the next narrowing and re-triage pass for helper-family normalization after `#126`.
+- `#134` is the next narrowing and re-triage pass after `#126`, and it classifies which helper families are green-light, bounded, deferred, or split to later follow-on work for `#136`.
 - `#136` is the next implementation slice once the scenario contract and helper boundaries are explicit.
 - `#123` and `#124` remain later phased implementation and authoring-flow outcomes after the contract and scaffold layers are stable.
 - `#137` remains later and conditional rather than part of the immediate next-step chain.
@@ -243,7 +244,7 @@ Completed on the current milestone branch:
 - expanded provider-first verification helpers where a shared abstraction is still clear and stable
 - small helper-surface cleanups for logging, HTTP, or typed DI setup where the FastMoq-owned runtime surface already exists and only needed a more generator-friendly shape
 
-These landed early because they improve normal authoring even before source generators ship. The remaining near-term follow-up is narrower analyzer guidance in [#146](https://github.com/cwinland/FastMoq/issues/146) and [#147](https://github.com/cwinland/FastMoq/issues/147), plus the narrower helper-family re-triage and normalization pass in [#134](https://github.com/cwinland/FastMoq/issues/134) after the `#126` scenario contract is explicit.
+These landed early because they improve normal authoring even before source generators ship. The remaining near-term follow-up is narrower analyzer guidance in [#146](https://github.com/cwinland/FastMoq/issues/146) and [#147](https://github.com/cwinland/FastMoq/issues/147), plus the helper-family narrowing matrix in [#134](https://github.com/cwinland/FastMoq/issues/134) after the `#126` scenario contract is explicit.
 
 ### Likely v5 blocking prerequisites
 
