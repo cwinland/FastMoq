@@ -289,6 +289,214 @@ public partial class OrderSubmitterTests : MockerTestBase<OrderSubmitter>
             dependencyTypes.Should().Equal(generatedPlan.Parameters.Select(static parameter => parameter.ParameterType));
         }
 
+        [Fact]
+        public async Task GeneratedHarnessSourceGenerator_ShouldEmitExecutableScenarioScaffold_ForGeneratedHarnessTarget()
+        {
+            const string source = @"
+using FastMoq;
+using FastMoq.Generators;
+
+namespace Demo.Tests;
+
+public sealed class ScenarioCounter
+{
+    public int Count { get; private set; }
+
+    public bool WasVerified { get; private set; }
+
+    public void Increment()
+    {
+        Count++;
+    }
+
+    public void MarkVerified()
+    {
+        WasVerified = true;
+    }
+}
+
+[FastMoqGeneratedTestTarget(typeof(ScenarioCounter))]
+public partial class GeneratedScenarioHarness : MockerTestBase<ScenarioCounter>
+{
+    public int DescribeCount() => Component.Count;
+
+    public bool DescribeWasVerified() => Component.WasVerified;
+
+    partial void ActGeneratedScenario(ScenarioBuilder<ScenarioCounter> scenario)
+    {
+        scenario.When(component => component.Increment());
+    }
+
+    partial void AssertGeneratedScenario(ScenarioBuilder<ScenarioCounter> scenario)
+    {
+        scenario.Then(component =>
+        {
+            if (component.Count != 1)
+            {
+                throw new global::System.InvalidOperationException(""Expected exactly one increment."");
+            }
+        });
+    }
+
+    partial void VerifyGeneratedScenario(ScenarioBuilder<ScenarioCounter> scenario)
+    {
+        scenario.Then(component => component.MarkVerified());
+    }
+}
+";
+
+            var loadedAssembly = await LoadGeneratedAssemblyAsync(source);
+            var generatedHarness = CreateInstance(loadedAssembly, "Demo.Tests.GeneratedScenarioHarness");
+
+            Invoke<object?>(generatedHarness, "ExecuteGeneratedScenarioScaffold");
+
+            Invoke<int>(generatedHarness, "DescribeCount").Should().Be(1);
+            Invoke<bool>(generatedHarness, "DescribeWasVerified").Should().BeTrue();
+        }
+
+        [Fact]
+        public async Task GeneratedHarnessSourceGenerator_ShouldEmitExecutableAsyncScenarioScaffold_ForGeneratedHarnessTarget()
+        {
+            const string source = @"
+using FastMoq;
+using FastMoq.Generators;
+
+namespace Demo.Tests;
+
+public sealed class AsyncScenarioCounter
+{
+    public int Count { get; private set; }
+
+    public bool WasVerified { get; private set; }
+
+    public void Increment()
+    {
+        Count++;
+    }
+
+    public void MarkVerified()
+    {
+        WasVerified = true;
+    }
+}
+
+[FastMoqGeneratedTestTarget(typeof(AsyncScenarioCounter))]
+public partial class GeneratedAsyncScenarioHarness : MockerTestBase<AsyncScenarioCounter>
+{
+    public int DescribeCount() => Component.Count;
+
+    public bool DescribeWasVerified() => Component.WasVerified;
+
+    partial void ActGeneratedScenario(ScenarioBuilder<AsyncScenarioCounter> scenario)
+    {
+        scenario.When(async component =>
+        {
+            await global::System.Threading.Tasks.Task.CompletedTask;
+            component.Increment();
+        });
+    }
+
+    partial void AssertGeneratedScenario(ScenarioBuilder<AsyncScenarioCounter> scenario)
+    {
+        scenario.Then(async component =>
+        {
+            await global::System.Threading.Tasks.Task.CompletedTask;
+            if (component.Count != 1)
+            {
+                throw new global::System.InvalidOperationException(""Expected exactly one increment."");
+            }
+        });
+    }
+
+    partial void VerifyGeneratedScenario(ScenarioBuilder<AsyncScenarioCounter> scenario)
+    {
+        scenario.Then(async component =>
+        {
+            await global::System.Threading.Tasks.Task.CompletedTask;
+            component.MarkVerified();
+        });
+    }
+}
+";
+
+            var loadedAssembly = await LoadGeneratedAssemblyAsync(source);
+            var generatedHarness = CreateInstance(loadedAssembly, "Demo.Tests.GeneratedAsyncScenarioHarness");
+
+            await Invoke<global::System.Threading.Tasks.Task>(generatedHarness, "ExecuteGeneratedScenarioScaffoldAsync");
+
+            Invoke<int>(generatedHarness, "DescribeCount").Should().Be(1);
+            Invoke<bool>(generatedHarness, "DescribeWasVerified").Should().BeTrue();
+        }
+
+        [Fact]
+        public async Task GeneratedHarnessSourceGenerator_ShouldEmitExecutableExpectedExceptionScenarioScaffold_ForGeneratedHarnessTarget()
+        {
+            const string source = @"
+using FastMoq;
+using FastMoq.Generators;
+
+namespace Demo.Tests;
+
+public sealed class ThrowingScenarioCounter
+{
+    public bool AssertedAfterExpectedException { get; private set; }
+
+    public bool VerifiedAfterExpectedException { get; private set; }
+
+    public void Throw()
+    {
+        throw new global::System.InvalidOperationException(""boom"");
+    }
+
+    public void MarkAsserted()
+    {
+        AssertedAfterExpectedException = true;
+    }
+
+    public void MarkVerified()
+    {
+        VerifiedAfterExpectedException = true;
+    }
+}
+
+[FastMoqGeneratedTestTarget(typeof(ThrowingScenarioCounter))]
+public partial class GeneratedExpectedExceptionScenarioHarness : MockerTestBase<ThrowingScenarioCounter>
+{
+    public bool DescribeAssertedAfterExpectedException() => Component.AssertedAfterExpectedException;
+
+    public bool DescribeVerifiedAfterExpectedException() => Component.VerifiedAfterExpectedException;
+
+    partial void ExpectedExceptionGeneratedScenario<TException>(ScenarioBuilder<ThrowingScenarioCounter> scenario) where TException : global::System.Exception
+    {
+        scenario.WhenThrows<TException>(component => component.Throw());
+    }
+
+    partial void AssertGeneratedScenario(ScenarioBuilder<ThrowingScenarioCounter> scenario)
+    {
+        scenario.Then(component => component.MarkAsserted());
+    }
+
+    partial void VerifyGeneratedScenario(ScenarioBuilder<ThrowingScenarioCounter> scenario)
+    {
+        scenario.Then(component => component.MarkVerified());
+    }
+}
+";
+
+            var loadedAssembly = await LoadGeneratedAssemblyAsync(source);
+            var generatedHarness = CreateInstance(loadedAssembly, "Demo.Tests.GeneratedExpectedExceptionScenarioHarness");
+
+            InvokeGenericVoid(generatedHarness, "ExecuteGeneratedExpectedExceptionScenarioScaffold", typeof(global::System.InvalidOperationException));
+
+            Invoke<bool>(generatedHarness, "DescribeAssertedAfterExpectedException").Should().BeTrue();
+            Invoke<bool>(generatedHarness, "DescribeVerifiedAfterExpectedException").Should().BeTrue();
+
+            await InvokeGeneric<global::System.Threading.Tasks.Task>(generatedHarness, "ExecuteGeneratedExpectedExceptionScenarioScaffoldAsync", typeof(global::System.InvalidOperationException));
+
+            Invoke<bool>(generatedHarness, "DescribeAssertedAfterExpectedException").Should().BeTrue();
+            Invoke<bool>(generatedHarness, "DescribeVerifiedAfterExpectedException").Should().BeTrue();
+        }
+
         private static async Task<GeneratorTestResult> RunGeneratorAsync(string source)
         {
             var document = AnalyzerTestHelpers.CreateDocumentForTest(
@@ -345,6 +553,20 @@ public partial class OrderSubmitterTests : MockerTestBase<OrderSubmitter>
             var method = instance.GetType().GetMethod(methodName, BindingFlags.Instance | BindingFlags.Public);
             method.Should().NotBeNull();
             return (T) method!.Invoke(instance, null)!;
+        }
+
+        private static void InvokeGenericVoid(object instance, string methodName, params Type[] typeArguments)
+        {
+            var method = instance.GetType().GetMethod(methodName, BindingFlags.Instance | BindingFlags.Public);
+            method.Should().NotBeNull();
+            method!.MakeGenericMethod(typeArguments).Invoke(instance, null);
+        }
+
+        private static T InvokeGeneric<T>(object instance, string methodName, params Type[] typeArguments)
+        {
+            var method = instance.GetType().GetMethod(methodName, BindingFlags.Instance | BindingFlags.Public);
+            method.Should().NotBeNull();
+            return (T) method!.MakeGenericMethod(typeArguments).Invoke(instance, null)!;
         }
 
         private sealed class GeneratorTestResult
