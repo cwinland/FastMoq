@@ -5,6 +5,7 @@ This page captures the current v5 direction for FastMoq code generation. It is t
 This page is intentionally design-level only. It is appropriate for roadmap and implementation planning ahead of code, but it does not imply current shipped support.
 
 For the shared generated-test settings contract behind [#162](https://github.com/cwinland/FastMoq/issues/162), see [Generated test settings design](./generated-test-settings.md).
+For the scenario-scaffolding contract behind [#126](https://github.com/cwinland/FastMoq/issues/126), see [Generated scenario scaffolding contract](./generated-scenario-scaffolding-contract.md).
 
 FastMoq now contains a narrow first Roslyn source-generator slice for explicit `MockerTestBase<TComponent>` harness targets. The repo still does not emit full generated tests, scenario scaffolds, or broader framework-helper builders.
 
@@ -48,8 +49,11 @@ Crosswalk summary:
 - `#120`, `#125`, `#126`, `#127`, and `#134` are the pre-v5 contract and blocking prerequisite slices.
 - `#122` is the completed first implementation-facing MVP for compile-time graph metadata and harness bootstrap.
 - `#162` is the current shared settings and test-platform contract gate before wider generated scenario scaffolds, full generated tests, and analyzer entry points.
-- `#126` is the stable scenario-scaffolding contract layer, and `#136` is the implementation slice that follows it.
-- `#137`, `#123`, and `#124` remain the later phased implementation and authoring-flow outcomes once the current `#162` contract is settled.
+- `#126` is the immediate next design slice after `#162` and defines the stable scenario-scaffolding contract layer.
+- `#134` is the next narrowing and re-triage pass for helper-family normalization after `#126`.
+- `#136` is the next implementation slice once the scenario contract and helper boundaries are explicit.
+- `#123` and `#124` remain later phased implementation and authoring-flow outcomes after the contract and scaffold layers are stable.
+- `#137` remains later and conditional rather than part of the immediate next-step chain.
 - `#138` and `#139` are intentionally late evaluation tracks after the main provider-first generator story is already working.
 
 ## Product Positioning
@@ -239,7 +243,7 @@ Completed on the current milestone branch:
 - expanded provider-first verification helpers where a shared abstraction is still clear and stable
 - small helper-surface cleanups for logging, HTTP, or typed DI setup where the FastMoq-owned runtime surface already exists and only needed a more generator-friendly shape
 
-These landed early because they improve normal authoring even before source generators ship. The remaining near-term follow-up is narrower analyzer guidance in [#146](https://github.com/cwinland/FastMoq/issues/146) and [#147](https://github.com/cwinland/FastMoq/issues/147), plus broader helper normalization in [#134](https://github.com/cwinland/FastMoq/issues/134).
+These landed early because they improve normal authoring even before source generators ship. The remaining near-term follow-up is narrower analyzer guidance in [#146](https://github.com/cwinland/FastMoq/issues/146) and [#147](https://github.com/cwinland/FastMoq/issues/147), plus the narrower helper-family re-triage and normalization pass in [#134](https://github.com/cwinland/FastMoq/issues/134) after the `#126` scenario contract is explicit.
 
 ### Likely v5 blocking prerequisites
 
@@ -407,7 +411,7 @@ Preferred post-`#122` decision:
 - keep the public planning API unchanged
 - use [#162](https://github.com/cwinland/FastMoq/issues/162) to settle generated-test settings and framework or runner targeting before widening into scaffolds or full tests
 - only enrich the internal graph model further if a later generation layer proves that more dependency-order metadata is actually required for compilation or parity
-- move the next implementation-facing generator work into [#136](https://github.com/cwinland/FastMoq/issues/136), [#123](https://github.com/cwinland/FastMoq/issues/123), and [#124](https://github.com/cwinland/FastMoq/issues/124) once that settings model is explicit
+- move next into the scenario-contract slice in [#126](https://github.com/cwinland/FastMoq/issues/126), then the helper-family narrowing pass in [#134](https://github.com/cwinland/FastMoq/issues/134), then the next implementation-facing generator work in [#136](https://github.com/cwinland/FastMoq/issues/136), with [#123](https://github.com/cwinland/FastMoq/issues/123) and [#124](https://github.com/cwinland/FastMoq/issues/124) following only after the contract and scaffold layers are stable
 
 ## Suggested v5 Delivery Phases
 

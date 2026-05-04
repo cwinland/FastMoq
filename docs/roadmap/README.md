@@ -122,24 +122,28 @@ FastMoq now contains a narrow first-party source-generator slice for explicit ha
 
 The main value is not "generated mocks" in isolation. The stronger FastMoq-specific opportunity is compile-time provider-first test generation: generated test graphs, harness scaffolding, and framework-helper builders that reduce reflection, reduce boilerplate, and stay aligned with FastMoq-owned APIs.
 
+For the next scenario-contract design slice behind [#126](https://github.com/cwinland/FastMoq/issues/126), see [Generated scenario scaffolding contract](./generated-scenario-scaffolding-contract.md).
+
 Current public issue crosswalk:
 
 - foundation and package-shape work: [#120](https://github.com/cwinland/FastMoq/issues/120), [#121](https://github.com/cwinland/FastMoq/issues/121), [#125](https://github.com/cwinland/FastMoq/issues/125), [#126](https://github.com/cwinland/FastMoq/issues/126) for the stable `ScenarioBuilder` scaffolding contract, [#127](https://github.com/cwinland/FastMoq/issues/127), and [#134](https://github.com/cwinland/FastMoq/issues/134)
 - near-term helper preparation that can improve v4 authoring before generators ship: [#132](https://github.com/cwinland/FastMoq/issues/132), [#133](https://github.com/cwinland/FastMoq/issues/133), and [#135](https://github.com/cwinland/FastMoq/issues/135)
 - completed first implementation-facing MVP: [#122](https://github.com/cwinland/FastMoq/issues/122)
 - current shared generated-test settings and test-platform contract gate for later authoring flows: [#162](https://github.com/cwinland/FastMoq/issues/162)
-- later implementation-facing outcomes after the shared `#162` contract settles: [#136](https://github.com/cwinland/FastMoq/issues/136) for scenario and suite scaffolding, [#123](https://github.com/cwinland/FastMoq/issues/123), [#137](https://github.com/cwinland/FastMoq/issues/137), and [#124](https://github.com/cwinland/FastMoq/issues/124)
+- immediate next-step sequence after the shared `#162` contract: [#126](https://github.com/cwinland/FastMoq/issues/126) for the stable `ScenarioBuilder` scaffolding contract, then [#134](https://github.com/cwinland/FastMoq/issues/134) for helper-surface narrowing and re-triage, then [#136](https://github.com/cwinland/FastMoq/issues/136) for scenario and suite scaffolding implementation
+- later implementation-facing outcomes once the contract and scaffold layers are stable: [#123](https://github.com/cwinland/FastMoq/issues/123), [#124](https://github.com/cwinland/FastMoq/issues/124), and later or conditional helper-builder work in [#137](https://github.com/cwinland/FastMoq/issues/137)
 - later evaluation tracks after the provider-first generator story is stable: [#138](https://github.com/cwinland/FastMoq/issues/138) and [#139](https://github.com/cwinland/FastMoq/issues/139)
 
 Planned direction stays phased:
 
 1. Compile-time test graph and harness generation.
 2. Shared generated-test settings and test-platform contract.
-3. Scenario and suite scaffolding.
-4. Full generated tests from existing supported classes.
-5. Framework-helper builders for repeated helper-heavy test patterns.
-6. Analyzer-guided generation flow and package suggestions.
-7. Provider-optimized or narrower generated-fake evaluation only after the shared contract is stable.
+3. Stable `ScenarioBuilder` scaffolding contract.
+4. Helper-surface narrowing and re-triage for generator-facing helper families.
+5. Scenario and suite scaffolding implementation.
+6. Full generated tests and analyzer-guided generation once the contract and scaffold layers are stable.
+7. Framework-helper builders for repeated helper-heavy test patterns.
+8. Provider-optimized or narrower generated-fake evaluation only after the shared contract is stable.
 
 Current package and MVP contract direction for [#120](https://github.com/cwinland/FastMoq/issues/120):
 
@@ -178,10 +182,11 @@ Current implementation status for [#122](https://github.com/cwinland/FastMoq/iss
 - done: representative generated consuming scenarios now compile against real generated harness output, and parity tests now prove the generated path matches the supported runtime harness path for the same component shapes
 - done: measured setup-path evidence is now recorded in [generated harness setup benchmark results](../benchmarks/results/generated-harness-setup-net8.md), where the generated bootstrap-descriptor path holds a slight edge over the runtime fallback path with effectively identical allocations on the richer single-constructor benchmark
 - done: the current branch now completes the planned `#122` MVP slice; later generated-test settings and framework or runner targeting move to [#162](https://github.com/cwinland/FastMoq/issues/162) while later scaffolding and full-test generation stay in [#136](https://github.com/cwinland/FastMoq/issues/136), [#123](https://github.com/cwinland/FastMoq/issues/123), and [#124](https://github.com/cwinland/FastMoq/issues/124)
-- next: settle the shared generated-test settings and test-platform model in [#162](https://github.com/cwinland/FastMoq/issues/162) before widening into framework-specific scaffolds, full generated tests, or analyzer entry points
+- next: settle the shared generated-test settings and test-platform model in [#162](https://github.com/cwinland/FastMoq/issues/162), then define the stable scenario-scaffolding contract in [#126](https://github.com/cwinland/FastMoq/issues/126), narrow helper-family follow-up in [#134](https://github.com/cwinland/FastMoq/issues/134), and only then widen into [#136](https://github.com/cwinland/FastMoq/issues/136), [#123](https://github.com/cwinland/FastMoq/issues/123), and [#124](https://github.com/cwinland/FastMoq/issues/124)
 
 For the current detailed direction, design constraints, and fuller generator issue mapping, see [Generator roadmap and design](./generator-roadmap.md).
 For the shared generated-test settings contract behind [#162](https://github.com/cwinland/FastMoq/issues/162), see [Generated test settings design](./generated-test-settings.md).
+For the scenario-scaffolding contract behind [#126](https://github.com/cwinland/FastMoq/issues/126), see [Generated scenario scaffolding contract](./generated-scenario-scaffolding-contract.md).
 
 ### `MockOptional` retirement
 
