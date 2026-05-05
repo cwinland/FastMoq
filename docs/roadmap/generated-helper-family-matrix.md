@@ -2,7 +2,7 @@
 
 This page captures the current helper-family narrowing contract for generator-facing FastMoq helper surfaces. It is the canonical repo-local design artifact for [#134](https://github.com/cwinland/FastMoq/issues/134), not a shipped feature guide.
 
-This page is intentionally docs-only. It does not imply that FastMoq currently generates helper-heavy test scaffolds, and it does not itself implement helper normalization.
+This page is intentionally docs-only. The repo does emit core scenario and suite scaffolding, but it does not yet emit helper-heavy or package-specific scaffold variants, and this page does not itself implement helper normalization.
 
 For the shared generated-test settings contract behind [#162](https://github.com/cwinland/FastMoq/issues/162), see [Generated test settings design](./generated-test-settings.md).
 For the scenario-scaffolding contract behind [#126](https://github.com/cwinland/FastMoq/issues/126), see [Generated scenario scaffolding contract](./generated-scenario-scaffolding-contract.md).
@@ -32,6 +32,7 @@ This slice does not:
 
 The first generated scenario or suite scaffold implementation should use this matrix as a hard boundary.
 
+- the current supported `#136` scaffold slice stays inside core provider-neutral scenario and suite hooks and does not yet auto-emit helper-family-specific setup from this matrix
 - `#136` may target helper families classified as `generator-stable as-is` directly.
 - `#136` may target helper families classified as `generator-stable with explicit bounds` only when the documented package or provider conditions are satisfied.
 - `#136` should not target helper families classified as `deferred from first scenario scaffolds`.
@@ -102,6 +103,6 @@ Open or route to a later issue when one of these becomes necessary:
 The immediate follow-on order after this docs pass should remain explicit:
 
 - `#134` ends once the helper-family matrix, package or provider bounds, and split criteria are documented and mirrored into the roadmap.
-- `#136` should then implement generated scenario and suite scaffolding against the `#126` scenario contract, this helper-family matrix, and the `#162` settings contract.
+- the first `#136` implementation now emits generated scenario and suite scaffolding inside explicit partial harness targets while staying within the core contract and these matrix bounds.
 - `#123` and `#124` should consume the same helper assumptions later instead of inventing local defaults or re-triaging helper families inside their own slices.
 - `#137` remains later and conditional rather than part of the immediate `#126 -> #134 -> #136 -> #123/#124` chain.
