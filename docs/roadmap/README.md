@@ -118,28 +118,24 @@ Current public issue anchor in this bucket is [#141](https://github.com/cwinland
 
 ### Code generation and scaffolding
 
-FastMoq now contains a narrow first-party source-generator slice for explicit harness targets, but the broader code-generation work is still part of the current v5 direction.
+Code generation remains part of the current v5 direction.
 
 The main value is not "generated mocks" in isolation. The stronger FastMoq-specific opportunity is compile-time provider-first test generation: generated test graphs, harness scaffolding, and framework-helper builders that reduce reflection, reduce boilerplate, and stay aligned with FastMoq-owned APIs.
 
-For the detailed issue crosswalk and implementation planning, see [Generator roadmap and design](./generator-roadmap.md).
-For the current contract-focused design docs, see [Generated test settings design](./generated-test-settings.md), [Generated scenario scaffolding contract](./generated-scenario-scaffolding-contract.md), and [Generated helper family matrix](./generated-helper-family-matrix.md).
-
-Planned direction stays phased:
+Current direction stays phased:
 
 1. Compile-time test graph and harness generation.
 2. Shared generated-test settings and test-platform contracts.
 3. Stable scenario-scaffolding contracts and helper-boundary narrowing.
-4. Scenario and suite scaffolding implementation.
-5. Full generated tests and analyzer-guided generation once the contract and scaffold layers are stable.
+4. Scenario and suite scaffolding.
+5. Broaden full generated tests and analyzer-guided generation beyond the current explicit-harness xUnit smoke-test slice.
 6. Framework-helper builders for repeated helper-heavy test patterns when they justify a separate layer.
 7. Provider-optimized or narrower generated-fake evaluation only after the shared contract is stable.
 
-The current implementation-facing MVP remains intentionally narrow: generated graph metadata and harness bootstrap are in place, while broader generated-test settings, scenario contracts, helper-boundary narrowing, scenario scaffolding, and full generated tests continue through the linked design docs and the detailed generator roadmap.
-
-For the current detailed direction, design constraints, and fuller generator issue mapping, see [Generator roadmap and design](./generator-roadmap.md).
+For the current detailed direction, implementation status, scope boundaries, and fuller generator issue mapping, see [Generator roadmap and design](./generator-roadmap.md).
 For the shared generated-test settings contract behind [#162](https://github.com/cwinland/FastMoq/issues/162), see [Generated test settings design](./generated-test-settings.md).
 For the scenario-scaffolding contract behind [#126](https://github.com/cwinland/FastMoq/issues/126), see [Generated scenario scaffolding contract](./generated-scenario-scaffolding-contract.md).
+For the current helper-boundary contract behind [#134](https://github.com/cwinland/FastMoq/issues/134), see [Generated helper family matrix](./generated-helper-family-matrix.md).
 
 ### `MockOptional` retirement
 

@@ -2,6 +2,7 @@ using System;
 using FastMoq.Generators;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp;
+using Microsoft.CodeAnalysis.Diagnostics;
 using System.Collections.Immutable;
 using System.IO;
 using System.Linq;
@@ -289,7 +290,869 @@ public partial class OrderSubmitterTests : MockerTestBase<OrderSubmitter>
             dependencyTypes.Should().Equal(generatedPlan.Parameters.Select(static parameter => parameter.ParameterType));
         }
 
-        private static async Task<GeneratorTestResult> RunGeneratorAsync(string source)
+        [Fact]
+        public async Task GeneratedHarnessSourceGenerator_ShouldEmitExecutableScenarioScaffold_ForGeneratedHarnessTarget()
+        {
+            const string source = @"
+using FastMoq;
+using FastMoq.Generators;
+
+namespace Demo.Tests;
+
+public sealed class ScenarioCounter
+{
+    public int Count { get; private set; }
+
+    public bool WasVerified { get; private set; }
+
+    public void Increment()
+    {
+        Count++;
+    }
+
+    public void MarkVerified()
+    {
+        WasVerified = true;
+    }
+}
+
+[FastMoqGeneratedTestTarget(typeof(ScenarioCounter))]
+public partial class GeneratedScenarioHarness : MockerTestBase<ScenarioCounter>
+{
+    public int DescribeCount() => Component.Count;
+
+    public bool DescribeWasVerified() => Component.WasVerified;
+
+    partial void ActGeneratedScenario(ScenarioBuilder<ScenarioCounter> scenario)
+    {
+        scenario.When(component => component.Increment());
+    }
+
+    partial void AssertGeneratedScenario(ScenarioBuilder<ScenarioCounter> scenario)
+    {
+        scenario.Then(component =>
+        {
+            if (component.Count != 1)
+            {
+                throw new global::System.InvalidOperationException(""Expected exactly one increment."");
+            }
+        });
+    }
+
+    partial void VerifyGeneratedScenario(ScenarioBuilder<ScenarioCounter> scenario)
+    {
+        scenario.Then(component => component.MarkVerified());
+    }
+}
+";
+
+            var loadedAssembly = await LoadGeneratedAssemblyAsync(source);
+            var generatedHarness = CreateInstance(loadedAssembly, "Demo.Tests.GeneratedScenarioHarness");
+
+            Invoke<object?>(generatedHarness, "ExecuteGeneratedScenarioScaffold");
+
+            Invoke<int>(generatedHarness, "DescribeCount").Should().Be(1);
+            Invoke<bool>(generatedHarness, "DescribeWasVerified").Should().BeTrue();
+        }
+
+        [Fact]
+        public async Task GeneratedHarnessSourceGenerator_ShouldEmitExecutableAsyncScenarioScaffold_ForGeneratedHarnessTarget()
+        {
+            const string source = @"
+using FastMoq;
+using FastMoq.Generators;
+
+namespace Demo.Tests;
+
+public sealed class AsyncScenarioCounter
+{
+    public int Count { get; private set; }
+
+    public bool WasVerified { get; private set; }
+
+    public void Increment()
+    {
+        Count++;
+    }
+
+    public void MarkVerified()
+    {
+        WasVerified = true;
+    }
+}
+
+[FastMoqGeneratedTestTarget(typeof(AsyncScenarioCounter))]
+public partial class GeneratedAsyncScenarioHarness : MockerTestBase<AsyncScenarioCounter>
+{
+    public int DescribeCount() => Component.Count;
+
+    public bool DescribeWasVerified() => Component.WasVerified;
+
+    partial void ActGeneratedScenario(ScenarioBuilder<AsyncScenarioCounter> scenario)
+    {
+        scenario.When(async component =>
+        {
+            await global::System.Threading.Tasks.Task.CompletedTask;
+            component.Increment();
+        });
+    }
+
+    partial void AssertGeneratedScenario(ScenarioBuilder<AsyncScenarioCounter> scenario)
+    {
+        scenario.Then(async component =>
+        {
+            await global::System.Threading.Tasks.Task.CompletedTask;
+            if (component.Count != 1)
+            {
+                throw new global::System.InvalidOperationException(""Expected exactly one increment."");
+            }
+        });
+    }
+
+    partial void VerifyGeneratedScenario(ScenarioBuilder<AsyncScenarioCounter> scenario)
+    {
+        scenario.Then(async component =>
+        {
+            await global::System.Threading.Tasks.Task.CompletedTask;
+            component.MarkVerified();
+        });
+    }
+}
+";
+
+            var loadedAssembly = await LoadGeneratedAssemblyAsync(source);
+            var generatedHarness = CreateInstance(loadedAssembly, "Demo.Tests.GeneratedAsyncScenarioHarness");
+
+            await Invoke<global::System.Threading.Tasks.Task>(generatedHarness, "ExecuteGeneratedScenarioScaffoldAsync");
+
+            Invoke<int>(generatedHarness, "DescribeCount").Should().Be(1);
+            Invoke<bool>(generatedHarness, "DescribeWasVerified").Should().BeTrue();
+        }
+
+        [Fact]
+        public async Task GeneratedHarnessSourceGenerator_ShouldEmitExecutableExpectedExceptionScenarioScaffold_ForGeneratedHarnessTarget()
+        {
+            const string source = @"
+using FastMoq;
+using FastMoq.Generators;
+
+namespace Demo.Tests;
+
+public sealed class ThrowingScenarioCounter
+{
+    public bool AssertedAfterExpectedException { get; private set; }
+
+    public bool VerifiedAfterExpectedException { get; private set; }
+
+    public void Throw()
+    {
+        throw new global::System.InvalidOperationException(""boom"");
+    }
+
+    public void MarkAsserted()
+    {
+        AssertedAfterExpectedException = true;
+    }
+
+    public void MarkVerified()
+    {
+        VerifiedAfterExpectedException = true;
+    }
+}
+
+[FastMoqGeneratedTestTarget(typeof(ThrowingScenarioCounter))]
+public partial class GeneratedExpectedExceptionScenarioHarness : MockerTestBase<ThrowingScenarioCounter>
+{
+    public bool DescribeAssertedAfterExpectedException() => Component.AssertedAfterExpectedException;
+
+    public bool DescribeVerifiedAfterExpectedException() => Component.VerifiedAfterExpectedException;
+
+    partial void ExpectedExceptionGeneratedScenario<TException>(ScenarioBuilder<ThrowingScenarioCounter> scenario) where TException : global::System.Exception
+    {
+        scenario.WhenThrows<TException>(component => component.Throw());
+    }
+
+    partial void AssertGeneratedScenario(ScenarioBuilder<ThrowingScenarioCounter> scenario)
+    {
+        scenario.Then(component => component.MarkAsserted());
+    }
+
+    partial void VerifyGeneratedScenario(ScenarioBuilder<ThrowingScenarioCounter> scenario)
+    {
+        scenario.Then(component => component.MarkVerified());
+    }
+}
+";
+
+            var loadedAssembly = await LoadGeneratedAssemblyAsync(source);
+            var generatedHarness = CreateInstance(loadedAssembly, "Demo.Tests.GeneratedExpectedExceptionScenarioHarness");
+
+            InvokeGenericVoid(generatedHarness, "ExecuteGeneratedExpectedExceptionScenarioScaffold", typeof(global::System.InvalidOperationException));
+
+            Invoke<bool>(generatedHarness, "DescribeAssertedAfterExpectedException").Should().BeTrue();
+            Invoke<bool>(generatedHarness, "DescribeVerifiedAfterExpectedException").Should().BeTrue();
+
+            await InvokeGeneric<global::System.Threading.Tasks.Task>(generatedHarness, "ExecuteGeneratedExpectedExceptionScenarioScaffoldAsync", typeof(global::System.InvalidOperationException));
+
+            Invoke<bool>(generatedHarness, "DescribeAssertedAfterExpectedException").Should().BeTrue();
+            Invoke<bool>(generatedHarness, "DescribeVerifiedAfterExpectedException").Should().BeTrue();
+        }
+
+        [Fact]
+        public async Task GeneratedHarnessSourceGenerator_ShouldEmitSuiteLevelSharedSetupHooks_ForGeneratedHarnessTarget()
+        {
+            const string source = @"
+using FastMoq;
+using FastMoq.Generators;
+
+namespace Demo.Tests;
+
+public interface ISharedSetupDependency
+{
+    string Name { get; }
+}
+
+public sealed class SharedSetupDependency : ISharedSetupDependency
+{
+    public string Name => ""shared"";
+}
+
+public sealed class SharedSetupTarget
+{
+    public SharedSetupTarget(ISharedSetupDependency dependency)
+    {
+        DependencyName = dependency.Name;
+    }
+
+    public string DependencyName { get; }
+
+    public bool WasCreatedHookApplied { get; private set; }
+
+    public bool WasScenarioExecuted { get; private set; }
+
+    public void MarkCreatedHookApplied()
+    {
+        WasCreatedHookApplied = true;
+    }
+
+    public void MarkScenarioExecuted()
+    {
+        WasScenarioExecuted = true;
+    }
+}
+
+[FastMoqGeneratedTestTarget(typeof(SharedSetupTarget))]
+public partial class GeneratedSharedSetupHarness : MockerTestBase<SharedSetupTarget>
+{
+    public string DescribeDependencyName() => Component.DependencyName;
+
+    public bool DescribeWasCreatedHookApplied() => Component.WasCreatedHookApplied;
+
+    public bool DescribeWasScenarioExecuted() => Component.WasScenarioExecuted;
+
+    public bool? DescribeStrictPolicy() => Mocks.Policy.DefaultStrictMockCreation;
+
+    partial void ConfigureGeneratedMockerPolicy(MockerPolicyOptions options)
+    {
+        options.DefaultStrictMockCreation = true;
+    }
+
+    partial void ConfigureGeneratedMocks(Mocker mocker)
+    {
+        mocker.AddType<ISharedSetupDependency>(new SharedSetupDependency());
+    }
+
+    partial void AfterGeneratedComponentCreated(SharedSetupTarget component)
+    {
+        component.MarkCreatedHookApplied();
+    }
+
+    partial void ActGeneratedScenario(ScenarioBuilder<SharedSetupTarget> scenario)
+    {
+        scenario.When(component => component.MarkScenarioExecuted());
+    }
+}
+";
+
+            var loadedAssembly = await LoadGeneratedAssemblyAsync(source);
+            var generatedHarness = CreateInstance(loadedAssembly, "Demo.Tests.GeneratedSharedSetupHarness");
+
+            Invoke<string>(generatedHarness, "DescribeDependencyName").Should().Be("shared");
+            Invoke<bool>(generatedHarness, "DescribeWasCreatedHookApplied").Should().BeTrue();
+            Invoke<bool?>(generatedHarness, "DescribeStrictPolicy").Should().BeTrue();
+
+            Invoke<object?>(generatedHarness, "ExecuteGeneratedScenarioScaffold");
+
+            Invoke<bool>(generatedHarness, "DescribeWasScenarioExecuted").Should().BeTrue();
+        }
+
+        [Fact]
+        public async Task GeneratedHarnessSourceGenerator_ShouldPreserveSuiteLevelSharedSetupHookOrder_ForGeneratedHarnessTarget()
+        {
+            const string source = @"
+using FastMoq;
+using FastMoq.Generators;
+
+namespace Demo.Tests;
+
+public static class SharedSetupEventLog
+{
+    public static global::System.Collections.Generic.List<string> Events { get; } = new global::System.Collections.Generic.List<string>();
+
+    public static void Record(string eventName)
+    {
+        Events.Add(eventName);
+    }
+
+    public static string Describe()
+    {
+        return global::System.String.Join(""|"", Events);
+    }
+}
+
+public interface ISharedSetupDependency
+{
+    string Name { get; }
+}
+
+public sealed class SharedSetupDependency : ISharedSetupDependency
+{
+    public string Name => ""shared"";
+}
+
+public sealed class SharedSetupTarget
+{
+    public SharedSetupTarget(ISharedSetupDependency dependency)
+    {
+        SharedSetupEventLog.Record(""constructed"");
+        DependencyName = dependency.Name;
+    }
+
+    public string DependencyName { get; }
+
+    public bool WasCreatedHookApplied { get; private set; }
+
+    public bool WasScenarioExecuted { get; private set; }
+
+    public void MarkCreatedHookApplied()
+    {
+        WasCreatedHookApplied = true;
+    }
+
+    public void MarkScenarioExecuted()
+    {
+        WasScenarioExecuted = true;
+    }
+}
+
+public abstract class SharedSetupHarnessBase : MockerTestBase<SharedSetupTarget>
+{
+    protected override global::System.Action<MockerPolicyOptions>? ConfigureMockerPolicy =>
+        _ => SharedSetupEventLog.Record(""base-policy"");
+
+    protected override global::System.Action<Mocker>? SetupMocksAction =>
+        _ => SharedSetupEventLog.Record(""base-setup"");
+
+    protected override global::System.Action<SharedSetupTarget>? CreatedComponentAction =>
+        _ => SharedSetupEventLog.Record(""base-created"");
+}
+
+[FastMoqGeneratedTestTarget(typeof(SharedSetupTarget))]
+public partial class GeneratedSharedSetupHarness : SharedSetupHarnessBase
+{
+    public string DescribeDependencyName() => Component.DependencyName;
+
+    public bool DescribeWasCreatedHookApplied() => Component.WasCreatedHookApplied;
+
+    public bool DescribeWasScenarioExecuted() => Component.WasScenarioExecuted;
+
+    public bool? DescribeStrictPolicy() => Mocks.Policy.DefaultStrictMockCreation;
+
+    public string DescribeHookOrder() => SharedSetupEventLog.Describe();
+
+    partial void ConfigureGeneratedMockerPolicy(MockerPolicyOptions options)
+    {
+        SharedSetupEventLog.Record(""generated-policy"");
+        options.DefaultStrictMockCreation = true;
+    }
+
+    partial void ConfigureGeneratedMocks(Mocker mocker)
+    {
+        SharedSetupEventLog.Record(""generated-setup"");
+        mocker.AddType<ISharedSetupDependency>(new SharedSetupDependency());
+    }
+
+    partial void AfterGeneratedComponentCreated(SharedSetupTarget component)
+    {
+        SharedSetupEventLog.Record(""generated-created"");
+        component.MarkCreatedHookApplied();
+    }
+
+    partial void ActGeneratedScenario(ScenarioBuilder<SharedSetupTarget> scenario)
+    {
+        scenario.When(component =>
+        {
+            SharedSetupEventLog.Record(""act"");
+            component.MarkScenarioExecuted();
+        });
+    }
+}
+";
+
+            var loadedAssembly = await LoadGeneratedAssemblyAsync(source);
+            var generatedHarness = CreateInstance(loadedAssembly, "Demo.Tests.GeneratedSharedSetupHarness");
+
+            Invoke<string>(generatedHarness, "DescribeDependencyName").Should().Be("shared");
+            Invoke<bool>(generatedHarness, "DescribeWasCreatedHookApplied").Should().BeTrue();
+            Invoke<bool>(generatedHarness, "DescribeWasScenarioExecuted").Should().BeFalse();
+            Invoke<bool?>(generatedHarness, "DescribeStrictPolicy").Should().BeTrue();
+            Invoke<string>(generatedHarness, "DescribeHookOrder").Should().Be("base-policy|generated-policy|base-setup|generated-setup|constructed|base-created|generated-created");
+
+            Invoke<object?>(generatedHarness, "ExecuteGeneratedScenarioScaffold");
+
+            Invoke<bool>(generatedHarness, "DescribeWasScenarioExecuted").Should().BeTrue();
+            Invoke<string>(generatedHarness, "DescribeHookOrder").Should().Be("base-policy|generated-policy|base-setup|generated-setup|constructed|base-created|generated-created|act");
+        }
+
+        [Fact]
+        public async Task GeneratedHarnessSourceGenerator_ShouldEmitExecutableXunitSmokeTests_ForParameterlessPublicMethods()
+        {
+            const string source = @"
+using FastMoq;
+using FastMoq.Generators;
+
+namespace Demo.Tests;
+
+public sealed class SmokeTarget
+{
+    public int Count { get; private set; }
+
+    public int GetCount()
+    {
+        return Count;
+    }
+
+    public void Increment()
+    {
+        Count++;
+    }
+
+    public async global::System.Threading.Tasks.Task IncrementAsync()
+    {
+        await global::System.Threading.Tasks.Task.CompletedTask;
+        Count++;
+    }
+}
+
+[FastMoqGeneratedTestTarget(typeof(SmokeTarget))]
+public partial class GeneratedSmokeHarness : MockerTestBase<SmokeTarget>
+{
+    public int DescribeCount() => Component.Count;
+}
+";
+
+            var result = await RunGeneratorAsync(source);
+
+            result.DriverDiagnostics.Where(static diagnostic => diagnostic.Severity == DiagnosticSeverity.Error)
+                .Should()
+                .BeEmpty();
+            result.OutputCompilation.GetDiagnostics().Where(static diagnostic => diagnostic.Severity == DiagnosticSeverity.Error)
+                .Should()
+                .BeEmpty();
+
+            var generatedSource = result.GeneratedSources.Should().ContainSingle().Subject.SourceText.ToString();
+            generatedSource.Should().Contain("[global::Xunit.Fact]");
+            generatedSource.Should().Contain("FastMoqGeneratedSmokeTest_00_Component_ShouldCreateComponent");
+            generatedSource.Should().Contain("FastMoqGeneratedSmokeTest_01_GetCount_ShouldExecuteWithoutThrowing");
+            generatedSource.Should().Contain("FastMoqGeneratedSmokeTest_02_Increment_ShouldExecuteWithoutThrowing");
+            generatedSource.Should().Contain("FastMoqGeneratedSmokeTest_03_IncrementAsync_ShouldExecuteWithoutThrowing");
+
+            var loadedAssembly = await LoadGeneratedAssemblyAsync(source);
+            var generatedHarness = CreateInstance(loadedAssembly, "Demo.Tests.GeneratedSmokeHarness");
+
+            InvokeVoid(generatedHarness, "FastMoqGeneratedSmokeTest_00_Component_ShouldCreateComponent");
+            InvokeVoid(generatedHarness, "FastMoqGeneratedSmokeTest_01_GetCount_ShouldExecuteWithoutThrowing");
+            Invoke<int>(generatedHarness, "DescribeCount").Should().Be(0);
+
+            InvokeVoid(generatedHarness, "FastMoqGeneratedSmokeTest_02_Increment_ShouldExecuteWithoutThrowing");
+            Invoke<int>(generatedHarness, "DescribeCount").Should().Be(1);
+
+            await Invoke<global::System.Threading.Tasks.Task>(generatedHarness, "FastMoqGeneratedSmokeTest_03_IncrementAsync_ShouldExecuteWithoutThrowing");
+            Invoke<int>(generatedHarness, "DescribeCount").Should().Be(2);
+        }
+
+        [Fact]
+        public async Task GeneratedHarnessSourceGenerator_ShouldEmitExecutableXunitSmokeTests_ForMethodsWithOptionalDefaults_AndValueTaskShapes()
+        {
+            const string source = @"
+using FastMoq;
+using FastMoq.Generators;
+
+namespace Demo.Tests;
+
+public sealed class OptionalDefaultsTarget
+{
+    public string LastMessage { get; private set; } = string.Empty;
+
+    public int Count { get; private set; }
+
+    public int Add(int amount = 3)
+    {
+        Count += amount;
+        return Count;
+    }
+
+    public global::System.Threading.Tasks.ValueTask<string> LoadAsync(string prefix = ""value"", int suffix = 7)
+    {
+        LastMessage = prefix + suffix;
+        return new global::System.Threading.Tasks.ValueTask<string>(LastMessage);
+    }
+
+    public global::System.Threading.Tasks.ValueTask ResetAsync(bool enabled = true)
+    {
+        if (enabled)
+        {
+            Count = 0;
+        }
+
+        return global::System.Threading.Tasks.ValueTask.CompletedTask;
+    }
+}
+
+[FastMoqGeneratedTestTarget(typeof(OptionalDefaultsTarget))]
+public partial class GeneratedOptionalDefaultsHarness : MockerTestBase<OptionalDefaultsTarget>
+{
+    public int DescribeCount() => Component.Count;
+
+    public string DescribeLastMessage() => Component.LastMessage;
+}
+";
+
+            var result = await RunGeneratorAsync(source);
+
+            result.DriverDiagnostics.Where(static diagnostic => diagnostic.Severity == DiagnosticSeverity.Error)
+                .Should()
+                .BeEmpty();
+            result.OutputCompilation.GetDiagnostics().Where(static diagnostic => diagnostic.Severity == DiagnosticSeverity.Error)
+                .Should()
+                .BeEmpty();
+
+            var generatedSource = result.GeneratedSources.Should().ContainSingle().Subject.SourceText.ToString();
+            generatedSource.Should().Contain("FastMoqGeneratedSmokeTest_01_Add_ShouldExecuteWithoutThrowing");
+            generatedSource.Should().Contain("_ = component.Add((int)3);");
+            generatedSource.Should().Contain("FastMoqGeneratedSmokeTest_02_LoadAsync_ShouldExecuteWithoutThrowing");
+            generatedSource.Should().Contain("_ = await component.LoadAsync((string)\"value\", (int)7);");
+            generatedSource.Should().Contain("FastMoqGeneratedSmokeTest_03_ResetAsync_ShouldExecuteWithoutThrowing");
+            generatedSource.Should().Contain("await component.ResetAsync((bool)true);");
+
+            var loadedAssembly = await LoadGeneratedAssemblyAsync(source);
+            var generatedHarness = CreateInstance(loadedAssembly, "Demo.Tests.GeneratedOptionalDefaultsHarness");
+
+            InvokeVoid(generatedHarness, "FastMoqGeneratedSmokeTest_01_Add_ShouldExecuteWithoutThrowing");
+            Invoke<int>(generatedHarness, "DescribeCount").Should().Be(3);
+
+            await Invoke<global::System.Threading.Tasks.Task>(generatedHarness, "FastMoqGeneratedSmokeTest_02_LoadAsync_ShouldExecuteWithoutThrowing");
+            Invoke<string>(generatedHarness, "DescribeLastMessage").Should().Be("value7");
+
+            await Invoke<global::System.Threading.Tasks.Task>(generatedHarness, "FastMoqGeneratedSmokeTest_03_ResetAsync_ShouldExecuteWithoutThrowing");
+            Invoke<int>(generatedHarness, "DescribeCount").Should().Be(0);
+        }
+
+        [Fact]
+        public async Task GeneratedHarnessSourceGenerator_ShouldBindOverloadedMethodsUsingTypedOptionalDefaults()
+        {
+            const string source = @"
+using FastMoq;
+using FastMoq.Generators;
+
+namespace Demo.Tests;
+
+public sealed class OverloadedOptionalDefaultsTarget
+{
+    public string LastCall { get; private set; } = string.Empty;
+
+    public void Choose(object? value = null)
+    {
+        LastCall = value is null ? ""object-null"" : value.ToString()!;
+    }
+
+    public void Choose(string value = ""text"")
+    {
+        LastCall = ""string:"" + value;
+    }
+}
+
+[FastMoqGeneratedTestTarget(typeof(OverloadedOptionalDefaultsTarget))]
+public partial class GeneratedOverloadedOptionalDefaultsHarness : MockerTestBase<OverloadedOptionalDefaultsTarget>
+{
+    public string DescribeLastCall() => Component.LastCall;
+}
+";
+
+            var result = await RunGeneratorAsync(source);
+
+            result.DriverDiagnostics.Where(static diagnostic => diagnostic.Severity == DiagnosticSeverity.Error)
+                .Should()
+                .BeEmpty();
+            result.OutputCompilation.GetDiagnostics().Where(static diagnostic => diagnostic.Severity == DiagnosticSeverity.Error)
+                .Should()
+                .BeEmpty();
+
+            var generatedSource = result.GeneratedSources.Should().ContainSingle().Subject.SourceText.ToString();
+            generatedSource.Should().Contain("component.Choose((object)null);");
+            generatedSource.Should().Contain("component.Choose((string)\"text\");");
+
+            var loadedAssembly = await LoadGeneratedAssemblyAsync(source);
+            var generatedHarness = CreateInstance(loadedAssembly, "Demo.Tests.GeneratedOverloadedOptionalDefaultsHarness");
+
+            InvokeVoid(generatedHarness, "FastMoqGeneratedSmokeTest_01_Choose_ShouldExecuteWithoutThrowing");
+            Invoke<string>(generatedHarness, "DescribeLastCall").Should().Be("object-null");
+
+            InvokeVoid(generatedHarness, "FastMoqGeneratedSmokeTest_02_Choose_ShouldExecuteWithoutThrowing");
+            Invoke<string>(generatedHarness, "DescribeLastCall").Should().Be("string:text");
+        }
+
+        [Fact]
+        public async Task GeneratedHarnessSourceGenerator_ShouldEmitDeferredXunitPlaceholders_ForUnsupportedPublicMethods()
+        {
+            const string source = @"
+using FastMoq;
+using FastMoq.Generators;
+
+namespace Demo.Tests;
+
+public sealed class DeferredSmokeTarget
+{
+    public global::System.Threading.Tasks.ValueTask<int> LoadAsync()
+    {
+        return new global::System.Threading.Tasks.ValueTask<int>(1);
+    }
+
+    public void Process(string value)
+    {
+    }
+}
+
+[FastMoqGeneratedTestTarget(typeof(DeferredSmokeTarget))]
+public partial class GeneratedDeferredSmokeHarness : MockerTestBase<DeferredSmokeTarget>
+{
+}
+";
+
+            var result = await RunGeneratorAsync(source);
+
+            result.DriverDiagnostics.Where(static diagnostic => diagnostic.Severity == DiagnosticSeverity.Error)
+                .Should()
+                .BeEmpty();
+            result.OutputCompilation.GetDiagnostics().Where(static diagnostic => diagnostic.Severity == DiagnosticSeverity.Error)
+                .Should()
+                .BeEmpty();
+
+            var generatedSource = result.GeneratedSources.Should().ContainSingle().Subject.SourceText.ToString();
+            generatedSource.Should().Contain("[global::Xunit.Fact]");
+            generatedSource.Should().Contain("FastMoqGeneratedSmokeTest_01_LoadAsync_ShouldExecuteWithoutThrowing");
+            generatedSource.Should().Contain("[global::Xunit.Fact(Skip = \"FastMoq generated smoke test deferred: method 'void DeferredSmokeTarget.Process(string value)' requires non-optional parameters.\")]");
+            generatedSource.Should().Contain("FastMoqGeneratedPlaceholder_02_Process_IsDeferred");
+
+            var loadedAssembly = await LoadGeneratedAssemblyAsync(source);
+            var generatedHarness = CreateInstance(loadedAssembly, "Demo.Tests.GeneratedDeferredSmokeHarness");
+
+            await Invoke<global::System.Threading.Tasks.Task>(generatedHarness, "FastMoqGeneratedSmokeTest_01_LoadAsync_ShouldExecuteWithoutThrowing");
+
+            var process = () => InvokeVoid(generatedHarness, "FastMoqGeneratedPlaceholder_02_Process_IsDeferred");
+            process.Should().Throw<TargetInvocationException>()
+                .WithInnerException<NotSupportedException>()
+                .WithMessage("*DeferredSmokeTarget.Process(string value)*requires non-optional parameters*");
+        }
+
+        [Fact]
+        public async Task GeneratedHarnessSourceGenerator_ShouldNotEmitXunitSmokeTests_WhenXunitIsUnavailable()
+        {
+            const string source = @"
+using FastMoq;
+using FastMoq.Generators;
+
+namespace Demo.Tests;
+
+public sealed class NoXunitTarget
+{
+    public void Run()
+    {
+    }
+}
+
+[FastMoqGeneratedTestTarget(typeof(NoXunitTarget))]
+public partial class GeneratedNoXunitHarness : MockerTestBase<NoXunitTarget>
+{
+}
+";
+
+            var document = AnalyzerTestHelpers.CreateDocumentForTest(
+                source,
+                includeAzureFunctionsHelpers: false,
+                includeMoqProviderPackage: false,
+                includeNSubstituteProviderPackage: false,
+                includeWebHelpers: false,
+                includeDatabaseHelpers: false,
+                includeAzureHelpers: false,
+                includeAggregatePackage: false,
+                includeXunit: false);
+            var compilation = await document.Project.GetCompilationAsync();
+            compilation.Should().NotBeNull();
+
+            GeneratorDriver driver = CSharpGeneratorDriver.Create(
+                [new GeneratedHarnessSourceGenerator().AsSourceGenerator()],
+                parseOptions: (CSharpParseOptions) document.Project.ParseOptions!);
+            driver = driver.RunGeneratorsAndUpdateCompilation(compilation!, out var outputCompilation, out var diagnostics);
+
+            diagnostics.Where(static diagnostic => diagnostic.Severity == DiagnosticSeverity.Error)
+                .Should()
+                .BeEmpty();
+            outputCompilation.GetDiagnostics().Where(static diagnostic => diagnostic.Severity == DiagnosticSeverity.Error)
+                .Should()
+                .BeEmpty();
+
+            var generatedSource = driver.GetRunResult().Results.SelectMany(static result => result.GeneratedSources)
+                .Should()
+                .ContainSingle()
+                .Subject.SourceText.ToString();
+            generatedSource.Should().NotContain("global::Xunit.Fact");
+            generatedSource.Should().NotContain("FastMoqGeneratedSmokeTest_");
+            generatedSource.Should().NotContain("FastMoqGeneratedPlaceholder_");
+        }
+
+        [Fact]
+        public async Task GeneratedHarnessSourceGenerator_ShouldNotEmitXunitSmokeTests_WhenFrameworkPropertyIsSetToNone()
+        {
+            const string source = @"
+using FastMoq;
+using FastMoq.Generators;
+
+namespace Demo.Tests;
+
+public sealed class FrameworkNoneTarget
+{
+    public void Run() { }
+}
+
+[FastMoqGeneratedTestTarget(typeof(FrameworkNoneTarget))]
+public partial class GeneratedFrameworkNoneHarness : MockerTestBase<FrameworkNoneTarget>
+{
+}
+";
+
+            var result = await RunGeneratorAsync(source, frameworkSetting: "none");
+
+            result.DriverDiagnostics.Where(static d => d.Severity == DiagnosticSeverity.Error).Should().BeEmpty();
+            result.OutputCompilation.GetDiagnostics().Where(static d => d.Severity == DiagnosticSeverity.Error).Should().BeEmpty();
+
+            var generatedSource = result.GeneratedSources.Should().ContainSingle().Subject.SourceText.ToString();
+            generatedSource.Should().NotContain("global::Xunit.Fact");
+            generatedSource.Should().NotContain("FastMoqGeneratedSmokeTest_");
+            generatedSource.Should().NotContain("FastMoqGeneratedPlaceholder_");
+        }
+
+        [Fact]
+        public async Task GeneratedHarnessSourceGenerator_ShouldEmitXunitSmokeTests_WhenFrameworkPropertyIsExplicitlyXunit()
+        {
+            const string source = @"
+using FastMoq;
+using FastMoq.Generators;
+
+namespace Demo.Tests;
+
+public sealed class FrameworkXunitTarget
+{
+    public void Run() { }
+}
+
+[FastMoqGeneratedTestTarget(typeof(FrameworkXunitTarget))]
+public partial class GeneratedFrameworkXunitHarness : MockerTestBase<FrameworkXunitTarget>
+{
+}
+";
+
+            var result = await RunGeneratorAsync(source, frameworkSetting: "xunit");
+
+            result.DriverDiagnostics.Where(static d => d.Severity == DiagnosticSeverity.Error).Should().BeEmpty();
+            result.OutputCompilation.GetDiagnostics().Where(static d => d.Severity == DiagnosticSeverity.Error).Should().BeEmpty();
+
+            var generatedSource = result.GeneratedSources.Should().ContainSingle().Subject.SourceText.ToString();
+            generatedSource.Should().Contain("[global::Xunit.Fact]");
+            generatedSource.Should().Contain("FastMoqGeneratedSmokeTest_00_Component_ShouldCreateComponent");
+            generatedSource.Should().Contain("FastMoqGeneratedSmokeTest_01_Run_ShouldExecuteWithoutThrowing");
+        }
+
+        [Fact]
+        public async Task GeneratedHarnessSourceGenerator_ShouldEmitXunitSmokeTests_WhenFrameworkPropertyIsSetToNoneButCaseDiffers()
+        {
+            const string source = @"
+using FastMoq;
+using FastMoq.Generators;
+
+namespace Demo.Tests;
+
+public sealed class FrameworkNoneCaseTarget
+{
+    public void Run() { }
+}
+
+[FastMoqGeneratedTestTarget(typeof(FrameworkNoneCaseTarget))]
+public partial class GeneratedFrameworkNoneCaseHarness : MockerTestBase<FrameworkNoneCaseTarget>
+{
+}
+";
+
+            // "None" with capital N should also disable emission (case-insensitive)
+            var result = await RunGeneratorAsync(source, frameworkSetting: "None");
+
+            result.DriverDiagnostics.Where(static d => d.Severity == DiagnosticSeverity.Error).Should().BeEmpty();
+
+            var generatedSource = result.GeneratedSources.Should().ContainSingle().Subject.SourceText.ToString();
+            generatedSource.Should().NotContain("global::Xunit.Fact");
+            generatedSource.Should().NotContain("FastMoqGeneratedSmokeTest_");
+        }
+
+        [Fact]
+        public async Task GeneratedHarnessSourceGenerator_ShouldEscapeCSharpKeywordsInGeneratedInvocations()
+        {
+            const string source = @"
+using FastMoq;
+using FastMoq.Generators;
+
+namespace Demo.Tests;
+
+public sealed class KeywordTarget
+{
+    public void @class() { }
+    public void @interface() { }
+    public void @return() { }
+    public void NormalMethod() { }
+}
+
+[FastMoqGeneratedTestTarget(typeof(KeywordTarget))]
+public partial class GeneratedKeywordHarness : MockerTestBase<KeywordTarget>
+{
+}
+";
+
+            var result = await RunGeneratorAsync(source);
+
+            result.DriverDiagnostics.Where(static d => d.Severity == DiagnosticSeverity.Error).Should().BeEmpty();
+            result.OutputCompilation.GetDiagnostics().Where(static d => d.Severity == DiagnosticSeverity.Error).Should().BeEmpty();
+
+            var generatedSource = result.GeneratedSources.Should().ContainSingle().Subject.SourceText.ToString();
+            // Verify keywords are escaped in the generated invocations
+            generatedSource.Should().Contain("component.@class()");
+            generatedSource.Should().Contain("component.@interface()");
+            generatedSource.Should().Contain("component.@return()");
+            generatedSource.Should().Contain("component.NormalMethod()");
+            // Verify smoke test methods exist
+            generatedSource.Should().Contain("[global::Xunit.Fact]");
+            generatedSource.Should().Contain("FastMoqGeneratedSmokeTest_");
+        }
+
+        private static async Task<GeneratorTestResult> RunGeneratorAsync(string source, string? frameworkSetting = null)
         {
             var document = AnalyzerTestHelpers.CreateDocumentForTest(
                 source,
@@ -303,9 +1166,18 @@ public partial class OrderSubmitterTests : MockerTestBase<OrderSubmitter>
             var compilation = await document.Project.GetCompilationAsync();
             compilation.Should().NotBeNull();
 
+            AnalyzerConfigOptionsProvider? optionsProvider = frameworkSetting is null
+                ? null
+                : new TestAnalyzerConfigOptionsProvider(
+                    new global::System.Collections.Generic.Dictionary<string, string>
+                    {
+                        ["build_property.FastMoqGeneratedTestFramework"] = frameworkSetting,
+                    });
+
             GeneratorDriver driver = CSharpGeneratorDriver.Create(
-                [new GeneratedHarnessSourceGenerator().AsSourceGenerator()],
-                parseOptions: (CSharpParseOptions) document.Project.ParseOptions!);
+                generators: [new GeneratedHarnessSourceGenerator().AsSourceGenerator()],
+                parseOptions: (CSharpParseOptions) document.Project.ParseOptions!,
+                optionsProvider: optionsProvider);
             driver = driver.RunGeneratorsAndUpdateCompilation(compilation!, out var outputCompilation, out var diagnostics);
             var runResult = driver.GetRunResult();
 
@@ -347,6 +1219,27 @@ public partial class OrderSubmitterTests : MockerTestBase<OrderSubmitter>
             return (T) method!.Invoke(instance, null)!;
         }
 
+        private static void InvokeVoid(object instance, string methodName)
+        {
+            var method = instance.GetType().GetMethod(methodName, BindingFlags.Instance | BindingFlags.Public);
+            method.Should().NotBeNull();
+            method!.Invoke(instance, null);
+        }
+
+        private static void InvokeGenericVoid(object instance, string methodName, params Type[] typeArguments)
+        {
+            var method = instance.GetType().GetMethod(methodName, BindingFlags.Instance | BindingFlags.Public);
+            method.Should().NotBeNull();
+            method!.MakeGenericMethod(typeArguments).Invoke(instance, null);
+        }
+
+        private static T InvokeGeneric<T>(object instance, string methodName, params Type[] typeArguments)
+        {
+            var method = instance.GetType().GetMethod(methodName, BindingFlags.Instance | BindingFlags.Public);
+            method.Should().NotBeNull();
+            return (T) method!.MakeGenericMethod(typeArguments).Invoke(instance, null)!;
+        }
+
         private sealed class GeneratorTestResult
         {
             public GeneratorTestResult(
@@ -364,6 +1257,33 @@ public partial class OrderSubmitterTests : MockerTestBase<OrderSubmitter>
             public ImmutableArray<Diagnostic> DriverDiagnostics { get; }
 
             public ImmutableArray<GeneratedSourceResult> GeneratedSources { get; }
+        }
+
+        private sealed class TestAnalyzerConfigOptionsProvider : AnalyzerConfigOptionsProvider
+        {
+            public TestAnalyzerConfigOptionsProvider(global::System.Collections.Generic.IReadOnlyDictionary<string, string> globalOptions)
+            {
+                GlobalOptions = new TestAnalyzerConfigOptions(globalOptions);
+            }
+
+            public override AnalyzerConfigOptions GlobalOptions { get; }
+
+            public override AnalyzerConfigOptions GetOptions(SyntaxTree tree) => GlobalOptions;
+
+            public override AnalyzerConfigOptions GetOptions(AdditionalText textFile) => GlobalOptions;
+        }
+
+        private sealed class TestAnalyzerConfigOptions : AnalyzerConfigOptions
+        {
+            private readonly global::System.Collections.Generic.IReadOnlyDictionary<string, string> _options;
+
+            public TestAnalyzerConfigOptions(global::System.Collections.Generic.IReadOnlyDictionary<string, string> options)
+            {
+                _options = options;
+            }
+
+            public override bool TryGetValue(string key, [global::System.Diagnostics.CodeAnalysis.NotNullWhen(true)] out string? value)
+                => _options.TryGetValue(key, out value);
         }
     }
 }
