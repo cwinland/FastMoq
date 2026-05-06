@@ -2,6 +2,7 @@ using System;
 using FastMoq.Generators;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp;
+using Microsoft.CodeAnalysis.Diagnostics;
 using System.Collections.Immutable;
 using System.IO;
 using System.Linq;
@@ -1021,6 +1022,98 @@ public partial class GeneratedNoXunitHarness : MockerTestBase<NoXunitTarget>
         }
 
         [Fact]
+        public async Task GeneratedHarnessSourceGenerator_ShouldNotEmitXunitSmokeTests_WhenFrameworkPropertyIsSetToNone()
+        {
+            const string source = @"
+using FastMoq;
+using FastMoq.Generators;
+
+namespace Demo.Tests;
+
+public sealed class FrameworkNoneTarget
+{
+    public void Run() { }
+}
+
+[FastMoqGeneratedTestTarget(typeof(FrameworkNoneTarget))]
+public partial class GeneratedFrameworkNoneHarness : MockerTestBase<FrameworkNoneTarget>
+{
+}
+";
+
+            var result = await RunGeneratorAsync(source, frameworkSetting: "none");
+
+            result.DriverDiagnostics.Where(static d => d.Severity == DiagnosticSeverity.Error).Should().BeEmpty();
+            result.OutputCompilation.GetDiagnostics().Where(static d => d.Severity == DiagnosticSeverity.Error).Should().BeEmpty();
+
+            var generatedSource = result.GeneratedSources.Should().ContainSingle().Subject.SourceText.ToString();
+            generatedSource.Should().NotContain("global::Xunit.Fact");
+            generatedSource.Should().NotContain("FastMoqGeneratedSmokeTest_");
+            generatedSource.Should().NotContain("FastMoqGeneratedPlaceholder_");
+        }
+
+        [Fact]
+        public async Task GeneratedHarnessSourceGenerator_ShouldEmitXunitSmokeTests_WhenFrameworkPropertyIsExplicitlyXunit()
+        {
+            const string source = @"
+using FastMoq;
+using FastMoq.Generators;
+
+namespace Demo.Tests;
+
+public sealed class FrameworkXunitTarget
+{
+    public void Run() { }
+}
+
+[FastMoqGeneratedTestTarget(typeof(FrameworkXunitTarget))]
+public partial class GeneratedFrameworkXunitHarness : MockerTestBase<FrameworkXunitTarget>
+{
+}
+";
+
+            var result = await RunGeneratorAsync(source, frameworkSetting: "xunit");
+
+            result.DriverDiagnostics.Where(static d => d.Severity == DiagnosticSeverity.Error).Should().BeEmpty();
+            result.OutputCompilation.GetDiagnostics().Where(static d => d.Severity == DiagnosticSeverity.Error).Should().BeEmpty();
+
+            var generatedSource = result.GeneratedSources.Should().ContainSingle().Subject.SourceText.ToString();
+            generatedSource.Should().Contain("[global::Xunit.Fact]");
+            generatedSource.Should().Contain("FastMoqGeneratedSmokeTest_00_Component_ShouldCreateComponent");
+            generatedSource.Should().Contain("FastMoqGeneratedSmokeTest_01_Run_ShouldExecuteWithoutThrowing");
+        }
+
+        [Fact]
+        public async Task GeneratedHarnessSourceGenerator_ShouldEmitXunitSmokeTests_WhenFrameworkPropertyIsSetToNoneButCaseDiffers()
+        {
+            const string source = @"
+using FastMoq;
+using FastMoq.Generators;
+
+namespace Demo.Tests;
+
+public sealed class FrameworkNoneCaseTarget
+{
+    public void Run() { }
+}
+
+[FastMoqGeneratedTestTarget(typeof(FrameworkNoneCaseTarget))]
+public partial class GeneratedFrameworkNoneCaseHarness : MockerTestBase<FrameworkNoneCaseTarget>
+{
+}
+";
+
+            // "None" with capital N should also disable emission (case-insensitive)
+            var result = await RunGeneratorAsync(source, frameworkSetting: "None");
+
+            result.DriverDiagnostics.Where(static d => d.Severity == DiagnosticSeverity.Error).Should().BeEmpty();
+
+            var generatedSource = result.GeneratedSources.Should().ContainSingle().Subject.SourceText.ToString();
+            generatedSource.Should().NotContain("global::Xunit.Fact");
+            generatedSource.Should().NotContain("FastMoqGeneratedSmokeTest_");
+        }
+
+        [Fact]
         public async Task GeneratedHarnessSourceGenerator_ShouldEscapeCSharpKeywordsInGeneratedInvocations()
         {
             const string source = @"
@@ -1059,7 +1152,7 @@ public partial class GeneratedKeywordHarness : MockerTestBase<KeywordTarget>
             generatedSource.Should().Contain("FastMoqGeneratedSmokeTest_");
         }
 
-        private static async Task<GeneratorTestResult> RunGeneratorAsync(string source)
+        private static async Task<GeneratorTestResult> RunGeneratorAsync(string source, string? frameworkSetting = null)
         {
             var document = AnalyzerTestHelpers.CreateDocumentForTest(
                 source,
@@ -1073,9 +1166,18 @@ public partial class GeneratedKeywordHarness : MockerTestBase<KeywordTarget>
             var compilation = await document.Project.GetCompilationAsync();
             compilation.Should().NotBeNull();
 
+            AnalyzerConfigOptionsProvider? optionsProvider = frameworkSetting is null
+                ? null
+                : new TestAnalyzerConfigOptionsProvider(
+                    new global::System.Collections.Generic.Dictionary<string, string>
+                    {
+                        ["build_property.FastMoqGeneratedTestFramework"] = frameworkSetting,
+                    });
+
             GeneratorDriver driver = CSharpGeneratorDriver.Create(
-                [new GeneratedHarnessSourceGenerator().AsSourceGenerator()],
-                parseOptions: (CSharpParseOptions) document.Project.ParseOptions!);
+                generators: [new GeneratedHarnessSourceGenerator().AsSourceGenerator()],
+                parseOptions: (CSharpParseOptions) document.Project.ParseOptions!,
+                optionsProvider: optionsProvider);
             driver = driver.RunGeneratorsAndUpdateCompilation(compilation!, out var outputCompilation, out var diagnostics);
             var runResult = driver.GetRunResult();
 
@@ -1155,6 +1257,33 @@ public partial class GeneratedKeywordHarness : MockerTestBase<KeywordTarget>
             public ImmutableArray<Diagnostic> DriverDiagnostics { get; }
 
             public ImmutableArray<GeneratedSourceResult> GeneratedSources { get; }
+        }
+
+        private sealed class TestAnalyzerConfigOptionsProvider : AnalyzerConfigOptionsProvider
+        {
+            public TestAnalyzerConfigOptionsProvider(global::System.Collections.Generic.IReadOnlyDictionary<string, string> globalOptions)
+            {
+                GlobalOptions = new TestAnalyzerConfigOptions(globalOptions);
+            }
+
+            public override AnalyzerConfigOptions GlobalOptions { get; }
+
+            public override AnalyzerConfigOptions GetOptions(SyntaxTree tree) => GlobalOptions;
+
+            public override AnalyzerConfigOptions GetOptions(AdditionalText textFile) => GlobalOptions;
+        }
+
+        private sealed class TestAnalyzerConfigOptions : AnalyzerConfigOptions
+        {
+            private readonly global::System.Collections.Generic.IReadOnlyDictionary<string, string> _options;
+
+            public TestAnalyzerConfigOptions(global::System.Collections.Generic.IReadOnlyDictionary<string, string> options)
+            {
+                _options = options;
+            }
+
+            public override bool TryGetValue(string key, [global::System.Diagnostics.CodeAnalysis.NotNullWhen(true)] out string? value)
+                => _options.TryGetValue(key, out value);
         }
     }
 }
