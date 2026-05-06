@@ -1,3 +1,9 @@
+---
+name: "FastMoq.Tests"
+description: "Use when writing or updating tests in FastMoq.Tests, especially MockerTestBase patterns, verification behavior, coverage, and test naming."
+applyTo: "FastMoq.Tests/**"
+---
+
 # FastMoq.Tests - Copilot Instructions
 
 ## 🧪 Test Writing Patterns

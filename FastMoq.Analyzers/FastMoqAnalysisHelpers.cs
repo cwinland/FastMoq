@@ -126,12 +126,21 @@ namespace FastMoq.Analyzers
 
     internal static class FastMoqAnalysisHelpers
     {
+        internal const string FastMoqAggregateAssemblyName = "FastMoq";
         internal const string FastMoqMockerTypeName = "FastMoq.Mocker";
         internal const string FastMoqMockModelTypeName = "FastMoq.Models.MockModel";
         internal const string FastMoqMockModelGenericTypeName = "FastMoq.Models.MockModel<T>";
+        internal const string FastMoqAzureAssemblyName = "FastMoq.Azure";
+        internal const string FastMoqAzureFunctionsAssemblyName = "FastMoq.AzureFunctions";
+        internal const string FastMoqAzureFunctionsExtensionsMetadataName = "FastMoq.AzureFunctions.Extensions.FunctionContextTestExtensions";
+        internal const string FastMoqAzurePageableBuilderMetadataName = "FastMoq.Azure.Pageable.PageableBuilder";
+        internal const string FastMoqDatabaseAssemblyName = "FastMoq.Database";
+        internal const string FastMoqDatabaseExtensionsMetadataName = "FastMoq.DbContextMockerExtensions";
+        internal const string FastMoqBlazorTestBaseMetadataName = "FastMoq.Web.Blazor.MockerBlazorTestBase`1";
         internal const string FastMoqProvidersNamespace = "FastMoq.Providers";
         internal const string FastMoqMoqProviderAssemblyName = "FastMoq.Provider.Moq";
         internal const string FastMoqNSubstituteProviderAssemblyName = "FastMoq.Provider.NSubstitute";
+        internal const string FastMoqWebAssemblyName = "FastMoq.Web";
         internal const string IFileSystemTypeName = "System.IO.Abstractions.IFileSystem";
         internal const string MockFileSystemTypeName = "System.IO.Abstractions.TestingHelpers.MockFileSystem";
         internal const string FastMoqWebExtensionsMetadataName = "FastMoq.Web.Extensions.TestWebExtensions";
@@ -304,9 +313,45 @@ namespace FastMoq.Analyzers
             return compilation.GetTypeByMetadataName(MoqProviderMetadataName) is not null;
         }
 
+        public static FastMoqGeneratedTestPackageMatrix GetGeneratedTestPackageMatrix(Compilation compilation)
+        {
+            if (compilation is null)
+            {
+                throw new ArgumentNullException(nameof(compilation));
+            }
+
+            var hasAggregatePackage = HasReferencedAssembly(compilation, FastMoqAggregateAssemblyName);
+            var hasCorePackage = compilation.GetTypeByMetadataName(FastMoqMockerTypeName) is not null;
+            var hasWebHelpers = compilation.GetTypeByMetadataName(FastMoqWebExtensionsMetadataName) is not null;
+            var hasDatabaseHelpers = compilation.GetTypeByMetadataName(FastMoqDatabaseExtensionsMetadataName) is not null;
+            var hasAzureHelpers = compilation.GetTypeByMetadataName(FastMoqAzurePageableBuilderMetadataName) is not null;
+            var hasAzureFunctionsHelpers = compilation.GetTypeByMetadataName(FastMoqAzureFunctionsExtensionsMetadataName) is not null;
+
+            return new FastMoqGeneratedTestPackageMatrix(
+                ResolveGeneratedTestPackageLayout(hasCorePackage, hasAggregatePackage, hasWebHelpers, hasDatabaseHelpers, hasAzureHelpers, hasAzureFunctionsHelpers),
+                hasAggregatePackage,
+                hasWebHelpers,
+                hasDatabaseHelpers,
+                hasAzureHelpers,
+                hasAzureFunctionsHelpers,
+                BuildSupportedGeneratedTestTargetShapes(hasCorePackage, hasAggregatePackage, hasWebHelpers, hasDatabaseHelpers, hasAzureHelpers, hasAzureFunctionsHelpers));
+        }
+
+        public static bool SupportsGeneratedTestTargetShape(Compilation compilation, GeneratedTestTargetShape targetShape)
+        {
+            return GetGeneratedTestPackageMatrix(compilation)
+                .SupportedTargetShapes
+                .Any(rule => rule.Shape == targetShape);
+        }
+
         public static bool HasWebHelperPackage(SemanticModel semanticModel)
         {
             return semanticModel.Compilation.GetTypeByMetadataName(FastMoqWebExtensionsMetadataName) is not null;
+        }
+
+        public static bool HasAzureFunctionsHelperPackage(Compilation compilation)
+        {
+            return compilation.GetTypeByMetadataName(FastMoqAzureFunctionsExtensionsMetadataName) is not null;
         }
 
         public static bool IsFastMoqMockModelType(ITypeSymbol type)
@@ -2952,7 +2997,7 @@ namespace FastMoq.Analyzers
 
         public static bool HasFunctionContextInstanceServicesMockHelper(SemanticModel semanticModel)
         {
-            var helperType = semanticModel.Compilation.GetTypeByMetadataName("FastMoq.AzureFunctions.Extensions.FunctionContextTestExtensions");
+            var helperType = semanticModel.Compilation.GetTypeByMetadataName(FastMoqAzureFunctionsExtensionsMetadataName);
             if (helperType is null)
             {
                 return false;
@@ -2970,7 +3015,7 @@ namespace FastMoq.Analyzers
 
         public static bool HasFunctionContextInvocationIdMockHelper(SemanticModel semanticModel)
         {
-            var helperType = semanticModel.Compilation.GetTypeByMetadataName("FastMoq.AzureFunctions.Extensions.FunctionContextTestExtensions");
+            var helperType = semanticModel.Compilation.GetTypeByMetadataName(FastMoqAzureFunctionsExtensionsMetadataName);
             if (helperType is null)
             {
                 return false;
@@ -5141,6 +5186,131 @@ namespace FastMoq.Analyzers
             {
                 yield return assemblySymbol;
             }
+        }
+
+        private static bool HasReferencedAssembly(Compilation compilation, string assemblyName)
+        {
+            return EnumerateVisibleAssemblySymbols(compilation)
+                .Any(assemblySymbol => string.Equals(assemblySymbol.Name, assemblyName, StringComparison.Ordinal));
+        }
+
+        private static FastMoqGeneratedTestPackageLayout ResolveGeneratedTestPackageLayout(
+            bool hasCorePackage,
+            bool hasAggregatePackage,
+            bool hasWebHelpers,
+            bool hasDatabaseHelpers,
+            bool hasAzureHelpers,
+            bool hasAzureFunctionsHelpers)
+        {
+            if (!hasCorePackage)
+            {
+                return FastMoqGeneratedTestPackageLayout.None;
+            }
+
+            if (hasAggregatePackage)
+            {
+                return FastMoqGeneratedTestPackageLayout.Aggregate;
+            }
+
+            if (hasWebHelpers || hasDatabaseHelpers || hasAzureHelpers || hasAzureFunctionsHelpers)
+            {
+                return FastMoqGeneratedTestPackageLayout.SplitHelpers;
+            }
+
+            return FastMoqGeneratedTestPackageLayout.CoreOnly;
+        }
+
+        private static IReadOnlyList<GeneratedTestTargetShapeRule> BuildSupportedGeneratedTestTargetShapes(
+            bool hasCorePackage,
+            bool hasAggregatePackage,
+            bool hasWebHelpers,
+            bool hasDatabaseHelpers,
+            bool hasAzureHelpers,
+            bool hasAzureFunctionsHelpers)
+        {
+            var rules = new List<GeneratedTestTargetShapeRule>();
+            if (!hasCorePackage)
+            {
+                return rules;
+            }
+
+            var corePackageName = hasAggregatePackage
+                ? FastMoqAggregateAssemblyName
+                : "FastMoq.Core";
+
+            rules.Add(new GeneratedTestTargetShapeRule(
+                GeneratedTestTargetShape.Core,
+                corePackageName,
+                "FastMoq.MockerTestBase<TComponent>",
+                new[] { "FastMoq" }));
+
+            if (hasWebHelpers)
+            {
+                var webPackageName = hasAggregatePackage
+                    ? FastMoqAggregateAssemblyName
+                    : FastMoqWebAssemblyName;
+
+                rules.Add(new GeneratedTestTargetShapeRule(
+                    GeneratedTestTargetShape.Web,
+                    webPackageName,
+                    "FastMoq.MockerTestBase<TComponent>",
+                    new[] { "FastMoq", "FastMoq.Web.Extensions" }));
+
+                rules.Add(new GeneratedTestTargetShapeRule(
+                    GeneratedTestTargetShape.Blazor,
+                    webPackageName,
+                    "FastMoq.Web.Blazor.MockerBlazorTestBase<TComponent>",
+                    new[] { "FastMoq.Web.Blazor" }));
+            }
+
+            if (hasDatabaseHelpers)
+            {
+                var databasePackageName = hasAggregatePackage
+                    ? FastMoqAggregateAssemblyName
+                    : FastMoqDatabaseAssemblyName;
+
+                rules.Add(new GeneratedTestTargetShapeRule(
+                    GeneratedTestTargetShape.Database,
+                    databasePackageName,
+                    "FastMoq.MockerTestBase<TComponent>",
+                    new[] { "FastMoq" }));
+            }
+
+            if (hasAzureHelpers)
+            {
+                var azurePackageName = hasAggregatePackage
+                    ? FastMoqAggregateAssemblyName
+                    : FastMoqAzureAssemblyName;
+
+                rules.Add(new GeneratedTestTargetShapeRule(
+                    GeneratedTestTargetShape.Azure,
+                    azurePackageName,
+                    "FastMoq.MockerTestBase<TComponent>",
+                    new[]
+                    {
+                        "FastMoq",
+                        "FastMoq.Azure.Credentials",
+                        "FastMoq.Azure.DependencyInjection",
+                        "FastMoq.Azure.KeyVault",
+                        "FastMoq.Azure.Pageable",
+                        "FastMoq.Azure.Storage",
+                    }));
+            }
+
+            if (hasAzureFunctionsHelpers)
+            {
+                var azureFunctionsPackageName = hasAggregatePackage
+                    ? FastMoqAggregateAssemblyName
+                    : FastMoqAzureFunctionsAssemblyName;
+
+                rules.Add(new GeneratedTestTargetShapeRule(
+                    GeneratedTestTargetShape.AzureFunctions,
+                    azureFunctionsPackageName,
+                    "FastMoq.MockerTestBase<TComponent>",
+                    new[] { "FastMoq", "FastMoq.AzureFunctions.Extensions" }));
+            }
+
+            return rules;
         }
 
         public static bool TryGetAssemblyDefaultProviderName(IAssemblySymbol assemblySymbol, out string providerName)
