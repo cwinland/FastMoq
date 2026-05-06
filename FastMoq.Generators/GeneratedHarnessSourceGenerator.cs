@@ -175,34 +175,39 @@ namespace FastMoq.Generators
             return method.IsOverride &&
                 method.OverriddenMethod?.ContainingType.SpecialType == SpecialType.System_Object;
         }
-
+        private static string EscapeIdentifierIfKeyword(string identifier)
+        {
+            var keywordKind = SyntaxFacts.GetKeywordKind(identifier);
+            return keywordKind != SyntaxKind.None ? "@" + identifier : identifier;
+        }
         private static GeneratedComponentTestMethodModel CreateGeneratedTestMethodModel(IMethodSymbol method, int ordinal)
         {
             var methodDisplayName = method.ToDisplayString(SymbolDisplayFormat.MinimallyQualifiedFormat);
+            var escapedMethodName = EscapeIdentifierIfKeyword(method.Name);
             var methodIdentifier = CreateGeneratedMethodIdentifier(method.Name);
 
             if (method.IsGenericMethod)
             {
-                return GeneratedComponentTestMethodModel.CreateDeferred(method.Name, ordinal, methodIdentifier, methodDisplayName, "is generic.");
+                return GeneratedComponentTestMethodModel.CreateDeferred(escapedMethodName, ordinal, methodIdentifier, methodDisplayName, "is generic.");
             }
 
             if (!TryCreateInvocationArguments(method, out var invocationArguments, out var deferredReasonSuffix))
             {
-                return GeneratedComponentTestMethodModel.CreateDeferred(method.Name, ordinal, methodIdentifier, methodDisplayName, deferredReasonSuffix);
+                return GeneratedComponentTestMethodModel.CreateDeferred(escapedMethodName, ordinal, methodIdentifier, methodDisplayName, deferredReasonSuffix);
             }
 
             if (method.ReturnsByRef || method.ReturnsByRefReadonly)
             {
-                return GeneratedComponentTestMethodModel.CreateDeferred(method.Name, ordinal, methodIdentifier, methodDisplayName, "returns by reference.");
+                return GeneratedComponentTestMethodModel.CreateDeferred(escapedMethodName, ordinal, methodIdentifier, methodDisplayName, "returns by reference.");
             }
 
             if (TryGetUnsupportedReturnTypeReason(method.ReturnType, out var unsupportedReason))
             {
-                return GeneratedComponentTestMethodModel.CreateDeferred(method.Name, ordinal, methodIdentifier, methodDisplayName, unsupportedReason);
+                return GeneratedComponentTestMethodModel.CreateDeferred(escapedMethodName, ordinal, methodIdentifier, methodDisplayName, unsupportedReason);
             }
 
             return GeneratedComponentTestMethodModel.CreateSupported(
-                method.Name,
+                escapedMethodName,
                 ordinal,
                 methodIdentifier,
                 invocationArguments,

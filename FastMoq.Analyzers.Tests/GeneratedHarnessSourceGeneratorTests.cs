@@ -1113,6 +1113,45 @@ public partial class GeneratedFrameworkNoneCaseHarness : MockerTestBase<Framewor
             generatedSource.Should().NotContain("FastMoqGeneratedSmokeTest_");
         }
 
+        [Fact]
+        public async Task GeneratedHarnessSourceGenerator_ShouldEscapeCSharpKeywordsInGeneratedInvocations()
+        {
+            const string source = @"
+using FastMoq;
+using FastMoq.Generators;
+
+namespace Demo.Tests;
+
+public sealed class KeywordTarget
+{
+    public void @class() { }
+    public void @interface() { }
+    public void @return() { }
+    public void NormalMethod() { }
+}
+
+[FastMoqGeneratedTestTarget(typeof(KeywordTarget))]
+public partial class GeneratedKeywordHarness : MockerTestBase<KeywordTarget>
+{
+}
+";
+
+            var result = await RunGeneratorAsync(source);
+
+            result.DriverDiagnostics.Where(static d => d.Severity == DiagnosticSeverity.Error).Should().BeEmpty();
+            result.OutputCompilation.GetDiagnostics().Where(static d => d.Severity == DiagnosticSeverity.Error).Should().BeEmpty();
+
+            var generatedSource = result.GeneratedSources.Should().ContainSingle().Subject.SourceText.ToString();
+            // Verify keywords are escaped in the generated invocations
+            generatedSource.Should().Contain("component.@class()");
+            generatedSource.Should().Contain("component.@interface()");
+            generatedSource.Should().Contain("component.@return()");
+            generatedSource.Should().Contain("component.NormalMethod()");
+            // Verify smoke test methods exist
+            generatedSource.Should().Contain("[global::Xunit.Fact]");
+            generatedSource.Should().Contain("FastMoqGeneratedSmokeTest_");
+        }
+
         private static async Task<GeneratorTestResult> RunGeneratorAsync(string source, string? frameworkSetting = null)
         {
             var document = AnalyzerTestHelpers.CreateDocumentForTest(
