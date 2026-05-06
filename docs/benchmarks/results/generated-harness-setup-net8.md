@@ -1,6 +1,6 @@
 # Generated Harness Setup Results
 
-These results were generated from the current branch on 2026-05-03 with the published generator-facing comparison below.
+These results were generated from the current branch on 2026-05-06 with the published generator-facing comparison below.
 
 ```powershell
 dotnet run -c Release --project .\FastMoq.Benchmarks\FastMoq.Benchmarks.csproj -- -j short --filter "*GeneratedHarnessSetupBenchmarks*"
@@ -23,13 +23,13 @@ This document records the first generator-facing setup-path measurement for `#12
 
 ## Generated harness bootstrap projection
 
-| Method | Mean | Error | StdDev | Ratio | RatioSD | Rank | Gen0 | Gen1 | Allocated | Alloc Ratio |
-| --- | ---: | ---: | ---: | ---: | ---: | ---: | ---: | ---: | ---: | ---: |
-| GeneratedHarnessBootstrapDescriptor | 213.7 us | 14.30 us | 0.78 us | 0.97 | 0.03 | 1 | 20.5078 | 2.4414 | 380.11 KB | 1.00 |
-| RuntimeFallbackBootstrapDescriptor | 220.7 us | 131.98 us | 7.23 us | 1.00 | 0.00 | 2 | 20.5078 | 2.9297 | 380.24 KB | 1.00 |
+| Method | Mean | Error | StdDev | Ratio | Rank | Gen0 | Gen1 | Allocated | Alloc Ratio |
+| --- | ---: | ---: | ---: | ---: | ---: | ---: | ---: | ---: | ---: |
+| GeneratedHarnessBootstrapDescriptor | 232.7 us | 47.78 us | 2.62 us | 0.98 | 1 | 20.0195 | 2.4414 | 375.91 KB | 0.99 |
+| RuntimeFallbackBootstrapDescriptor | 238.1 us | 81.33 us | 4.46 us | 1.00 | 2 | 20.5078 | 2.9297 | 380.57 KB | 1.00 |
 
 ## Interpretation
 
-- On this richer graph/bootstrap comparison, the generated harness path holds a slight edge over the runtime fallback path.
-- Allocations are effectively identical across the two measured paths.
+- On this richer graph/bootstrap comparison, the generated harness path still holds a slight edge over the runtime fallback path.
+- Allocations remain close, with the generated harness path now measuring slightly lower than the runtime fallback path.
 - The short-run confidence interval is intentionally lightweight, so treat this as recorded branch evidence for the first MVP slice rather than a blanket promise for every component shape.
