@@ -2,9 +2,13 @@
 
 This page captures the current v5 direction for FastMoq code generation. It is the detailed design companion to the main [roadmap summary](./README.md), not a shipped feature guide.
 
-This page is intentionally design-level only. It is appropriate for roadmap and implementation planning ahead of code, but it does not imply current shipped support.
+This page remains design-level heavy. It is appropriate for roadmap and implementation planning, but some sections also record the narrow generator slices currently supported in the repo.
 
-FastMoq now contains a narrow first Roslyn source-generator slice for explicit `MockerTestBase<TComponent>` harness targets. The repo still does not emit full generated tests, scenario scaffolds, or broader framework-helper builders.
+For the shared generated-test settings contract behind [#162](https://github.com/cwinland/FastMoq/issues/162), see [Generated test settings design](./generated-test-settings.md).
+For the scenario-scaffolding contract behind [#126](https://github.com/cwinland/FastMoq/issues/126), see [Generated scenario scaffolding contract](./generated-scenario-scaffolding-contract.md).
+For the helper-family narrowing contract behind [#134](https://github.com/cwinland/FastMoq/issues/134), see [Generated helper family matrix](./generated-helper-family-matrix.md).
+
+FastMoq now contains narrow Roslyn source-generator slices for explicit `MockerTestBase<TComponent>` harness targets, the first generated scenario and suite scaffolding layer inside those targets, and the first narrow generated-test slice inside those same harness partials. The repo still does not emit standalone generated test classes or broader framework-helper builders.
 
 ## Current Baseline
 
@@ -12,10 +16,11 @@ Confirmed current state:
 
 - `FastMoq.Analyzers` ships analyzers and code fixes for migration, provider-first authoring, package guidance, and helper adoption.
 - `FastMoq.Generators` now contains the first `IIncrementalGenerator` implementation for explicit partial `MockerTestBase<TComponent>` targets.
-- The current generated output is intentionally narrow: constructor-signature metadata and harness bootstrap for explicitly selected component paths.
-- There is still no first-party compile-time generation of full tests, scenario scaffolding, or framework-helper builders.
+- The current generated output is intentionally narrow: constructor-signature metadata and harness bootstrap for explicitly selected component paths, generated scenario execution entry points and suite-level shared setup hooks for explicit partial harness targets, and xUnit-gated smoke-test emission inside those same harness partials.
+- The current generated-test slice is still bounded to public instance methods that are safe to execute with no inputs or with explicit compile-time default parameter values, with supported `void`, value-returning, `Task`, `Task<T>`, `ValueTask`, and `ValueTask<T>` return shapes. Unsupported methods stay compile-safe through skipped placeholders with explicit reasons.
+- There is still no first-party compile-time generation of standalone full generated test classes or broader framework-helper builders, and the current full-test slice remains intentionally limited to explicit partial harness targets.
 
-That means code generation in v5 is now an early implementation-facing surface rather than roadmap-only prose, but the broader generator line is still net-new beyond this first harness slice.
+That means code generation in v5 is now an early implementation-facing surface rather than roadmap-only prose, but the broader generator line is still net-new beyond these first harness, scaffold, and smoke-test slices.
 
 ## Public Issue Crosswalk
 
@@ -28,24 +33,29 @@ The current public backlog for this design is:
 - [#125](https://github.com/cwinland/FastMoq/issues/125) graph metadata hooks and constructor-selection primitives
 - [#126](https://github.com/cwinland/FastMoq/issues/126) `ScenarioBuilder` scaffolding hooks for generated output
 - [#127](https://github.com/cwinland/FastMoq/issues/127) package-detection and target-test-shape rules for generated tests
-- [#134](https://github.com/cwinland/FastMoq/issues/134) blocking helper-surface normalization for logging, HTTP, Azure, Azure Functions, and typed DI
+- [#134](https://github.com/cwinland/FastMoq/issues/134) helper-family narrowing and re-triage matrix for logging, HTTP, Azure, Azure Functions, and typed DI
 - [#122](https://github.com/cwinland/FastMoq/issues/122) compile-time graph and harness MVP
+- [#162](https://github.com/cwinland/FastMoq/issues/162) generated-test settings and test-platform targeting as the current gate before wider authoring flows
 - [#136](https://github.com/cwinland/FastMoq/issues/136) generated scenario and suite scaffolding after the graph and harness MVP
 - [#137](https://github.com/cwinland/FastMoq/issues/137) generator-backed framework-helper builders for repeated test patterns
 - [#123](https://github.com/cwinland/FastMoq/issues/123) full provider-first test generation from existing services and supported classes
 - [#124](https://github.com/cwinland/FastMoq/issues/124) analyzer-guided test generation and missing-package suggestions
-- [#162](https://github.com/cwinland/FastMoq/issues/162) generated-test settings and test-platform targeting for later generation flows
 - [#138](https://github.com/cwinland/FastMoq/issues/138) later provider-optimized generation evaluation
 - [#139](https://github.com/cwinland/FastMoq/issues/139) later narrow compile-time fake or mock generation evaluation
 
 Crosswalk summary:
 
 - `#121` is the runtime-prerequisite umbrella.
-- `#132`, `#133`, and `#135` are the narrower v4-style quick wins that are now implemented on the current milestone branch.
+- `#132`, `#133`, and `#135` are the narrower v4-style quick wins that are now implemented in the repo.
 - `#146` and `#147` carry the near-term analyzer follow-up for those landed helper surfaces.
-- `#120`, `#125`, `#126`, `#127`, and `#134` are the pre-v5 contract and blocking prerequisite slices.
-- `#122`, `#136`, `#137`, `#123`, and `#124` are the phased implementation and authoring-flow outcomes once the prerequisites are stable enough.
-- `#162` is the later settings and test-platform contract for generated scenario scaffolds, full generated tests, and analyzer entry points.
+- `#120`, `#125`, `#126`, `#127`, and `#134` are the pre-v5 contract and helper-boundary prerequisite slices.
+- `#122` is the completed first implementation-facing MVP for compile-time graph metadata and harness bootstrap.
+- `#162` is the current shared settings and test-platform contract gate before wider generated scenario scaffolds, broader generated-test expansion, and analyzer entry points.
+- `#126` defines the stable scenario-scaffolding contract layer that the current generated scaffold slice now targets.
+- `#134` documents the helper-family bounds that the current scaffold slice stays within and that later helper-heavy scaffold expansion must continue to honor.
+- `#136` is now the first implementation slice for generated scenario and suite scaffolding: generated scenario execution helpers, companion partial hooks, and suite-level shared setup composition inside explicit partial harness targets.
+- `#123` now has its first narrow implementation slice inside explicit harness partials, while `#124` remains later analyzer-guided authoring flow after the current generated-test boundary is stable.
+- `#137` remains later and conditional rather than part of the immediate next-step chain.
 - `#138` and `#139` are intentionally late evaluation tracks after the main provider-first generator story is already working.
 
 ## Product Positioning
@@ -115,14 +125,27 @@ Why it goes first:
 
 ### 2. Scenario and suite scaffolding
 
-This workstream should build on generated graph metadata rather than replace it.
+This workstream now has its first implementation slice and still has explicit bounds.
 
-Primary outputs:
+Current implemented outputs:
 
-- generated scenario shell types or partials
-- generated per-suite setup regions
-- generated default verify helpers or scenario hooks
-- generated migration-starting points for repeated patterns
+- generated scenario execution entry points and companion partial hooks inside explicit partial `MockerTestBase<TComponent>` targets
+- generated suite-level shared setup regions through `ConfigureGeneratedMockerPolicy`, `ConfigureGeneratedMocks`, and `AfterGeneratedComponentCreated`
+- generated sync, async, and continued-assertion expected-exception scaffold entry points built on the existing `ScenarioBuilder<T>` pipeline
+
+Current supported shape:
+
+- generated members stay inside explicit partial harness types rather than standalone generated suite classes
+- suite scaffolding for `#136` means shared setup composition for the generated harness, not separate project-level test containers
+- verification stays provider-first through existing `ScenarioBuilder<T>` and `Mocks` surfaces
+- the current slice uses the settled `#162` hook vocabulary and built-in defaults rather than consumer-configurable settings values
+
+Explicitly deferred from this slice:
+
+- standalone generated suite or scenario types outside the harness partial
+- settings-driven framework syntax, runner or bootstrap selection, naming templates, or helper-family-specific emission
+- generated wrappers that return the thrown exception object through `ExecuteThrows<TException>()` or `ExecuteThrowsAsync<TException>()`; use a hand-written `Scenario` flow when the exception object itself is the primary assertion target
+- full generated test classes and helper-builder expansion
 
 Expected value:
 
@@ -132,7 +155,28 @@ Expected value:
 
 ### 3. Full-test generation from existing services and classes
 
-This workstream should generate complete starting tests for real existing code, not just partial harness fragments.
+This workstream now has its first implementation-facing slice, but the broader work still aims at complete starting tests for real existing code rather than partial harness fragments alone.
+
+Current implemented outputs:
+
+- xUnit smoke tests emitted inside explicit partial `MockerTestBase<TComponent>` harness targets when `Xunit.FactAttribute` is available in the compilation
+- one component-creation smoke test plus one generated smoke test per eligible public instance component method
+- generated calls for methods that take no parameters or only explicit compile-time defaulted parameters
+- skipped placeholders with explicit reasons for unsupported methods and shapes
+
+Current supported shape:
+
+- generated tests stay inside the existing explicit harness partial rather than emitting standalone generated test classes
+- method execution is limited to public instance methods with either no parameters or explicit compile-time default values that can be emitted safely
+- supported return shapes are `void`, value-returning sync methods, `Task`, `Task<T>`, `ValueTask`, and `ValueTask<T>`
+- generated smoke tests are currently xUnit-specific and only emit when the xUnit surface is actually available in the compilation
+
+Explicitly deferred from this slice:
+
+- standalone generated test classes for services, controllers, handlers, or other broader target shapes
+- methods that require non-optional parameters, generic methods, `ref` or `out` parameters, or optional defaults that cannot be emitted safely from metadata
+- settings-driven framework syntax, naming templates, runner selection, assertion-style selection, or helper-family-specific full-test emission
+- analyzer entry points and missing-package suggestion flows in `#124`
 
 Primary outputs:
 
@@ -229,19 +273,19 @@ Without those runtime targets, generators would be forced to emit provider-nativ
 
 Some runtime preparation work was narrow enough to land before v5 without forcing a wider public-contract redesign.
 
-Completed on the current milestone branch:
+Completed in the repo:
 
 - expanded provider-first setup helpers for common simple arrangements
 - expanded provider-first verification helpers where a shared abstraction is still clear and stable
 - small helper-surface cleanups for logging, HTTP, or typed DI setup where the FastMoq-owned runtime surface already exists and only needed a more generator-friendly shape
 
-These landed early because they improve normal authoring even before source generators ship. The remaining near-term follow-up is narrower analyzer guidance in [#146](https://github.com/cwinland/FastMoq/issues/146) and [#147](https://github.com/cwinland/FastMoq/issues/147), plus broader helper normalization in [#134](https://github.com/cwinland/FastMoq/issues/134).
+These landed early because they improve normal authoring even before source generators ship. The remaining near-term follow-up is narrower analyzer guidance in [#146](https://github.com/cwinland/FastMoq/issues/146) and [#147](https://github.com/cwinland/FastMoq/issues/147), plus the helper-family narrowing matrix in [#134](https://github.com/cwinland/FastMoq/issues/134) after the `#126` scenario contract is explicit.
 
 ### Likely v5 blocking prerequisites
 
 Some work is more foundational and should be treated as explicit prerequisites for the generator implementation itself.
 
-Completed on the current milestone branch:
+Completed in the repo:
 
 - stable graph metadata hooks and reusable constructor-selection primitives for generator output
 - clear package-detection and target-test-shape rules so generated tests do not assume helper packages that are not referenced
@@ -382,7 +426,7 @@ That parity matrix is part of the definition artifact for this slice. It does no
 
 The first implementation step after [#125](https://github.com/cwinland/FastMoq/issues/125) is now in place.
 
-Done in the current branch:
+Done in the repo:
 
 - an internal `InstanceConstructionGraph` model now projects the selected root constructor plan plus ordered dependency nodes and edges from `Mocker.CreateConstructionPlan(...)`
 - `MockerTestBase<TComponent>` now exposes the first harness-side consumer through `GetComponentConstructionGraph()`
@@ -395,15 +439,16 @@ Done in the current branch:
 What now moves past [#122](https://github.com/cwinland/FastMoq/issues/122):
 
 - broader generated-test settings and framework or runner targeting now live in [#162](https://github.com/cwinland/FastMoq/issues/162) rather than the graph and harness MVP
-- generated scenario or suite scaffolding still belongs in [#136](https://github.com/cwinland/FastMoq/issues/136)
-- full generated tests and analyzer entry points still belong in [#123](https://github.com/cwinland/FastMoq/issues/123) and [#124](https://github.com/cwinland/FastMoq/issues/124)
+- the first generated scenario or suite scaffolding slice now lives in [#136](https://github.com/cwinland/FastMoq/issues/136) through generated scenario execution helpers and suite-level shared setup hooks inside explicit partial harness targets
+- broader generated-test expansion and analyzer entry points still belong in [#123](https://github.com/cwinland/FastMoq/issues/123) and [#124](https://github.com/cwinland/FastMoq/issues/124)
 
 Preferred post-`#122` decision:
 
 - keep the public planning API unchanged
-- use [#162](https://github.com/cwinland/FastMoq/issues/162) to settle generated-test settings and framework or runner targeting before widening into scaffolds or full tests
+- use [#162](https://github.com/cwinland/FastMoq/issues/162) to wire consumer-configurable generated-test settings before widening beyond the current fixed scaffold defaults
+- treat the current [#136](https://github.com/cwinland/FastMoq/issues/136) scaffold shape as the stable narrow baseline: explicit partial harness targets, companion partial hooks, and suite-level shared setup composition
 - only enrich the internal graph model further if a later generation layer proves that more dependency-order metadata is actually required for compilation or parity
-- move the next implementation-facing generator work into [#136](https://github.com/cwinland/FastMoq/issues/136), [#123](https://github.com/cwinland/FastMoq/issues/123), and [#124](https://github.com/cwinland/FastMoq/issues/124) once that settings model is explicit
+- move next into [#123](https://github.com/cwinland/FastMoq/issues/123) and [#124](https://github.com/cwinland/FastMoq/issues/124) only after the current scaffold boundary is stable enough to consume without re-deriving local defaults
 
 ## Suggested v5 Delivery Phases
 
@@ -428,6 +473,8 @@ Ship:
 - initial benchmark coverage showing reduced reflection and setup overhead
 
 ### Phase 2: scenario and scaffold generation
+
+The first step of this phase is now in place for explicit partial harness targets.
 
 Ship:
 
@@ -498,10 +545,10 @@ The current doc plan now maps to these issue slices:
 5. Tighten the existing logging, HTTP, and typed DI helper surfaces that are small enough to land as v4 quick wins.
 6. Define graph metadata hooks and constructor-selection contracts for generator-targeted output.
 7. Define `ScenarioBuilder` scaffolding hooks and regeneration-safe extension points for generated output.
-8. Define package-detection and target-test-shape rules for package-aware generation. This is now implemented on the current milestone branch through the shared analyzer package matrix.
+8. Define package-detection and target-test-shape rules for package-aware generation. This is now implemented in the repo through the shared analyzer package matrix.
 9. Normalize the broader blocking helper surfaces for logging, HTTP, Azure, Azure Functions, and typed DI-heavy setup.
 10. Implement compile-time test graph and harness generation MVP.
-11. Implement generated scenario and suite scaffolding after the graph and harness MVP.
+11. Implement generated scenario and suite scaffolding after the graph and harness MVP. This is now in place for explicit partial harness targets through generated scenario execution helpers and suite-level shared setup hooks.
 12. Implement generator-backed framework-helper builders for repeated test patterns.
 13. Add full-test generation for supported existing services and other supported classes.
 14. Add analyzer guidance for untested code plus package-aware suggestions before test generation.

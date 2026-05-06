@@ -24,6 +24,11 @@ namespace FastMoq.Analyzers.Tests
             "FastMoq.Tests.Web",
         };
 
+        private static bool IsXunitAssemblyName(string assemblyName)
+        {
+            return assemblyName.StartsWith("xunit", StringComparison.OrdinalIgnoreCase);
+        }
+
         public static async Task<ImmutableArray<Diagnostic>> GetDiagnosticsAsync(string source, params DiagnosticAnalyzer[] analyzers)
         {
             return await GetDiagnosticsAsync(source, includeAzureFunctionsHelpers: false, includeMoqProviderPackage: true, includeNSubstituteProviderPackage: true, includeWebHelpers: true, analyzers).ConfigureAwait(false);
@@ -148,7 +153,8 @@ namespace FastMoq.Analyzers.Tests
             bool includeWebHelpers = true,
             bool includeDatabaseHelpers = false,
             bool includeAzureHelpers = false,
-            bool includeAggregatePackage = false)
+            bool includeAggregatePackage = false,
+            bool includeXunit = true)
         {
             return CreateDocument(
                 source,
@@ -158,7 +164,8 @@ namespace FastMoq.Analyzers.Tests
                 includeWebHelpers,
                 includeDatabaseHelpers,
                 includeAzureHelpers,
-                includeAggregatePackage);
+                includeAggregatePackage,
+                includeXunit);
         }
 
         private static Document CreateDocument(
@@ -169,7 +176,8 @@ namespace FastMoq.Analyzers.Tests
             bool includeWebHelpers = true,
             bool includeDatabaseHelpers = false,
             bool includeAzureHelpers = false,
-            bool includeAggregatePackage = false)
+            bool includeAggregatePackage = false,
+            bool includeXunit = true)
         {
             var project = CreateProject(
                 [("Test.cs", source)],
@@ -179,7 +187,8 @@ namespace FastMoq.Analyzers.Tests
                 includeWebHelpers,
                 includeDatabaseHelpers,
                 includeAzureHelpers,
-                includeAggregatePackage);
+                includeAggregatePackage,
+                includeXunit);
             return project.Documents.Single();
         }
 
@@ -191,7 +200,8 @@ namespace FastMoq.Analyzers.Tests
             bool includeWebHelpers = true,
             bool includeDatabaseHelpers = false,
             bool includeAzureHelpers = false,
-            bool includeAggregatePackage = false)
+            bool includeAggregatePackage = false,
+            bool includeXunit = true)
         {
             var workspace = new AdhocWorkspace();
             var projectId = ProjectId.CreateNewId();
@@ -208,7 +218,8 @@ namespace FastMoq.Analyzers.Tests
                 includeWebHelpers,
                 includeDatabaseHelpers,
                 includeAzureHelpers,
-                includeAggregatePackage))
+                includeAggregatePackage,
+                includeXunit))
             {
                 solution = solution.AddMetadataReference(projectId, metadataReference);
             }
@@ -229,7 +240,8 @@ namespace FastMoq.Analyzers.Tests
             bool includeWebHelpers,
             bool includeDatabaseHelpers,
             bool includeAzureHelpers,
-            bool includeAggregatePackage)
+            bool includeAggregatePackage,
+            bool includeXunit)
         {
             if (includeAggregatePackage)
             {
@@ -246,6 +258,11 @@ namespace FastMoq.Analyzers.Tests
                 {
                     var assemblyName = Path.GetFileNameWithoutExtension(assemblyPath);
                     if (ExcludedTrustedPlatformAssemblyNames.Contains(assemblyName))
+                    {
+                        continue;
+                    }
+
+                    if (!includeXunit && IsXunitAssemblyName(assemblyName))
                     {
                         continue;
                     }
@@ -335,6 +352,10 @@ namespace FastMoq.Analyzers.Tests
 
             references.Add(typeof(Moq.Mock).Assembly.Location);
             references.Add(typeof(NSubstitute.Substitute).Assembly.Location);
+            if (includeXunit)
+            {
+                references.Add(typeof(global::Xunit.FactAttribute).Assembly.Location);
+            }
             references.Add(typeof(Microsoft.Extensions.Logging.ILogger).Assembly.Location);
             references.Add(typeof(Microsoft.AspNetCore.Http.DefaultHttpContext).Assembly.Location);
             references.Add(typeof(Microsoft.AspNetCore.Mvc.ControllerContext).Assembly.Location);
