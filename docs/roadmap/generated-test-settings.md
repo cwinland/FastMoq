@@ -6,7 +6,7 @@ This page captures the current `#162` design direction for generated-test author
 
 Purpose:
 
-- define one shared authoring-time settings contract for later generated scenario scaffolds, full generated tests, analyzer-guided entry points, and any helper-builder output that explicitly opts into the same contract
+- define one shared authoring-time settings contract for later generated scenario scaffolds, broader generated-test expansion, analyzer-guided entry points, and any helper-builder output that explicitly opts into the same contract
 - keep `#123`, `#124`, `#126`, `#136`, and conditionally `#137` aligned to one vocabulary for naming, platform targeting, regeneration, and extensibility
 - settle where those settings live, how they override one another, and which parts remain capability-gated by existing package-shape rules
 
@@ -22,9 +22,9 @@ Non-goals:
 
 The current repo state that drives this design is:
 
-- `#122` is complete for the narrow harness MVP, and `#136` now builds on that base for explicit partial `MockerTestBase<TComponent>` targets: the repo can emit constructor-signature metadata, harness bootstrap, generated scenario execution entry points, and suite-level shared setup hooks, but it still does not emit full generated tests, settings-driven scaffold variants, or framework-helper builders.
+- `#122` is complete for the narrow harness MVP, and `#136` now builds on that base for explicit partial `MockerTestBase<TComponent>` targets: the repo can emit constructor-signature metadata, harness bootstrap, generated scenario execution entry points, suite-level shared setup hooks, and the first narrow `#123` xUnit smoke-test slice inside those explicit harness partials, but it still does not emit standalone full generated test classes, settings-driven scaffold variants, or framework-helper builders.
 - `#127` is complete for package detection and target-shape rules: the analyzer layer already knows the supported generated target shapes for the referenced FastMoq package layout.
-- `GeneratedHarnessSourceGenerator` currently hard-codes the target attribute metadata name, the `MockerTestBase<TComponent>` requirement, the generated metadata type name, the `ComponentConstructorParameterTypes` override, the auto-generated header, `#nullable enable`, and the `.FastMoq.GeneratedHarness.g.cs` hint-name suffix.
+- `GeneratedHarnessSourceGenerator` currently hard-codes the target attribute metadata name, the `MockerTestBase<TComponent>` requirement, the generated metadata type name, the `ComponentConstructorParameterTypes` override, the auto-generated header, `#nullable enable`, the `.FastMoq.GeneratedHarness.g.cs` hint-name suffix, and the current xUnit-gated smoke-test naming and placeholder strategy.
 - `GeneratedTestTargetShapeRule` and `FastMoqAnalysisHelpers` currently own the package matrix, target-shape list, required package per shape, default base type name, and default namespaces for each supported generated test shape.
 - `Directory.Packages.props` currently carries `xunit` `2.9.3` and `xunit.runner.visualstudio` `3.0.2`, while the repo documentation remains framework-agnostic. That mixed baseline is one reason syntax targeting and runner or bootstrap targeting must stay separate settings.
 - `FastMoq.Generators.csproj` does not currently declare `CompilerVisibleProperty`, `CompilerVisibleItemMetadata`, or any equivalent custom bridge for generated-test authoring settings.
@@ -33,7 +33,7 @@ The current repo state that drives this design is:
 
 - `#126` consumes the shared settings contract for regeneration-safe scenario-scaffolding hooks and customization boundaries, but it still owns the `ScenarioBuilder` contract surface rather than the settings carrier.
 - `#136` consumes the shared settings contract for concrete scenario and suite scaffolding implementation after `#126` settles the hook model.
-- `#123` consumes the shared settings contract for naming, scaffold choice, framework syntax targeting, runner or bootstrap targeting, and regeneration behavior when widening from harness metadata into full generated tests.
+- `#123` consumes the shared settings contract for naming, scaffold choice, framework syntax targeting, runner or bootstrap targeting, and regeneration behavior when widening from harness metadata into broader generated-test coverage.
 - `#124` consumes the shared settings contract so analyzer-guided generation suggestions can reflect the same naming and platform choices without inventing analyzer-local defaults.
 - `#137` is conditional: if helper-builder output needs shared naming, output, or regeneration rules, it should consume this contract later. This design does not assume that relationship unless a later implementation explicitly chooses it.
 
@@ -108,7 +108,7 @@ Reserved later properties for external scaffolding flows are:
 
 JSON or `AdditionalFiles` manifests are explicitly deferred. They should only be introduced if the structured settings shape demonstrably outgrows practical MSBuild properties or simple semicolon-delimited list values.
 
-Implementation note: although Roslyn analyzers and generators can observe `build_property.*` values through generated analyzer config, this repo does not currently expose any custom generated-test settings bridge in `FastMoq.Generators.csproj`. A future implementation slice must add the required compiler-visible-property or equivalent build plumbing before any custom settings can flow into analyzer or generator code. The current `#136` scaffold implementation therefore consumes the `#162` vocabulary as fixed generator-owned defaults rather than as user-configurable settings values.
+Implementation note: although Roslyn analyzers and generators can observe `build_property.*` values through generated analyzer config, this repo does not currently expose any custom generated-test settings bridge in `FastMoq.Generators.csproj`. A future implementation slice must add the required compiler-visible-property or equivalent build plumbing before any custom settings can flow into analyzer or generator code. The current `#136` scaffold implementation and the first narrow `#123` smoke-test slice therefore consume the `#162` vocabulary as fixed generator-owned defaults rather than as user-configurable settings values.
 
 ## Extensibility Model
 
@@ -242,7 +242,7 @@ Intended first-use classification by type:
 - `GeneratedTestAuthoringSettings`: top-level true user-setting aggregate; first carrier is MSBuild-backed analyzer-config values.
 - `GeneratedTestPackagePolicySettings`: capability-gated user settings; primary consumer is analyzer-guided or external scaffolding flows.
 - `GeneratedTestPlacementSettings`: mixed user setting plus deferred placeholders; `OutputProject` and `OutputFolder` are not first-class source-generator controls yet.
-- `GeneratedTestNamingTemplateSettings`: true user settings; consumed by generated scenario scaffolds and full generated tests.
+- `GeneratedTestNamingTemplateSettings`: true user settings; consumed by generated scenario scaffolds and broader generated-test expansion.
 - `GeneratedTestProviderSelectionSettings`: true user settings; constrained by referenced FastMoq provider packages.
 - `GeneratedTestSyntaxTargetSettings`: true user settings with explicit deferred values.
 - `GeneratedTestScaffoldPreferenceSettings`: mixed user settings and structured extensibility point.
@@ -344,7 +344,7 @@ This section exists to keep `#162` from silently reopening `#122` or `#127`.
 - `#162` ends once the shared settings contract, carrier model, precedence rules, support matrix, extensibility model, and invariants are documented and mirrored into the roadmap.
 - `#126` should then focus only on regeneration-safe scenario/scaffold hooks that consume this contract.
 - the first `#136` slice now implements scenario and suite scaffolding against the `#126` hook contract plus the `#162` settings vocabulary, but future settings wiring still needs the compiler-visible-property bridge above before consumers can override those defaults.
-- `#123` should implement full generated tests against this contract without inventing local defaults for framework syntax, runner/bootstrap mode, naming, or regeneration behavior.
+- `#123` should implement broader generated-test coverage against this contract without inventing local defaults for framework syntax, runner/bootstrap mode, naming, or regeneration behavior.
 - `#124` should route analyzer suggestions into already-supported generation layers while using this contract for defaults and choices.
 - `#137` should only adopt this contract if helper-builder output actually needs the same naming, placement, regeneration, or framework-targeting choices.
 - provider-optimized generation evaluation in `#138` and narrower fake-generation evaluation in `#139` remain intentionally later.

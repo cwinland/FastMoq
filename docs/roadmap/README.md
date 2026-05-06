@@ -128,7 +128,7 @@ Current direction stays phased:
 2. Shared generated-test settings and test-platform contracts.
 3. Stable scenario-scaffolding contracts and helper-boundary narrowing.
 4. Scenario and suite scaffolding.
-5. Full generated tests and analyzer-guided generation once the contract and scaffold layers are stable.
+5. Broaden full generated tests and analyzer-guided generation beyond the current explicit-harness xUnit smoke-test slice.
 6. Framework-helper builders for repeated helper-heavy test patterns when they justify a separate layer.
 7. Provider-optimized or narrower generated-fake evaluation only after the shared contract is stable.
 
