@@ -998,6 +998,57 @@ public partial class GeneratedOverloadedOptionalDefaultsHarness : MockerTestBase
         }
 
         [Fact]
+        public async Task GeneratedHarnessSourceGenerator_ShouldEscapeKeywordEnumMembers_InOptionalDefaults()
+        {
+            const string source = @"
+using FastMoq;
+using FastMoq.Generators;
+
+namespace Demo.Tests;
+
+public enum KeywordMode
+{
+    @class = 1,
+    Normal = 2,
+}
+
+public sealed class KeywordEnumOptionalDefaultsTarget
+{
+    public KeywordMode LastValue { get; private set; } = KeywordMode.Normal;
+
+    public void Select(KeywordMode mode = KeywordMode.@class)
+    {
+        LastValue = mode;
+    }
+}
+
+[FastMoqGeneratedTestTarget(typeof(KeywordEnumOptionalDefaultsTarget))]
+public partial class GeneratedKeywordEnumOptionalDefaultsHarness : MockerTestBase<KeywordEnumOptionalDefaultsTarget>
+{
+    public string DescribeLastValue() => Component.LastValue.ToString();
+}
+";
+
+            var result = await RunGeneratorAsync(source);
+
+            result.DriverDiagnostics.Where(static diagnostic => diagnostic.Severity == DiagnosticSeverity.Error)
+                .Should()
+                .BeEmpty();
+            result.OutputCompilation.GetDiagnostics().Where(static diagnostic => diagnostic.Severity == DiagnosticSeverity.Error)
+                .Should()
+                .BeEmpty();
+
+            var generatedSource = result.GeneratedSources.Should().ContainSingle().Subject.SourceText.ToString();
+            generatedSource.Should().Contain("component.Select((global::Demo.Tests.KeywordMode)global::Demo.Tests.KeywordMode.@class);");
+
+            var loadedAssembly = await LoadGeneratedAssemblyAsync(source);
+            var generatedHarness = CreateInstance(loadedAssembly, "Demo.Tests.GeneratedKeywordEnumOptionalDefaultsHarness");
+
+            InvokeVoid(generatedHarness, "FastMoqGeneratedSmokeTest_01_Select_ShouldExecuteWithoutThrowing");
+            Invoke<string>(generatedHarness, "DescribeLastValue").Should().Be("class");
+        }
+
+        [Fact]
         public async Task GeneratedHarnessSourceGenerator_ShouldEmitDeferredXunitPlaceholders_ForUnsupportedPublicMethods()
         {
             const string source = @"

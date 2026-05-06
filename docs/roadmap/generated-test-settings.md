@@ -27,7 +27,7 @@ The current repo state that drives this design is:
 - `GeneratedHarnessSourceGenerator` currently hard-codes the target attribute metadata name, the `MockerTestBase<TComponent>` requirement, the generated metadata type name, the `ComponentConstructorParameterTypes` override, the auto-generated header, `#nullable enable`, the `.FastMoq.GeneratedHarness.g.cs` hint-name suffix, and the current xUnit-gated smoke-test naming and placeholder strategy.
 - `GeneratedTestTargetShapeRule` and `FastMoqAnalysisHelpers` currently own the package matrix, target-shape list, required package per shape, default base type name, and default namespaces for each supported generated test shape.
 - `Directory.Packages.props` currently carries `xunit` `2.9.3` and `xunit.runner.visualstudio` `3.0.2`, while the repo documentation remains framework-agnostic. That mixed baseline is one reason syntax targeting and runner or bootstrap targeting must stay separate settings.
-- `FastMoq.Generators.csproj` does not currently declare `CompilerVisibleProperty`, `CompilerVisibleItemMetadata`, or any equivalent custom bridge for generated-test authoring settings.
+- `FastMoq.Generators.csproj` now declares `CompilerVisibleProperty` for `FastMoqGeneratedTestFramework`, but it still does not declare `CompilerVisibleItemMetadata` or any broader custom bridge for the rest of the generated-test authoring settings.
 
 ## Consumer Map
 

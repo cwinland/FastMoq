@@ -451,7 +451,7 @@ namespace FastMoq.Generators
 
                 if (Equals(field.ConstantValue, explicitDefaultValue))
                 {
-                    expression = namedEnumType.ToDisplayString(SymbolDisplayFormat.FullyQualifiedFormat) + "." + field.Name;
+                    expression = namedEnumType.ToDisplayString(SymbolDisplayFormat.FullyQualifiedFormat) + "." + EscapeIdentifierIfKeyword(field.Name);
                     return true;
                 }
             }
