@@ -13,6 +13,7 @@ namespace FastMoq.Generators
     public sealed class GeneratedHarnessSourceGenerator : IIncrementalGenerator
     {
         internal const string GeneratedTestTargetAttributeMetadataName = "FastMoq.Generators.FastMoqGeneratedTestTargetAttribute";
+        internal const string UnsupportedNestedGeneratedTargetDiagnosticId = "FMOQGEN001";
         private const string XUnitFactAttributeMetadataName = "Xunit.FactAttribute";
         private const string FastMoqGeneratedTestFrameworkPropertyName = "build_property.FastMoqGeneratedTestFramework";
         private const string FrameworkSettingNone = "none";
@@ -27,15 +28,36 @@ namespace FastMoq.Generators
         private const string GenericTaskMetadataName = "Task`1";
         private const string ValueTaskMetadataName = "ValueTask";
         private const string GenericValueTaskMetadataName = "ValueTask`1";
+        private static readonly DiagnosticDescriptor UnsupportedNestedGeneratedTargetDiagnostic = new(
+            UnsupportedNestedGeneratedTargetDiagnosticId,
+            "Nested generated harness target requires partial containing types",
+            "FastMoqGeneratedTestTarget on nested type '{0}' requires containing type '{1}' to be partial so FastMoq can emit matching nested declarations",
+            "FastMoq.Generators",
+            DiagnosticSeverity.Warning,
+            isEnabledByDefault: true,
+            description: "FastMoq can emit generated harness members for nested targets only when each containing type is partial, allowing the generator to reopen the containing declaration chain.");
 
         public void Initialize(IncrementalGeneratorInitializationContext context)
         {
-            var targets = context.SyntaxProvider
+            var evaluations = context.SyntaxProvider
                 .ForAttributeWithMetadataName(
                     GeneratedTestTargetAttributeMetadataName,
                     static (node, _) => node is ClassDeclarationSyntax,
-                    static (generatorContext, _) => TryCreateTargetModel(generatorContext))
-                .Where(static model => model is not null);
+                    static (generatorContext, _) => EvaluateTarget(generatorContext));
+
+            context.RegisterSourceOutput(
+                evaluations,
+                static (productionContext, evaluation) =>
+                {
+                    foreach (var diagnostic in evaluation.Diagnostics)
+                    {
+                        productionContext.ReportDiagnostic(diagnostic);
+                    }
+                });
+
+            var targets = evaluations
+                .Where(static evaluation => evaluation.Target is not null)
+                .Select(static (evaluation, _) => evaluation.Target!);
 
             var frameworkSetting = context.AnalyzerConfigOptionsProvider
                 .Select(static (options, _) =>
@@ -49,28 +71,32 @@ namespace FastMoq.Generators
                 static (productionContext, pair) => EmitSource(productionContext, pair.Left!, pair.Right));
         }
 
-        private static GeneratedHarnessTargetModel? TryCreateTargetModel(GeneratorAttributeSyntaxContext context)
+        private static GeneratedHarnessTargetEvaluation EvaluateTarget(GeneratorAttributeSyntaxContext context)
         {
             if (context.TargetNode is not ClassDeclarationSyntax classDeclaration ||
                 !classDeclaration.Modifiers.Any(static modifier => modifier.IsKind(SyntaxKind.PartialKeyword)))
             {
-                return null;
+                return GeneratedHarnessTargetEvaluation.Empty;
             }
 
             var targetType = (INamedTypeSymbol)context.TargetSymbol;
             var propertyNames = new global::System.Collections.Generic.HashSet<string>(
                 targetType.GetMembers().OfType<IPropertySymbol>().Select(static property => property.Name));
             if (targetType.Arity != 0 ||
-                targetType.ContainingType is not null ||
                 propertyNames.Contains(ComponentConstructorParameterTypesPropertyName))
             {
-                return null;
+                return GeneratedHarnessTargetEvaluation.Empty;
+            }
+
+            if (!TryCreateContainingTypeDeclarations(classDeclaration, targetType, out var containingTypeDeclarations, out var diagnostic))
+            {
+                return GeneratedHarnessTargetEvaluation.FromDiagnostic(diagnostic!);
             }
 
             var componentType = TryGetMockerTestBaseComponentType(targetType);
             if (componentType is null)
             {
-                return null;
+                return GeneratedHarnessTargetEvaluation.Empty;
             }
 
             var attribute = context.Attributes[0];
@@ -78,32 +104,91 @@ namespace FastMoq.Generators
                 attribute.ConstructorArguments[0].Value is not ITypeSymbol attributeComponentType ||
                 !SymbolEqualityComparer.Default.Equals(attributeComponentType, componentType))
             {
-                return null;
+                return GeneratedHarnessTargetEvaluation.Empty;
             }
 
             var explicitConstructorParameterTypes = GetExplicitConstructorParameterTypes(attribute);
             if (!TryResolveConstructor(componentType, explicitConstructorParameterTypes, out var selectedConstructor))
             {
-                return null;
+                return GeneratedHarnessTargetEvaluation.Empty;
             }
 
-            return new GeneratedHarnessTargetModel(
-                targetType.ContainingNamespace.IsGlobalNamespace
-                    ? null
-                    : targetType.ContainingNamespace.ToDisplayString(),
-                targetType.Name,
-                componentType.ToDisplayString(SymbolDisplayFormat.FullyQualifiedFormat),
-                context.SemanticModel.Compilation.GetTypeByMetadataName(XUnitFactAttributeMetadataName) is not null,
-                GetGeneratedTestMethods(componentType),
-                !propertyNames.Contains(SetupMocksActionPropertyName),
-                !propertyNames.Contains(CreatedComponentActionPropertyName),
-                !propertyNames.Contains(ConfigureMockerPolicyPropertyName),
-                selectedConstructor!.Parameters
-                    .Select(parameter => parameter.Type.ToDisplayString(SymbolDisplayFormat.FullyQualifiedFormat))
-                    .ToImmutableArray(),
-                selectedConstructor.Parameters
-                    .Select(parameter => parameter.Name)
-                    .ToImmutableArray());
+            return GeneratedHarnessTargetEvaluation.FromTarget(
+                new GeneratedHarnessTargetModel(
+                    targetType.ContainingNamespace.IsGlobalNamespace
+                        ? null
+                        : targetType.ContainingNamespace.ToDisplayString(),
+                    targetType.ToDisplayString(SymbolDisplayFormat.FullyQualifiedFormat),
+                    CreateTypeDeclarationModel(classDeclaration),
+                    containingTypeDeclarations,
+                    componentType.ToDisplayString(SymbolDisplayFormat.FullyQualifiedFormat),
+                    context.SemanticModel.Compilation.GetTypeByMetadataName(XUnitFactAttributeMetadataName) is not null,
+                    GetGeneratedTestMethods(componentType),
+                    !propertyNames.Contains(SetupMocksActionPropertyName),
+                    !propertyNames.Contains(CreatedComponentActionPropertyName),
+                    !propertyNames.Contains(ConfigureMockerPolicyPropertyName),
+                    selectedConstructor!.Parameters
+                        .Select(parameter => parameter.Type.ToDisplayString(SymbolDisplayFormat.FullyQualifiedFormat))
+                        .ToImmutableArray(),
+                    selectedConstructor.Parameters
+                        .Select(parameter => parameter.Name)
+                        .ToImmutableArray()));
+        }
+
+        private static bool TryCreateContainingTypeDeclarations(
+            ClassDeclarationSyntax classDeclaration,
+            INamedTypeSymbol targetType,
+            out ImmutableArray<GeneratedTypeDeclarationModel> containingTypeDeclarations,
+            out Diagnostic? diagnostic)
+        {
+            diagnostic = null;
+            var builder = ImmutableArray.CreateBuilder<GeneratedTypeDeclarationModel>();
+
+            foreach (var containingType in classDeclaration.Ancestors().OfType<TypeDeclarationSyntax>().Reverse())
+            {
+                if (!containingType.Modifiers.Any(static modifier => modifier.IsKind(SyntaxKind.PartialKeyword)))
+                {
+                    containingTypeDeclarations = default;
+                    diagnostic = Diagnostic.Create(
+                        UnsupportedNestedGeneratedTargetDiagnostic,
+                        containingType.Identifier.GetLocation(),
+                        targetType.ToDisplayString(SymbolDisplayFormat.CSharpErrorMessageFormat),
+                        containingType.Identifier.Text);
+                    return false;
+                }
+
+                builder.Add(CreateTypeDeclarationModel(containingType));
+            }
+
+            containingTypeDeclarations = builder.ToImmutable();
+            return true;
+        }
+
+        private static GeneratedTypeDeclarationModel CreateTypeDeclarationModel(TypeDeclarationSyntax declaration)
+        {
+            var modifiers = string.Join(" ", declaration.Modifiers.Select(static modifier => modifier.Text));
+            var nameWithTypeParameters = declaration.Identifier.Text + (declaration.TypeParameterList?.ToString() ?? string.Empty);
+            var declarationKeyword = GetDeclarationKeyword(declaration);
+            var headerText = string.IsNullOrWhiteSpace(modifiers)
+                ? declarationKeyword + " " + nameWithTypeParameters
+                : modifiers + " " + declarationKeyword + " " + nameWithTypeParameters;
+
+            return new GeneratedTypeDeclarationModel(
+                headerText,
+                declaration.ConstraintClauses.Select(static clause => clause.ToString()).ToImmutableArray());
+        }
+
+        private static string GetDeclarationKeyword(TypeDeclarationSyntax declaration)
+        {
+            return declaration switch
+            {
+                ClassDeclarationSyntax => "class",
+                StructDeclarationSyntax => "struct",
+                RecordDeclarationSyntax recordDeclaration when recordDeclaration.ClassOrStructKeyword.IsKind(SyntaxKind.StructKeyword) => "record struct",
+                RecordDeclarationSyntax recordDeclaration when recordDeclaration.ClassOrStructKeyword.IsKind(SyntaxKind.ClassKeyword) => "record class",
+                RecordDeclarationSyntax => "record",
+                _ => declaration.Keyword.Text,
+            };
         }
 
         private static INamedTypeSymbol? TryGetMockerTestBaseComponentType(INamedTypeSymbol targetType)
@@ -508,141 +593,156 @@ namespace FastMoq.Generators
                 sourceBuilder.AppendLine("{");
             }
 
-            AppendIndentedLine(sourceBuilder, 1, $"partial class {target.TargetTypeName}");
-            AppendIndentedLine(sourceBuilder, 1, "{");
-            AppendIndentedLine(sourceBuilder, 2, "protected override global::System.Type?[]? ComponentConstructorParameterTypes =>");
-            AppendIndentedLine(sourceBuilder, 3, "FastMoqGeneratedHarnessMetadata.ConstructorParameterTypes;");
+            var currentTypeIndentLevel = 1;
+            foreach (var containingTypeDeclaration in target.ContainingTypeDeclarations)
+            {
+                AppendTypeDeclaration(sourceBuilder, currentTypeIndentLevel, containingTypeDeclaration);
+                currentTypeIndentLevel++;
+            }
+
+            AppendTypeDeclaration(sourceBuilder, currentTypeIndentLevel, target.TargetTypeDeclaration);
+
+            var memberIndentLevel = currentTypeIndentLevel + 1;
+            var blockIndentLevel = memberIndentLevel + 1;
+            var nestedBlockIndentLevel = blockIndentLevel + 1;
+
+            AppendIndentedLine(sourceBuilder, memberIndentLevel, "protected override global::System.Type?[]? ComponentConstructorParameterTypes =>");
+            AppendIndentedLine(sourceBuilder, blockIndentLevel, "FastMoqGeneratedHarnessMetadata.ConstructorParameterTypes;");
             sourceBuilder.AppendLine();
             if (target.EmitConfigureMockerPolicyOverride)
             {
-                AppendIndentedLine(sourceBuilder, 2, "protected override global::System.Action<global::FastMoq.MockerPolicyOptions>? ConfigureMockerPolicy =>");
-                AppendIndentedLine(sourceBuilder, 3, "options =>");
-                AppendIndentedLine(sourceBuilder, 3, "{");
-                AppendIndentedLine(sourceBuilder, 4, "base.ConfigureMockerPolicy?.Invoke(options);");
-                AppendIndentedLine(sourceBuilder, 4, "ConfigureGeneratedMockerPolicy(options);");
-                AppendIndentedLine(sourceBuilder, 3, "};");
+                AppendIndentedLine(sourceBuilder, memberIndentLevel, "protected override global::System.Action<global::FastMoq.MockerPolicyOptions>? ConfigureMockerPolicy =>");
+                AppendIndentedLine(sourceBuilder, blockIndentLevel, "options =>");
+                AppendIndentedLine(sourceBuilder, blockIndentLevel, "{");
+                AppendIndentedLine(sourceBuilder, nestedBlockIndentLevel, "base.ConfigureMockerPolicy?.Invoke(options);");
+                AppendIndentedLine(sourceBuilder, nestedBlockIndentLevel, "ConfigureGeneratedMockerPolicy(options);");
+                AppendIndentedLine(sourceBuilder, blockIndentLevel, "};");
                 sourceBuilder.AppendLine();
-                AppendIndentedLine(sourceBuilder, 2, "partial void ConfigureGeneratedMockerPolicy(global::FastMoq.MockerPolicyOptions options);");
+                AppendIndentedLine(sourceBuilder, memberIndentLevel, "partial void ConfigureGeneratedMockerPolicy(global::FastMoq.MockerPolicyOptions options);");
                 sourceBuilder.AppendLine();
             }
 
             if (target.EmitSetupMocksActionOverride)
             {
-                AppendIndentedLine(sourceBuilder, 2, "protected override global::System.Action<global::FastMoq.Mocker>? SetupMocksAction =>");
-                AppendIndentedLine(sourceBuilder, 3, "mocker =>");
-                AppendIndentedLine(sourceBuilder, 3, "{");
-                AppendIndentedLine(sourceBuilder, 4, "base.SetupMocksAction?.Invoke(mocker);");
-                AppendIndentedLine(sourceBuilder, 4, "ConfigureGeneratedMocks(mocker);");
-                AppendIndentedLine(sourceBuilder, 3, "};");
+                AppendIndentedLine(sourceBuilder, memberIndentLevel, "protected override global::System.Action<global::FastMoq.Mocker>? SetupMocksAction =>");
+                AppendIndentedLine(sourceBuilder, blockIndentLevel, "mocker =>");
+                AppendIndentedLine(sourceBuilder, blockIndentLevel, "{");
+                AppendIndentedLine(sourceBuilder, nestedBlockIndentLevel, "base.SetupMocksAction?.Invoke(mocker);");
+                AppendIndentedLine(sourceBuilder, nestedBlockIndentLevel, "ConfigureGeneratedMocks(mocker);");
+                AppendIndentedLine(sourceBuilder, blockIndentLevel, "};");
                 sourceBuilder.AppendLine();
-                AppendIndentedLine(sourceBuilder, 2, "partial void ConfigureGeneratedMocks(global::FastMoq.Mocker mocker);");
+                AppendIndentedLine(sourceBuilder, memberIndentLevel, "partial void ConfigureGeneratedMocks(global::FastMoq.Mocker mocker);");
                 sourceBuilder.AppendLine();
             }
 
             if (target.EmitCreatedComponentActionOverride)
             {
-                AppendIndentedLine(sourceBuilder, 2, $"protected override global::System.Action<{target.ComponentTypeName}>? CreatedComponentAction =>");
-                AppendIndentedLine(sourceBuilder, 3, "component =>");
-                AppendIndentedLine(sourceBuilder, 3, "{");
-                AppendIndentedLine(sourceBuilder, 4, "base.CreatedComponentAction?.Invoke(component);");
-                AppendIndentedLine(sourceBuilder, 4, "AfterGeneratedComponentCreated(component);");
-                AppendIndentedLine(sourceBuilder, 3, "};");
+                AppendIndentedLine(sourceBuilder, memberIndentLevel, $"protected override global::System.Action<{target.ComponentTypeName}>? CreatedComponentAction =>");
+                AppendIndentedLine(sourceBuilder, blockIndentLevel, "component =>");
+                AppendIndentedLine(sourceBuilder, blockIndentLevel, "{");
+                AppendIndentedLine(sourceBuilder, nestedBlockIndentLevel, "base.CreatedComponentAction?.Invoke(component);");
+                AppendIndentedLine(sourceBuilder, nestedBlockIndentLevel, "AfterGeneratedComponentCreated(component);");
+                AppendIndentedLine(sourceBuilder, blockIndentLevel, "};");
                 sourceBuilder.AppendLine();
-                AppendIndentedLine(sourceBuilder, 2, $"partial void AfterGeneratedComponentCreated({target.ComponentTypeName} component);");
+                AppendIndentedLine(sourceBuilder, memberIndentLevel, $"partial void AfterGeneratedComponentCreated({target.ComponentTypeName} component);");
                 sourceBuilder.AppendLine();
             }
 
-            AppendIndentedLine(sourceBuilder, 2, "/// <summary>");
-            AppendIndentedLine(sourceBuilder, 2, "/// Executes the generated arrange, act, assert, and verify scaffold synchronously.");
-            AppendIndentedLine(sourceBuilder, 2, "/// </summary>");
-            AppendIndentedLine(sourceBuilder, 2, "public void ExecuteGeneratedScenarioScaffold() => CreateGeneratedScenarioScaffold().Execute();");
-            AppendIndentedLine(sourceBuilder, 2, "/// <summary>");
-            AppendIndentedLine(sourceBuilder, 2, "/// Executes the generated arrange, act, assert, and verify scaffold asynchronously.");
-            AppendIndentedLine(sourceBuilder, 2, "/// </summary>");
-            AppendIndentedLine(sourceBuilder, 2, "/// <returns>A task that completes when the generated scaffold finishes running.</returns>");
-            AppendIndentedLine(sourceBuilder, 2, "public global::System.Threading.Tasks.Task ExecuteGeneratedScenarioScaffoldAsync() => CreateGeneratedScenarioScaffold().ExecuteAsync();");
-            AppendIndentedLine(sourceBuilder, 2, "/// <summary>");
-            AppendIndentedLine(sourceBuilder, 2, "/// Executes the generated scaffold with an act phase that expects the specified exception type.");
-            AppendIndentedLine(sourceBuilder, 2, "/// </summary>");
-            AppendIndentedLine(sourceBuilder, 2, "/// <typeparam name=\"TException\">The exception type expected from the generated act phase.</typeparam>");
-            AppendIndentedLine(sourceBuilder, 2, "public void ExecuteGeneratedExpectedExceptionScenarioScaffold<TException>() where TException : global::System.Exception => CreateGeneratedExpectedExceptionScenarioScaffold<TException>().Execute();");
-            AppendIndentedLine(sourceBuilder, 2, "/// <summary>");
-            AppendIndentedLine(sourceBuilder, 2, "/// Executes the generated scaffold asynchronously with an act phase that expects the specified exception type.");
-            AppendIndentedLine(sourceBuilder, 2, "/// </summary>");
-            AppendIndentedLine(sourceBuilder, 2, "/// <typeparam name=\"TException\">The exception type expected from the generated act phase.</typeparam>");
-            AppendIndentedLine(sourceBuilder, 2, "/// <returns>A task that completes when the generated scaffold finishes running.</returns>");
-            AppendIndentedLine(sourceBuilder, 2, "public global::System.Threading.Tasks.Task ExecuteGeneratedExpectedExceptionScenarioScaffoldAsync<TException>() where TException : global::System.Exception => CreateGeneratedExpectedExceptionScenarioScaffold<TException>().ExecuteAsync();");
+            AppendIndentedLine(sourceBuilder, memberIndentLevel, "/// <summary>");
+            AppendIndentedLine(sourceBuilder, memberIndentLevel, "/// Executes the generated arrange, act, assert, and verify scaffold synchronously.");
+            AppendIndentedLine(sourceBuilder, memberIndentLevel, "/// </summary>");
+            AppendIndentedLine(sourceBuilder, memberIndentLevel, "public void ExecuteGeneratedScenarioScaffold() => CreateGeneratedScenarioScaffold().Execute();");
+            AppendIndentedLine(sourceBuilder, memberIndentLevel, "/// <summary>");
+            AppendIndentedLine(sourceBuilder, memberIndentLevel, "/// Executes the generated arrange, act, assert, and verify scaffold asynchronously.");
+            AppendIndentedLine(sourceBuilder, memberIndentLevel, "/// </summary>");
+            AppendIndentedLine(sourceBuilder, memberIndentLevel, "/// <returns>A task that completes when the generated scaffold finishes running.</returns>");
+            AppendIndentedLine(sourceBuilder, memberIndentLevel, "public global::System.Threading.Tasks.Task ExecuteGeneratedScenarioScaffoldAsync() => CreateGeneratedScenarioScaffold().ExecuteAsync();");
+            AppendIndentedLine(sourceBuilder, memberIndentLevel, "/// <summary>");
+            AppendIndentedLine(sourceBuilder, memberIndentLevel, "/// Executes the generated scaffold with an act phase that expects the specified exception type.");
+            AppendIndentedLine(sourceBuilder, memberIndentLevel, "/// </summary>");
+            AppendIndentedLine(sourceBuilder, memberIndentLevel, "/// <typeparam name=\"TException\">The exception type expected from the generated act phase.</typeparam>");
+            AppendIndentedLine(sourceBuilder, memberIndentLevel, "public void ExecuteGeneratedExpectedExceptionScenarioScaffold<TException>() where TException : global::System.Exception => CreateGeneratedExpectedExceptionScenarioScaffold<TException>().Execute();");
+            AppendIndentedLine(sourceBuilder, memberIndentLevel, "/// <summary>");
+            AppendIndentedLine(sourceBuilder, memberIndentLevel, "/// Executes the generated scaffold asynchronously with an act phase that expects the specified exception type.");
+            AppendIndentedLine(sourceBuilder, memberIndentLevel, "/// </summary>");
+            AppendIndentedLine(sourceBuilder, memberIndentLevel, "/// <typeparam name=\"TException\">The exception type expected from the generated act phase.</typeparam>");
+            AppendIndentedLine(sourceBuilder, memberIndentLevel, "/// <returns>A task that completes when the generated scaffold finishes running.</returns>");
+            AppendIndentedLine(sourceBuilder, memberIndentLevel, "public global::System.Threading.Tasks.Task ExecuteGeneratedExpectedExceptionScenarioScaffoldAsync<TException>() where TException : global::System.Exception => CreateGeneratedExpectedExceptionScenarioScaffold<TException>().ExecuteAsync();");
             sourceBuilder.AppendLine();
-            AppendIndentedLine(sourceBuilder, 2, $"private global::FastMoq.ScenarioBuilder<{target.ComponentTypeName}> CreateGeneratedScenarioScaffold()");
-            AppendIndentedLine(sourceBuilder, 2, "{");
-            AppendIndentedLine(sourceBuilder, 3, "var scenario = Scenario;");
-            AppendIndentedLine(sourceBuilder, 3, "ArrangeGeneratedScenario(scenario);");
-            AppendIndentedLine(sourceBuilder, 3, "ActGeneratedScenario(scenario);");
-            AppendIndentedLine(sourceBuilder, 3, "AssertGeneratedScenario(scenario);");
-            AppendIndentedLine(sourceBuilder, 3, "VerifyGeneratedScenario(scenario);");
-            AppendIndentedLine(sourceBuilder, 3, "return scenario;");
-            AppendIndentedLine(sourceBuilder, 2, "}");
+            AppendIndentedLine(sourceBuilder, memberIndentLevel, $"private global::FastMoq.ScenarioBuilder<{target.ComponentTypeName}> CreateGeneratedScenarioScaffold()");
+            AppendIndentedLine(sourceBuilder, memberIndentLevel, "{");
+            AppendIndentedLine(sourceBuilder, blockIndentLevel, "var scenario = Scenario;");
+            AppendIndentedLine(sourceBuilder, blockIndentLevel, "ArrangeGeneratedScenario(scenario);");
+            AppendIndentedLine(sourceBuilder, blockIndentLevel, "ActGeneratedScenario(scenario);");
+            AppendIndentedLine(sourceBuilder, blockIndentLevel, "AssertGeneratedScenario(scenario);");
+            AppendIndentedLine(sourceBuilder, blockIndentLevel, "VerifyGeneratedScenario(scenario);");
+            AppendIndentedLine(sourceBuilder, blockIndentLevel, "return scenario;");
+            AppendIndentedLine(sourceBuilder, memberIndentLevel, "}");
             sourceBuilder.AppendLine();
-            AppendIndentedLine(sourceBuilder, 2, $"private global::FastMoq.ScenarioBuilder<{target.ComponentTypeName}> CreateGeneratedExpectedExceptionScenarioScaffold<TException>() where TException : global::System.Exception");
-            AppendIndentedLine(sourceBuilder, 2, "{");
-            AppendIndentedLine(sourceBuilder, 3, "var scenario = Scenario;");
-            AppendIndentedLine(sourceBuilder, 3, "ArrangeGeneratedScenario(scenario);");
-            AppendIndentedLine(sourceBuilder, 3, "ExpectedExceptionGeneratedScenario<TException>(scenario);");
-            AppendIndentedLine(sourceBuilder, 3, "AssertGeneratedScenario(scenario);");
-            AppendIndentedLine(sourceBuilder, 3, "VerifyGeneratedScenario(scenario);");
-            AppendIndentedLine(sourceBuilder, 3, "return scenario;");
-            AppendIndentedLine(sourceBuilder, 2, "}");
+            AppendIndentedLine(sourceBuilder, memberIndentLevel, $"private global::FastMoq.ScenarioBuilder<{target.ComponentTypeName}> CreateGeneratedExpectedExceptionScenarioScaffold<TException>() where TException : global::System.Exception");
+            AppendIndentedLine(sourceBuilder, memberIndentLevel, "{");
+            AppendIndentedLine(sourceBuilder, blockIndentLevel, "var scenario = Scenario;");
+            AppendIndentedLine(sourceBuilder, blockIndentLevel, "ArrangeGeneratedScenario(scenario);");
+            AppendIndentedLine(sourceBuilder, blockIndentLevel, "ExpectedExceptionGeneratedScenario<TException>(scenario);");
+            AppendIndentedLine(sourceBuilder, blockIndentLevel, "AssertGeneratedScenario(scenario);");
+            AppendIndentedLine(sourceBuilder, blockIndentLevel, "VerifyGeneratedScenario(scenario);");
+            AppendIndentedLine(sourceBuilder, blockIndentLevel, "return scenario;");
+            AppendIndentedLine(sourceBuilder, memberIndentLevel, "}");
             sourceBuilder.AppendLine();
-            AppendIndentedLine(sourceBuilder, 2, "/// <summary>");
-            AppendIndentedLine(sourceBuilder, 2, "/// Adds arrange steps to the generated scenario scaffold.");
-            AppendIndentedLine(sourceBuilder, 2, "/// </summary>");
-            AppendIndentedLine(sourceBuilder, 2, "/// <param name=\"scenario\">The scenario builder to configure.</param>");
-            AppendIndentedLine(sourceBuilder, 2, $"partial void ArrangeGeneratedScenario(global::FastMoq.ScenarioBuilder<{target.ComponentTypeName}> scenario);");
-            AppendIndentedLine(sourceBuilder, 2, "/// <summary>");
-            AppendIndentedLine(sourceBuilder, 2, "/// Adds act steps to the generated scenario scaffold.");
-            AppendIndentedLine(sourceBuilder, 2, "/// </summary>");
-            AppendIndentedLine(sourceBuilder, 2, "/// <param name=\"scenario\">The scenario builder to configure.</param>");
-            AppendIndentedLine(sourceBuilder, 2, $"partial void ActGeneratedScenario(global::FastMoq.ScenarioBuilder<{target.ComponentTypeName}> scenario);");
-            AppendIndentedLine(sourceBuilder, 2, "/// <summary>");
-            AppendIndentedLine(sourceBuilder, 2, "/// Adds an act step to the generated scaffold that expects the specified exception type.");
-            AppendIndentedLine(sourceBuilder, 2, "/// </summary>");
-            AppendIndentedLine(sourceBuilder, 2, "/// <typeparam name=\"TException\">The exception type expected from the generated act phase.</typeparam>");
-            AppendIndentedLine(sourceBuilder, 2, "/// <param name=\"scenario\">The scenario builder to configure.</param>");
-            AppendIndentedLine(sourceBuilder, 2, $"partial void ExpectedExceptionGeneratedScenario<TException>(global::FastMoq.ScenarioBuilder<{target.ComponentTypeName}> scenario) where TException : global::System.Exception;");
-            AppendIndentedLine(sourceBuilder, 2, "/// <summary>");
-            AppendIndentedLine(sourceBuilder, 2, "/// Adds assertion steps to the generated scenario scaffold.");
-            AppendIndentedLine(sourceBuilder, 2, "/// </summary>");
-            AppendIndentedLine(sourceBuilder, 2, "/// <param name=\"scenario\">The scenario builder to configure.</param>");
-            AppendIndentedLine(sourceBuilder, 2, $"partial void AssertGeneratedScenario(global::FastMoq.ScenarioBuilder<{target.ComponentTypeName}> scenario);");
-            AppendIndentedLine(sourceBuilder, 2, "/// <summary>");
-            AppendIndentedLine(sourceBuilder, 2, "/// Adds verification steps to the generated scenario scaffold.");
-            AppendIndentedLine(sourceBuilder, 2, "/// </summary>");
-            AppendIndentedLine(sourceBuilder, 2, "/// <param name=\"scenario\">The scenario builder to configure.</param>");
-            AppendIndentedLine(sourceBuilder, 2, $"partial void VerifyGeneratedScenario(global::FastMoq.ScenarioBuilder<{target.ComponentTypeName}> scenario);");
+            AppendIndentedLine(sourceBuilder, memberIndentLevel, "/// <summary>");
+            AppendIndentedLine(sourceBuilder, memberIndentLevel, "/// Adds arrange steps to the generated scenario scaffold.");
+            AppendIndentedLine(sourceBuilder, memberIndentLevel, "/// </summary>");
+            AppendIndentedLine(sourceBuilder, memberIndentLevel, "/// <param name=\"scenario\">The scenario builder to configure.</param>");
+            AppendIndentedLine(sourceBuilder, memberIndentLevel, $"partial void ArrangeGeneratedScenario(global::FastMoq.ScenarioBuilder<{target.ComponentTypeName}> scenario);");
+            AppendIndentedLine(sourceBuilder, memberIndentLevel, "/// <summary>");
+            AppendIndentedLine(sourceBuilder, memberIndentLevel, "/// Adds act steps to the generated scenario scaffold.");
+            AppendIndentedLine(sourceBuilder, memberIndentLevel, "/// </summary>");
+            AppendIndentedLine(sourceBuilder, memberIndentLevel, "/// <param name=\"scenario\">The scenario builder to configure.</param>");
+            AppendIndentedLine(sourceBuilder, memberIndentLevel, $"partial void ActGeneratedScenario(global::FastMoq.ScenarioBuilder<{target.ComponentTypeName}> scenario);");
+            AppendIndentedLine(sourceBuilder, memberIndentLevel, "/// <summary>");
+            AppendIndentedLine(sourceBuilder, memberIndentLevel, "/// Adds an act step to the generated scaffold that expects the specified exception type.");
+            AppendIndentedLine(sourceBuilder, memberIndentLevel, "/// </summary>");
+            AppendIndentedLine(sourceBuilder, memberIndentLevel, "/// <typeparam name=\"TException\">The exception type expected from the generated act phase.</typeparam>");
+            AppendIndentedLine(sourceBuilder, memberIndentLevel, "/// <param name=\"scenario\">The scenario builder to configure.</param>");
+            AppendIndentedLine(sourceBuilder, memberIndentLevel, $"partial void ExpectedExceptionGeneratedScenario<TException>(global::FastMoq.ScenarioBuilder<{target.ComponentTypeName}> scenario) where TException : global::System.Exception;");
+            AppendIndentedLine(sourceBuilder, memberIndentLevel, "/// <summary>");
+            AppendIndentedLine(sourceBuilder, memberIndentLevel, "/// Adds assertion steps to the generated scenario scaffold.");
+            AppendIndentedLine(sourceBuilder, memberIndentLevel, "/// </summary>");
+            AppendIndentedLine(sourceBuilder, memberIndentLevel, "/// <param name=\"scenario\">The scenario builder to configure.</param>");
+            AppendIndentedLine(sourceBuilder, memberIndentLevel, $"partial void AssertGeneratedScenario(global::FastMoq.ScenarioBuilder<{target.ComponentTypeName}> scenario);");
+            AppendIndentedLine(sourceBuilder, memberIndentLevel, "/// <summary>");
+            AppendIndentedLine(sourceBuilder, memberIndentLevel, "/// Adds verification steps to the generated scenario scaffold.");
+            AppendIndentedLine(sourceBuilder, memberIndentLevel, "/// </summary>");
+            AppendIndentedLine(sourceBuilder, memberIndentLevel, "/// <param name=\"scenario\">The scenario builder to configure.</param>");
+            AppendIndentedLine(sourceBuilder, memberIndentLevel, $"partial void VerifyGeneratedScenario(global::FastMoq.ScenarioBuilder<{target.ComponentTypeName}> scenario);");
             sourceBuilder.AppendLine();
-            AppendGeneratedXUnitSmokeTests(sourceBuilder, target, emitXUnitSmokeTests);
-            AppendIndentedLine(sourceBuilder, 2, "internal static class FastMoqGeneratedHarnessMetadata");
-            AppendIndentedLine(sourceBuilder, 2, "{");
-            AppendIndentedLine(sourceBuilder, 3, $"internal static global::System.Type ComponentType {{ get; }} = typeof({target.ComponentTypeName});");
-            AppendIndentedLine(sourceBuilder, 3, "internal static global::System.Type?[] ConstructorParameterTypes { get; } = new global::System.Type?[]");
-            AppendIndentedLine(sourceBuilder, 3, "{");
+            AppendGeneratedXUnitSmokeTests(sourceBuilder, target, emitXUnitSmokeTests, memberIndentLevel);
+            AppendIndentedLine(sourceBuilder, memberIndentLevel, "internal static class FastMoqGeneratedHarnessMetadata");
+            AppendIndentedLine(sourceBuilder, memberIndentLevel, "{");
+            AppendIndentedLine(sourceBuilder, blockIndentLevel, $"internal static global::System.Type ComponentType {{ get; }} = typeof({target.ComponentTypeName});");
+            AppendIndentedLine(sourceBuilder, blockIndentLevel, "internal static global::System.Type?[] ConstructorParameterTypes { get; } = new global::System.Type?[]");
+            AppendIndentedLine(sourceBuilder, blockIndentLevel, "{");
             foreach (var parameterTypeName in target.ConstructorParameterTypeNames)
             {
-                AppendIndentedLine(sourceBuilder, 4, $"typeof({parameterTypeName}),");
+                AppendIndentedLine(sourceBuilder, nestedBlockIndentLevel, $"typeof({parameterTypeName}),");
             }
-            AppendIndentedLine(sourceBuilder, 3, "};");
+            AppendIndentedLine(sourceBuilder, blockIndentLevel, "};");
             sourceBuilder.AppendLine();
-            AppendIndentedLine(sourceBuilder, 3, "internal static global::System.String[] DependencyNames { get; } = new global::System.String[]");
-            AppendIndentedLine(sourceBuilder, 3, "{");
+            AppendIndentedLine(sourceBuilder, blockIndentLevel, "internal static global::System.String[] DependencyNames { get; } = new global::System.String[]");
+            AppendIndentedLine(sourceBuilder, blockIndentLevel, "{");
             foreach (var parameterName in target.DependencyNames)
             {
-                AppendIndentedLine(sourceBuilder, 4, SymbolDisplay.FormatLiteral(parameterName, quote: true) + ",");
+                AppendIndentedLine(sourceBuilder, nestedBlockIndentLevel, SymbolDisplay.FormatLiteral(parameterName, quote: true) + ",");
             }
-            AppendIndentedLine(sourceBuilder, 3, "};");
+            AppendIndentedLine(sourceBuilder, blockIndentLevel, "};");
             sourceBuilder.AppendLine();
-            AppendIndentedLine(sourceBuilder, 3, "internal static global::System.Type?[] DependencyTypes => ConstructorParameterTypes;");
-            AppendIndentedLine(sourceBuilder, 2, "}");
-            AppendIndentedLine(sourceBuilder, 1, "}");
+            AppendIndentedLine(sourceBuilder, blockIndentLevel, "internal static global::System.Type?[] DependencyTypes => ConstructorParameterTypes;");
+            AppendIndentedLine(sourceBuilder, memberIndentLevel, "}");
+
+            for (var indentLevel = currentTypeIndentLevel; indentLevel >= 1; indentLevel--)
+            {
+                AppendIndentedLine(sourceBuilder, indentLevel, "}");
+            }
 
             if (!string.IsNullOrWhiteSpace(target.NamespaceName))
             {
@@ -652,24 +752,37 @@ namespace FastMoq.Generators
             context.AddSource(GetHintName(target), sourceBuilder.ToString());
         }
 
+        private static void AppendTypeDeclaration(StringBuilder builder, int indentLevel, GeneratedTypeDeclarationModel declaration)
+        {
+            AppendIndentedLine(builder, indentLevel, declaration.HeaderText);
+            foreach (var constraintClause in declaration.ConstraintClauses)
+            {
+                AppendIndentedLine(builder, indentLevel, constraintClause);
+            }
+
+            AppendIndentedLine(builder, indentLevel, "{");
+        }
+
         private static void AppendIndentedLine(StringBuilder builder, int indentLevel, string text)
         {
             builder.Append(' ', indentLevel * 4)
                 .AppendLine(text);
         }
 
-        private static void AppendGeneratedXUnitSmokeTests(StringBuilder sourceBuilder, GeneratedHarnessTargetModel target, bool emitXUnitSmokeTests)
+        private static void AppendGeneratedXUnitSmokeTests(StringBuilder sourceBuilder, GeneratedHarnessTargetModel target, bool emitXUnitSmokeTests, int memberIndentLevel)
         {
             if (!emitXUnitSmokeTests)
             {
                 return;
             }
 
-            AppendIndentedLine(sourceBuilder, 2, "[global::Xunit.Fact]");
-            AppendIndentedLine(sourceBuilder, 2, "public void FastMoqGeneratedSmokeTest_00_Component_ShouldCreateComponent()");
-            AppendIndentedLine(sourceBuilder, 2, "{");
-            AppendIndentedLine(sourceBuilder, 3, "_ = Component;");
-            AppendIndentedLine(sourceBuilder, 2, "}");
+            var blockIndentLevel = memberIndentLevel + 1;
+
+            AppendIndentedLine(sourceBuilder, memberIndentLevel, "[global::Xunit.Fact]");
+            AppendIndentedLine(sourceBuilder, memberIndentLevel, "public void FastMoqGeneratedSmokeTest_00_Component_ShouldCreateComponent()");
+            AppendIndentedLine(sourceBuilder, memberIndentLevel, "{");
+            AppendIndentedLine(sourceBuilder, blockIndentLevel, "_ = Component;");
+            AppendIndentedLine(sourceBuilder, memberIndentLevel, "}");
             sourceBuilder.AppendLine();
 
             foreach (var generatedTestMethod in target.GeneratedTestMethods)
@@ -677,70 +790,103 @@ namespace FastMoq.Generators
                 if (generatedTestMethod.IsDeferred)
                 {
                     var skipReasonLiteral = SymbolDisplay.FormatLiteral(generatedTestMethod.DeferredReason!, quote: true);
-                    AppendIndentedLine(sourceBuilder, 2, "[global::Xunit.Fact(Skip = " + skipReasonLiteral + ")]");
-                    AppendIndentedLine(sourceBuilder, 2, "public void " + generatedTestMethod.GeneratedMethodName + "()");
-                    AppendIndentedLine(sourceBuilder, 2, "{");
-                    AppendIndentedLine(sourceBuilder, 3, "throw new global::System.NotSupportedException(" + skipReasonLiteral + ");");
-                    AppendIndentedLine(sourceBuilder, 2, "}");
+                    AppendIndentedLine(sourceBuilder, memberIndentLevel, "[global::Xunit.Fact(Skip = " + skipReasonLiteral + ")]");
+                    AppendIndentedLine(sourceBuilder, memberIndentLevel, "public void " + generatedTestMethod.GeneratedMethodName + "()");
+                    AppendIndentedLine(sourceBuilder, memberIndentLevel, "{");
+                    AppendIndentedLine(sourceBuilder, blockIndentLevel, "throw new global::System.NotSupportedException(" + skipReasonLiteral + ");");
+                    AppendIndentedLine(sourceBuilder, memberIndentLevel, "}");
                     sourceBuilder.AppendLine();
                     continue;
                 }
 
-                AppendIndentedLine(sourceBuilder, 2, "[global::Xunit.Fact]");
+                AppendIndentedLine(sourceBuilder, memberIndentLevel, "[global::Xunit.Fact]");
                 if (generatedTestMethod.IsAsync)
                 {
-                    AppendIndentedLine(sourceBuilder, 2, "public async global::System.Threading.Tasks.Task " + generatedTestMethod.GeneratedMethodName + "()");
+                    AppendIndentedLine(sourceBuilder, memberIndentLevel, "public async global::System.Threading.Tasks.Task " + generatedTestMethod.GeneratedMethodName + "()");
                 }
                 else
                 {
-                    AppendIndentedLine(sourceBuilder, 2, "public void " + generatedTestMethod.GeneratedMethodName + "()");
+                    AppendIndentedLine(sourceBuilder, memberIndentLevel, "public void " + generatedTestMethod.GeneratedMethodName + "()");
                 }
 
-                AppendIndentedLine(sourceBuilder, 2, "{");
-                AppendIndentedLine(sourceBuilder, 3, "var component = Component;");
+                AppendIndentedLine(sourceBuilder, memberIndentLevel, "{");
+                AppendIndentedLine(sourceBuilder, blockIndentLevel, "var component = Component;");
 
                 if (generatedTestMethod.IsAsync)
                 {
                     if (generatedTestMethod.ReturnsValue)
                     {
-                        AppendIndentedLine(sourceBuilder, 3, "_ = await component." + generatedTestMethod.ComponentMethodName + "(" + generatedTestMethod.InvocationArguments + ");");
+                        AppendIndentedLine(sourceBuilder, blockIndentLevel, "_ = await component." + generatedTestMethod.ComponentMethodName + "(" + generatedTestMethod.InvocationArguments + ");");
                     }
                     else
                     {
-                        AppendIndentedLine(sourceBuilder, 3, "await component." + generatedTestMethod.ComponentMethodName + "(" + generatedTestMethod.InvocationArguments + ");");
+                        AppendIndentedLine(sourceBuilder, blockIndentLevel, "await component." + generatedTestMethod.ComponentMethodName + "(" + generatedTestMethod.InvocationArguments + ");");
                     }
                 }
                 else if (generatedTestMethod.ReturnsValue)
                 {
-                    AppendIndentedLine(sourceBuilder, 3, "_ = component." + generatedTestMethod.ComponentMethodName + "(" + generatedTestMethod.InvocationArguments + ");");
+                    AppendIndentedLine(sourceBuilder, blockIndentLevel, "_ = component." + generatedTestMethod.ComponentMethodName + "(" + generatedTestMethod.InvocationArguments + ");");
                 }
                 else
                 {
-                    AppendIndentedLine(sourceBuilder, 3, "component." + generatedTestMethod.ComponentMethodName + "(" + generatedTestMethod.InvocationArguments + ");");
+                    AppendIndentedLine(sourceBuilder, blockIndentLevel, "component." + generatedTestMethod.ComponentMethodName + "(" + generatedTestMethod.InvocationArguments + ");");
                 }
 
-                AppendIndentedLine(sourceBuilder, 2, "}");
+                AppendIndentedLine(sourceBuilder, memberIndentLevel, "}");
                 sourceBuilder.AppendLine();
             }
         }
 
         private static string GetHintName(GeneratedHarnessTargetModel target)
         {
-            var identifier = string.IsNullOrWhiteSpace(target.NamespaceName)
-                ? target.TargetTypeName
-                : target.NamespaceName + "." + target.TargetTypeName;
-            var sanitizedIdentifier = new string(identifier.Select(static character =>
+            var sanitizedIdentifier = new string(target.TargetIdentityName.Select(static character =>
                 char.IsLetterOrDigit(character)
                     ? character
                     : '_').ToArray());
             return sanitizedIdentifier + ".FastMoq.GeneratedHarness.g.cs";
         }
 
+        private sealed class GeneratedHarnessTargetEvaluation
+        {
+            private GeneratedHarnessTargetEvaluation(GeneratedHarnessTargetModel? target, ImmutableArray<Diagnostic> diagnostics)
+            {
+                Target = target;
+                Diagnostics = diagnostics;
+            }
+
+            public static GeneratedHarnessTargetEvaluation Empty { get; } = new(null, ImmutableArray<Diagnostic>.Empty);
+
+            public static GeneratedHarnessTargetEvaluation FromTarget(GeneratedHarnessTargetModel target) =>
+                new(target, ImmutableArray<Diagnostic>.Empty);
+
+            public static GeneratedHarnessTargetEvaluation FromDiagnostic(Diagnostic diagnostic) =>
+                new(null, ImmutableArray.Create(diagnostic));
+
+            public GeneratedHarnessTargetModel? Target { get; }
+
+            public ImmutableArray<Diagnostic> Diagnostics { get; }
+        }
+
+        private sealed class GeneratedTypeDeclarationModel
+        {
+            public GeneratedTypeDeclarationModel(string headerText, ImmutableArray<string> constraintClauses)
+            {
+                HeaderText = headerText;
+                ConstraintClauses = constraintClauses;
+            }
+
+            public string HeaderText { get; }
+
+            public ImmutableArray<string> ConstraintClauses { get; }
+        }
+
         private sealed class GeneratedHarnessTargetModel
         {
             public GeneratedHarnessTargetModel(
                 string? namespaceName,
-                string targetTypeName,
+                string targetIdentityName,
+                GeneratedTypeDeclarationModel targetTypeDeclaration,
+                ImmutableArray<GeneratedTypeDeclarationModel> containingTypeDeclarations,
                 string componentTypeName,
                 bool emitXUnitSmokeTests,
                 ImmutableArray<GeneratedComponentTestMethodModel> generatedTestMethods,
@@ -751,7 +897,9 @@ namespace FastMoq.Generators
                 ImmutableArray<string> dependencyNames)
             {
                 NamespaceName = namespaceName;
-                TargetTypeName = targetTypeName;
+                TargetIdentityName = targetIdentityName;
+                TargetTypeDeclaration = targetTypeDeclaration;
+                ContainingTypeDeclarations = containingTypeDeclarations;
                 ComponentTypeName = componentTypeName;
                 EmitXUnitSmokeTests = emitXUnitSmokeTests;
                 GeneratedTestMethods = generatedTestMethods;
@@ -764,7 +912,11 @@ namespace FastMoq.Generators
 
             public string? NamespaceName { get; }
 
-            public string TargetTypeName { get; }
+            public string TargetIdentityName { get; }
+
+            public GeneratedTypeDeclarationModel TargetTypeDeclaration { get; }
+
+            public ImmutableArray<GeneratedTypeDeclarationModel> ContainingTypeDeclarations { get; }
 
             public string ComponentTypeName { get; }
 

@@ -192,6 +192,91 @@ public partial class OrderSubmitterTests : MockerTestBase<OrderSubmitter>
         }
 
         [Fact]
+        public async Task GeneratedHarnessSourceGenerator_ShouldEmitHarnessMetadata_ForNestedPartialHarnessTarget()
+        {
+            const string source = @"
+using FastMoq;
+using FastMoq.Generators;
+using System;
+
+namespace Demo.Tests;
+
+public sealed class NestedTarget
+{
+    public NestedTarget()
+    {
+    }
+}
+
+public partial class OuterHarnessContainer
+{
+    [FastMoqGeneratedTestTarget(typeof(NestedTarget))]
+    public partial class GeneratedNestedHarness : MockerTestBase<NestedTarget>
+    {
+        public Type?[]? DescribeConstructorTypes() => ComponentConstructorParameterTypes;
+    }
+}
+";
+
+            var result = await RunGeneratorAsync(source);
+
+            result.DriverDiagnostics.Where(static diagnostic => diagnostic.Severity == DiagnosticSeverity.Error)
+                .Should()
+                .BeEmpty();
+            result.OutputCompilation.GetDiagnostics().Where(static diagnostic => diagnostic.Severity == DiagnosticSeverity.Error)
+                .Should()
+                .BeEmpty();
+
+            var generatedSource = result.GeneratedSources.Should().ContainSingle().Subject.SourceText.ToString();
+            generatedSource.Should().Contain("public partial class OuterHarnessContainer");
+            generatedSource.Should().Contain("public partial class GeneratedNestedHarness");
+
+            var loadedAssembly = await LoadGeneratedAssemblyAsync(source);
+            var generatedHarness = CreateInstance(loadedAssembly, "Demo.Tests.OuterHarnessContainer+GeneratedNestedHarness");
+
+            Invoke<Type?[]>(generatedHarness, "DescribeConstructorTypes").Should().BeEmpty();
+            generatedHarness.GetType().GetNestedType("FastMoqGeneratedHarnessMetadata", BindingFlags.NonPublic).Should().NotBeNull();
+        }
+
+        [Fact]
+        public async Task GeneratedHarnessSourceGenerator_ShouldReportDiagnostic_WhenNestedHarnessContainingTypeIsNotPartial()
+        {
+            const string source = @"
+using FastMoq;
+using FastMoq.Generators;
+
+namespace Demo.Tests;
+
+public sealed class NestedTarget
+{
+    public NestedTarget()
+    {
+    }
+}
+
+public class OuterHarnessContainer
+{
+    [FastMoqGeneratedTestTarget(typeof(NestedTarget))]
+    public partial class GeneratedNestedHarness : MockerTestBase<NestedTarget>
+    {
+    }
+}
+";
+
+            var result = await RunGeneratorAsync(source);
+
+            result.OutputCompilation.GetDiagnostics().Where(static diagnostic => diagnostic.Severity == DiagnosticSeverity.Error)
+                .Should()
+                .BeEmpty();
+            result.GeneratedSources.Should().BeEmpty();
+
+            var diagnostic = result.DriverDiagnostics.Single(static d => d.Id == GeneratedHarnessSourceGenerator.UnsupportedNestedGeneratedTargetDiagnosticId);
+            diagnostic.Severity.Should().Be(DiagnosticSeverity.Warning);
+            diagnostic.GetMessage().Should().Contain("OuterHarnessContainer");
+            diagnostic.GetMessage().Should().Contain("GeneratedNestedHarness");
+        }
+
+        [Fact]
         public async Task GeneratedHarnessSourceGenerator_ShouldNotEmit_WhenMultiplePublicConstructorsRemainAmbiguous()
         {
             const string source = @"

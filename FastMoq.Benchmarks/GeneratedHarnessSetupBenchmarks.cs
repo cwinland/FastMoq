@@ -10,7 +10,7 @@ namespace FastMoq.Benchmarks;
 [MemoryDiagnoser]
 [Orderer(SummaryOrderPolicy.FastestToSlowest)]
 [RankColumn]
-public class GeneratedHarnessSetupBenchmarks
+public partial class GeneratedHarnessSetupBenchmarks
 {
     /// <summary>
     /// Measures creating a fresh runtime-only harness and projecting the graph/bootstrap descriptor through constructor discovery.
