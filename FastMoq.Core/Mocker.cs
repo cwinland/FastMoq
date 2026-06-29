@@ -2273,18 +2273,34 @@ namespace FastMoq
 
         #region Legacy Helper Methods (Batch C)
         /// <summary>
-        /// Returns the shared mock file system after optionally applying additional configuration.
+        /// Returns the configured file system after optionally applying additional configuration.
         /// </summary>
-        public IFileSystem GetFileSystem(Action<MockFileSystem>? configure = null)
+        /// <param name="configure">An optional callback invoked with the resolved file system.</param>
+        /// <returns>
+        /// The registered <see cref="IFileSystem"/> (for example one added via
+        /// <see cref="AddType{TInterface, TClass}(Func{Mocker, TClass}, bool, object[])"/>) when present;
+        /// otherwise the shared in-memory mock file system.
+        /// </returns>
+        /// <remarks>
+        /// By default this returns the full in-memory mock file system. When a custom
+        /// <see cref="IFileSystem"/> has been registered, that instance is returned instead, allowing tests to
+        /// opt into a real file system.
+        /// </remarks>
+        public IFileSystem GetFileSystem(Action<IFileSystem>? configure = null)
         {
-            configure?.Invoke(fileSystem);
-            return fileSystem;
+            var resolvedFileSystem = GetObject<IFileSystem>() ?? fileSystem;
+            configure?.Invoke(resolvedFileSystem);
+            return resolvedFileSystem;
         }
 
         /// <summary>
-        /// Returns the shared mock file system.
+        /// Returns the configured file system, honoring a registered <see cref="IFileSystem"/> and otherwise
+        /// falling back to the shared in-memory mock file system.
         /// </summary>
-        public IFileSystem GetFileSystem() => fileSystem;
+        /// <returns>
+        /// The registered <see cref="IFileSystem"/> when present; otherwise the shared in-memory mock file system.
+        /// </returns>
+        public IFileSystem GetFileSystem() => GetObject<IFileSystem>() ?? fileSystem;
 
         /// <summary>
         /// Creates a list by invoking the supplied factory a fixed number of times.
