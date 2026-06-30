@@ -14,6 +14,8 @@
     <None Include="..\.github\workflows\publish_FastMoq.yml" Link="publish_FastMoq.yml" />
     <None Include="..\FastMoq.Analyzers\bin\$(Configuration)\netstandard2.0\FastMoq.Analyzers.dll" Pack="true" PackagePath="analyzers/dotnet/cs" Visible="false" />
     <None Include="..\FastMoq.Analyzers\bin\$(Configuration)\netstandard2.0\FastMoq.Analyzers.pdb" Pack="true" PackagePath="analyzers/dotnet/cs" Visible="false" Condition="Exists('..\FastMoq.Analyzers\bin\$(Configuration)\netstandard2.0\FastMoq.Analyzers.pdb')" />
+    <None Include="..\FastMoq.Generators\bin\$(Configuration)\netstandard2.0\FastMoq.Generators.dll" Pack="true" PackagePath="analyzers/dotnet/cs" Visible="false" />
+    <None Include="..\FastMoq.Generators\bin\$(Configuration)\netstandard2.0\FastMoq.Generators.pdb" Pack="true" PackagePath="analyzers/dotnet/cs" Visible="false" Condition="Exists('..\FastMoq.Generators\bin\$(Configuration)\netstandard2.0\FastMoq.Generators.pdb')" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\FastMoq.Analyzers\FastMoq.Analyzers.csproj" ReferenceOutputAssembly="false" PrivateAssets="all" />
@@ -22,6 +24,7 @@
     <ProjectReference Include="..\FastMoq.AzureFunctions\FastMoq.AzureFunctions.csproj" />
     <ProjectReference Include="..\FastMoq.Core\FastMoq.Core.csproj" />
     <ProjectReference Include="..\FastMoq.Database\FastMoq.Database.csproj" />
+    <ProjectReference Include="..\FastMoq.Generators\FastMoq.Generators.csproj" ReferenceOutputAssembly="false" PrivateAssets="all" />
     <ProjectReference Include="..\FastMoq.Provider.Moq\FastMoq.Provider.Moq.csproj" />
     <ProjectReference Include="..\FastMoq.Provider.NSubstitute\FastMoq.Provider.NSubstitute.csproj" />
     <ProjectReference Include="..\FastMoq.Web\FastMoq.Web.csproj" />

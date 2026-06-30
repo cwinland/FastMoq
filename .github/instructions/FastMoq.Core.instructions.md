@@ -1,3 +1,9 @@
+---
+name: "FastMoq.Core"
+description: "Use when working in FastMoq.Core, Mocker, MockerTestBase internals, provider-first runtime code, constructor resolution, or shared public API changes."
+applyTo: "FastMoq.Core/**"
+---
+
 # FastMoq.Core - Copilot Instructions
 
 ## 🏗 Core Architecture Rules

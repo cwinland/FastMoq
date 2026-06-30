@@ -1,3 +1,9 @@
+---
+name: "FastMoq.Web"
+description: "Use when working in FastMoq.Web or related Blazor and web-helper code, including HttpContext helpers, service registration, and component-testing flows."
+applyTo: "FastMoq.Web/**"
+---
+
 # FastMoq.Web - Copilot Instructions
 
 ## 🌐 Web & Blazor Development Guidelines

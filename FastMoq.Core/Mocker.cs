@@ -81,7 +81,7 @@ namespace FastMoq
         private static readonly EventId ConstructorAmbiguityEventId = new(21071, nameof(ConstructorAmbiguityEventId));
         private static readonly ConcurrentDictionary<Type, PropertyInfo[]> AutoPopulatedPropertyCache = new();
 
-        private readonly record struct InstanceConstructionRequest(
+        private readonly record struct ConstructorSelectionRequest(
             bool? PublicOnly,
             Type?[]? ConstructorParameterTypes,
             OptionalParameterResolutionMode OptionalParameterResolution,
@@ -1132,7 +1132,7 @@ namespace FastMoq
         /// Creates an instance of <typeparamref name="T"/> using the supplied per-call construction flags.
         /// </summary>
         public T? CreateInstance<T>(InstanceCreationFlags flags, params object?[] args) where T : class =>
-            CreateInstanceCore<T>(CreateInstanceConstructionRequest(flags, constructorParameterTypes: null), args);
+            CreateInstanceCore<T>(CreateConstructorSelectionRequest(flags, constructorParameterTypes: null), args);
 
         /// <summary>
         /// Legacy compatibility overload retained for callers that previously toggled file-system resolution per call.
@@ -1172,7 +1172,7 @@ namespace FastMoq
         }
 
         internal T? CreateInstance<T>(bool? publicOnly, OptionalParameterResolutionMode optionalParameterResolution, params object?[] args) where T : class =>
-            CreateInstanceCore<T>(CreateInstanceConstructionRequest(publicOnly, null, optionalParameterResolution, Policy.DefaultConstructorAmbiguityBehavior), args);
+            CreateInstanceCore<T>(CreateConstructorSelectionRequest(publicOnly, null, optionalParameterResolution, Policy.DefaultConstructorAmbiguityBehavior), args);
 
         /// <summary>
         /// Creates an instance of <typeparamref name="T"/> by selecting a constructor that matches the supplied parameter types.
@@ -1186,20 +1186,20 @@ namespace FastMoq
         /// Creates an instance of <typeparamref name="T"/> by selecting a constructor that matches the supplied parameter types and creation flags.
         /// </summary>
         public T? CreateInstanceByType<T>(InstanceCreationFlags flags, params Type?[] parameterTypes) where T : class =>
-            CreateInstanceCore<T>(CreateInstanceConstructionRequest(flags, parameterTypes), Array.Empty<object?>());
+            CreateInstanceCore<T>(CreateConstructorSelectionRequest(flags, parameterTypes), Array.Empty<object?>());
 
         internal T? CreateInstanceByType<T>(bool? publicOnly, OptionalParameterResolutionMode optionalParameterResolution, params Type?[] parameterTypes) where T : class =>
-            CreateInstanceCore<T>(CreateInstanceConstructionRequest(publicOnly, parameterTypes, optionalParameterResolution, Policy.DefaultConstructorAmbiguityBehavior), Array.Empty<object?>());
+            CreateInstanceCore<T>(CreateConstructorSelectionRequest(publicOnly, parameterTypes, optionalParameterResolution, Policy.DefaultConstructorAmbiguityBehavior), Array.Empty<object?>());
 
-        private InstanceConstructionRequest CreateInstanceConstructionRequest(InstanceCreationFlags flags, Type?[]? constructorParameterTypes)
+        private ConstructorSelectionRequest CreateConstructorSelectionRequest(InstanceCreationFlags flags, Type?[]? constructorParameterTypes)
         {
             var publicOnly = ResolvePublicOnlyOverride(flags);
             var optionalParameterResolution = ResolveOptionalParameterResolution(flags);
             var constructorAmbiguityBehavior = ResolveConstructorAmbiguityBehavior(flags);
-            return CreateInstanceConstructionRequest(publicOnly, constructorParameterTypes, optionalParameterResolution, constructorAmbiguityBehavior);
+            return CreateConstructorSelectionRequest(publicOnly, constructorParameterTypes, optionalParameterResolution, constructorAmbiguityBehavior);
         }
 
-        private InstanceConstructionRequest CreateInstanceConstructionRequest(bool? publicOnly, Type?[]? constructorParameterTypes, OptionalParameterResolutionMode optionalParameterResolution, ConstructorAmbiguityBehavior constructorAmbiguityBehavior) =>
+        private ConstructorSelectionRequest CreateConstructorSelectionRequest(bool? publicOnly, Type?[]? constructorParameterTypes, OptionalParameterResolutionMode optionalParameterResolution, ConstructorAmbiguityBehavior constructorAmbiguityBehavior) =>
             new(publicOnly, constructorParameterTypes, optionalParameterResolution, constructorAmbiguityBehavior);
 
         private static bool? ResolvePublicOnlyOverride(InstanceCreationFlags flags)
@@ -1261,7 +1261,7 @@ namespace FastMoq
         /// <summary>
         /// Centralized creation logic used by all public CreateInstance* methods.
         /// </summary>
-        private T? CreateInstanceCore<T>(InstanceConstructionRequest request, object?[] args) where T : class
+        private T? CreateInstanceCore<T>(ConstructorSelectionRequest request, object?[] args) where T : class
         {
             var requestedType = typeof(T);
             var model = GetTypeModel(requestedType);

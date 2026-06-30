@@ -1,4 +1,5 @@
-﻿using Microsoft.Extensions.Logging;
+﻿using FastMoq.Models;
+using Microsoft.Extensions.Logging;
 
 namespace FastMoq
 {
@@ -22,6 +23,38 @@ namespace FastMoq
         /// Return an empty array to select the parameterless constructor explicitly.
         /// </summary>
         protected virtual Type?[]? ComponentConstructorParameterTypes => null;
+
+        /// <summary>
+        /// Creates the constructor-planning request for the current component path.
+        /// Override this when a custom <see cref="CreateComponentAction"/> no longer matches the default constructor-selection hooks.
+        /// </summary>
+        protected virtual InstanceConstructionRequest CreateComponentConstructionRequest() =>
+            Mocks.CreateConstructionPlanRequest(typeof(TComponent), ComponentCreationFlags, ComponentConstructorParameterTypes);
+
+        /// <summary>
+        /// Resolves constructor-selection metadata for the current component path without creating a new component instance.
+        /// Generated or hand-written harnesses can use this to query the component-construction contract through the same request-only planning surface used by <see cref="Mocker.CreateConstructionPlan(InstanceConstructionRequest)"/>.
+        /// </summary>
+        /// <returns>A constructor plan for the current component-construction path.</returns>
+        protected InstanceConstructionPlan GetComponentConstructionPlan() =>
+            Mocks.CreateConstructionPlan(CreateComponentConstructionRequest());
+
+        internal InstanceConstructionGraph GetComponentConstructionGraph() =>
+            Mocks.CreateConstructionGraph(CreateComponentConstructionRequest());
+
+        internal ComponentHarnessBootstrapDescriptor GetComponentHarnessBootstrapDescriptor()
+        {
+            var componentCreationFlags = ComponentCreationFlags;
+            var componentConstructorParameterTypes = ComponentConstructorParameterTypes;
+            var defaultRequest = Mocks.CreateConstructionPlanRequest(typeof(TComponent), componentCreationFlags, componentConstructorParameterTypes);
+            var request = CreateComponentConstructionRequest();
+
+            return new ComponentHarnessBootstrapDescriptor(
+                Mocks.CreateConstructionGraph(request),
+                componentCreationFlags,
+                componentConstructorParameterTypes,
+                requiresExplicitConstructionRequestOverride: !RequestsAreEquivalent(defaultRequest, request));
+        }
 
         private Func<Mocker, TComponent> DefaultCreateAction =>
             mocker => Component = CreateDefaultComponent(mocker) ?? throw CannotCreateComponentException;
@@ -204,6 +237,41 @@ namespace FastMoq
             return constructorParameterTypes == null
                 ? mocker.CreateInstance<TComponent>(ComponentCreationFlags)
                 : mocker.CreateInstanceByType<TComponent>(ComponentCreationFlags, constructorParameterTypes);
+        }
+
+        private static bool RequestsAreEquivalent(InstanceConstructionRequest left, InstanceConstructionRequest right)
+        {
+            ArgumentNullException.ThrowIfNull(left);
+            ArgumentNullException.ThrowIfNull(right);
+
+            return left.RequestedType == right.RequestedType &&
+                left.PublicOnly == right.PublicOnly &&
+                left.OptionalParameterResolution == right.OptionalParameterResolution &&
+                left.ConstructorAmbiguityBehavior == right.ConstructorAmbiguityBehavior &&
+                ConstructorParameterTypesAreEquivalent(left.ConstructorParameterTypes, right.ConstructorParameterTypes);
+        }
+
+        private static bool ConstructorParameterTypesAreEquivalent(Type?[]? left, Type?[]? right)
+        {
+            if (left == null || right == null)
+            {
+                return left == right;
+            }
+
+            if (left.Length != right.Length)
+            {
+                return false;
+            }
+
+            for (var index = 0; index < left.Length; index++)
+            {
+                if (left[index] != right[index])
+                {
+                    return false;
+                }
+            }
+
+            return true;
         }
 
         private static Func<Mocker, TComponent> CreateActionWithTypes(params Type[] args) =>

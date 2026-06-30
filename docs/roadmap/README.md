@@ -118,44 +118,24 @@ Current public issue anchor in this bucket is [#141](https://github.com/cwinland
 
 ### Code generation and scaffolding
 
-First-party code generators do not exist today, but code-generation work is part of the current v5 direction.
+Code generation remains part of the current v5 direction.
 
 The main value is not "generated mocks" in isolation. The stronger FastMoq-specific opportunity is compile-time provider-first test generation: generated test graphs, harness scaffolding, and framework-helper builders that reduce reflection, reduce boilerplate, and stay aligned with FastMoq-owned APIs.
 
-Current public issue crosswalk:
-
-- foundation and package-shape work: [#120](https://github.com/cwinland/FastMoq/issues/120), [#121](https://github.com/cwinland/FastMoq/issues/121), [#125](https://github.com/cwinland/FastMoq/issues/125), [#126](https://github.com/cwinland/FastMoq/issues/126), [#127](https://github.com/cwinland/FastMoq/issues/127), and [#134](https://github.com/cwinland/FastMoq/issues/134)
-- near-term helper preparation that can improve v4 authoring before generators ship: [#132](https://github.com/cwinland/FastMoq/issues/132), [#133](https://github.com/cwinland/FastMoq/issues/133), and [#135](https://github.com/cwinland/FastMoq/issues/135)
-- first implementation-facing outcomes, in planned order: [#122](https://github.com/cwinland/FastMoq/issues/122), [#136](https://github.com/cwinland/FastMoq/issues/136), [#123](https://github.com/cwinland/FastMoq/issues/123), [#137](https://github.com/cwinland/FastMoq/issues/137), and [#124](https://github.com/cwinland/FastMoq/issues/124)
-- later evaluation tracks after the provider-first generator story is stable: [#138](https://github.com/cwinland/FastMoq/issues/138) and [#139](https://github.com/cwinland/FastMoq/issues/139)
-
-Planned direction stays phased:
+Current direction stays phased:
 
 1. Compile-time test graph and harness generation.
-2. Scenario and suite scaffolding.
-3. Full generated tests from existing supported classes.
-4. Framework-helper builders for repeated helper-heavy test patterns.
-5. Analyzer-guided generation flow and package suggestions.
-6. Provider-optimized or narrower generated-fake evaluation only after the shared contract is stable.
+2. Shared generated-test settings and test-platform contracts.
+3. Stable scenario-scaffolding contracts and helper-boundary narrowing.
+4. Scenario and suite scaffolding.
+5. Broaden full generated tests and analyzer-guided generation beyond the current explicit-harness xUnit smoke-test slice.
+6. Framework-helper builders for repeated helper-heavy test patterns when they justify a separate layer.
+7. Provider-optimized or narrower generated-fake evaluation only after the shared contract is stable.
 
-Current package and MVP contract direction for [#120](https://github.com/cwinland/FastMoq/issues/120):
-
-- `FastMoq.Generators` is the dedicated source-generator package
-- `FastMoq.Analyzers` remains separate from the source-generator implementation
-- the aggregate `FastMoq` package should include the generator path once it ships, while `FastMoq.Core` stays the lighter provider-neutral runtime and does not include the source-generator implementation
-- generator capability is install-enabled but target-explicit, not blanket automatic for every eligible type in a project
-- unsupported, disabled, missing, or stale generated paths fall back to the supported FastMoq runtime path
-- the first implementation-facing MVP is generated graph metadata and harness bootstrap only; scenario scaffolding, full generated tests, helper builders, provider-optimized generation, and compile-time fake generation remain later work
-- broader project-level or suite-level generated-test preference settings are intentionally later than the first MVP
-
-Current constructor-contract direction for [#125](https://github.com/cwinland/FastMoq/issues/125):
-
-- [#121](https://github.com/cwinland/FastMoq/issues/121) remains the umbrella tracker, while [#125](https://github.com/cwinland/FastMoq/issues/125) is the active blocking contract before [#122](https://github.com/cwinland/FastMoq/issues/122)
-- the proposed public contract is `InstanceConstructionRequest`, `InstanceConstructionPlan`, `InstanceConstructionParameterPlan`, and `InstanceConstructionParameterSource`, with `Mocker.CreateConstructionPlan(InstanceConstructionRequest request)` as the preferred entry point
-- the proposed first-slice parameter-source enum members are `CustomRegistration`, `KnownType`, `KeyedService`, `AutoMock`, `ConstructedByMocker`, `OptionalDefault`, and `TypeDefault`
-- the new contract stays narrow while existing public diagnostics, models, creation APIs, and current public reflection-metadata resolution behavior remain part of the compatibility boundary
-
-For the current detailed direction, design constraints, and fuller generator issue mapping, see [Generator roadmap and design](./generator-roadmap.md).
+For the current detailed direction, implementation status, scope boundaries, and fuller generator issue mapping, see [Generator roadmap and design](./generator-roadmap.md).
+For the shared generated-test settings contract behind [#162](https://github.com/cwinland/FastMoq/issues/162), see [Generated test settings design](./generated-test-settings.md).
+For the scenario-scaffolding contract behind [#126](https://github.com/cwinland/FastMoq/issues/126), see [Generated scenario scaffolding contract](./generated-scenario-scaffolding-contract.md).
+For the current helper-boundary contract behind [#134](https://github.com/cwinland/FastMoq/issues/134), see [Generated helper family matrix](./generated-helper-family-matrix.md).
 
 ### `MockOptional` retirement
 
