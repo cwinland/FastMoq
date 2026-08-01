@@ -20,6 +20,42 @@ jobs:
   codeql:
     uses: ./.github/workflows/codeql.yml
 
+  security-audit:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v6
+
+      - name: Setup .NET
+        uses: actions/setup-dotnet@v5
+        with:
+          dotnet-version: "10.0.x"
+          cache: true
+          cache-dependency-path: |
+            **/*.csproj
+            **/*.sln
+
+      - name: Restore
+        run: dotnet restore FastMoq.sln
+
+      # dotnet list --vulnerable exits 0 even when advisories exist, so fail explicitly on any hit.
+      - name: Audit NuGet dependencies for known vulnerabilities
+        run: |
+          set -euo pipefail
+          audit="$(dotnet list FastMoq.sln package --vulnerable --include-transitive)"
+          echo "$audit"
+          if echo "$audit" | grep -qi "has the following vulnerable"; then
+            echo "::error::Vulnerable NuGet packages detected. See the audit output above."
+            {
+              echo "### 🛡️ Vulnerable dependencies detected"
+              echo '```'
+              echo "$audit" | grep -Ei "vulnerable|Advisory|>" || true
+              echo '```'
+            } >> "$GITHUB_STEP_SUMMARY"
+            exit 1
+          fi
+          echo "### 🛡️ Dependency audit: no known vulnerabilities" >> "$GITHUB_STEP_SUMMARY"
+
   build-test:
     runs-on: ubuntu-latest
     strategy:

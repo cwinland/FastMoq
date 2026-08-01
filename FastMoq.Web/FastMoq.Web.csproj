@@ -21,6 +21,8 @@
   <ItemGroup>
     <PackageReference Include="System.Configuration.ConfigurationManager" />
     <PackageReference Include="bunit" />
+    <!-- Force patched AngleSharp (CVE-2026-54570) over bunit's vulnerable 1.4.0 transitive dependency. -->
+    <PackageReference Include="AngleSharp" />
   </ItemGroup>
 
   <ItemGroup>
