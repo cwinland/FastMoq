@@ -45,7 +45,7 @@ jobs:
           audit="$(dotnet list FastMoq.sln package --vulnerable --include-transitive)"
           echo "$audit"
           if echo "$audit" | grep -qi "has the following vulnerable"; then
-            echo "::error::Vulnerable NuGet packages detected. See the audit output above." 
+            echo "::error::Vulnerable NuGet packages detected. See the audit output above."
             {
               echo "### 🛡️ Vulnerable dependencies detected"
               echo '```'
