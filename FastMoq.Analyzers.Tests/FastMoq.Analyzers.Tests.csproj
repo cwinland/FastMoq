@@ -10,6 +10,7 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <PackageReference Include="AwesomeAssertions" />
     <PackageReference Include="Microsoft.NET.Test.Sdk" />
     <PackageReference Include="xunit" />
     <PackageReference Include="xunit.runner.visualstudio">
@@ -31,8 +32,12 @@
 
   <ItemGroup>
     <ProjectReference Include="..\FastMoq.Analyzers\FastMoq.Analyzers.csproj" OutputItemType="Analyzer" />
+    <ProjectReference Include="..\FastMoq\FastMoq.csproj" />
+    <ProjectReference Include="..\FastMoq.Azure\FastMoq.Azure.csproj" />
     <ProjectReference Include="..\FastMoq.AzureFunctions\FastMoq.AzureFunctions.csproj" />
     <ProjectReference Include="..\FastMoq.Core\FastMoq.Core.csproj" />
+    <ProjectReference Include="..\FastMoq.Database\FastMoq.Database.csproj" />
+    <ProjectReference Include="..\FastMoq.Generators\FastMoq.Generators.csproj" />
     <ProjectReference Include="..\FastMoq.Provider.Moq\FastMoq.Provider.Moq.csproj" />
     <ProjectReference Include="..\FastMoq.Provider.NSubstitute\FastMoq.Provider.NSubstitute.csproj" />
     <ProjectReference Include="..\FastMoq.Web\FastMoq.Web.csproj" />

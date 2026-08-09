@@ -112,6 +112,34 @@ namespace FastMoq
             return false;
         }
 
+        internal static bool HasManagedInstanceResolution(Mocker mocker, Type requestedType)
+        {
+            ArgumentNullException.ThrowIfNull(mocker);
+            ArgumentNullException.ThrowIfNull(requestedType);
+
+            if (mocker.KnownTypeRegistrations.Any(registration =>
+                registration.Matches(requestedType) && registration.ManagedInstanceFactory != null))
+            {
+                return true;
+            }
+
+            return HasBuiltInManagedInstanceResolution(mocker, requestedType);
+        }
+
+        internal static bool HasKnownParameterResolution(Mocker mocker, Type requestedType)
+        {
+            ArgumentNullException.ThrowIfNull(mocker);
+            ArgumentNullException.ThrowIfNull(requestedType);
+
+            if (mocker.KnownTypeRegistrations.Any(registration =>
+                registration.Matches(requestedType) && (registration.DirectInstanceFactory != null || registration.ManagedInstanceFactory != null)))
+            {
+                return true;
+            }
+
+            return HasBuiltInKnownParameterResolution(mocker, requestedType);
+        }
+
         internal static bool TryGetCustomManagedInstance(Mocker mocker, Type requestedType, out object? instance)
         {
             foreach (var registration in mocker.KnownTypeRegistrations)
@@ -176,6 +204,68 @@ namespace FastMoq
         private static IEnumerable<KnownTypeRegistration> GetPostProcessingRegistrations(Mocker mocker)
         {
             return BuiltInRegistrations.Concat(mocker.KnownTypeRegistrations);
+        }
+
+        private static bool HasBuiltInKnownParameterResolution(Mocker mocker, Type requestedType)
+        {
+            var enabledResolutions = mocker.Policy.EnabledBuiltInTypeResolutions;
+            if ((enabledResolutions & BuiltInTypeResolutionFlags.FileSystem) != 0 &&
+                requestedType.IsEquivalentTo(typeof(IFileSystem)) &&
+                !mocker.Contains<IFileSystem>())
+            {
+                return true;
+            }
+
+            if ((enabledResolutions & BuiltInTypeResolutionFlags.HttpClient) != 0 && requestedType.IsEquivalentTo(typeof(HttpClient)))
+            {
+                return true;
+            }
+
+            if ((enabledResolutions & BuiltInTypeResolutionFlags.Uri) != 0 && requestedType.IsEquivalentTo(typeof(Uri)))
+            {
+                return true;
+            }
+
+            if (requestedType.IsAssignableTo(typeof(MemberInfo)) || requestedType == typeof(ParameterInfo))
+            {
+                return true;
+            }
+
+            return HasBuiltInManagedInstanceResolution(mocker, requestedType);
+        }
+
+        private static bool HasBuiltInManagedInstanceResolution(Mocker mocker, Type requestedType)
+        {
+            var enabledResolutions = mocker.Policy.EnabledBuiltInTypeResolutions;
+            if ((enabledResolutions & BuiltInTypeResolutionFlags.FileSystem) != 0 &&
+                requestedType.IsEquivalentTo(typeof(IFileSystem)) &&
+                !mocker.Contains<IFileSystem>())
+            {
+                return true;
+            }
+
+            if (requestedType == typeof(HttpContext) && !mocker.Contains<HttpContext>())
+            {
+                return true;
+            }
+
+            if (requestedType == typeof(ControllerContext) && !mocker.HasTypeRegistration(typeof(ControllerContext)))
+            {
+                return true;
+            }
+
+            if (typeof(IHttpContextAccessor).IsAssignableFrom(requestedType) && !mocker.Contains<IHttpContextAccessor>())
+            {
+                return true;
+            }
+
+            if (requestedType.IsAssignableTo(typeof(MemberInfo)) || requestedType == typeof(ParameterInfo))
+            {
+                return true;
+            }
+
+            return (enabledResolutions & BuiltInTypeResolutionFlags.DbContext) != 0 &&
+                DatabaseSupportBridge.IsEntityFrameworkDbContextType(requestedType);
         }
 
         private static object? TryGetBuiltInFileSystem(Mocker mocker, Type type)

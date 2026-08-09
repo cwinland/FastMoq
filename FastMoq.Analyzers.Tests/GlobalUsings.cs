@@ -1,0 +1,3 @@
+global using AwesomeAssertions;
+global using static AwesomeAssertions.AssertionExtensions;
+global using static AwesomeAssertions.EnumAssertionsExtensions;
